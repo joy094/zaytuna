@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import CategoryForm from "./CategoryForm";
 
-import "./createCategory.css";
+import "./CreateCategory.css";
 
 const CreateCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -18,10 +18,9 @@ const CreateCategory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "/api/v1/category/create-category",
-        { name },
-      );
+      const { data } = await axios.post("/api/v1/category/create-category", {
+        name,
+      });
       if (data?.success) {
         toast.success(data.message);
         setName("");
@@ -36,9 +35,7 @@ const CreateCategory = () => {
 
   const getAllCategories = async () => {
     try {
-      const { data } = await axios.get(
-        "/api/v1/category/get-category",
-      );
+      const { data } = await axios.get("/api/v1/category/get-category");
       if (data?.success) setCategories(data?.category);
     } catch (error) {
       toast.error("Failed to load categories");
