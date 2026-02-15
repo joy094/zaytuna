@@ -8,6 +8,7 @@ import {
   updateProfileController,
   updateOrderStatusController,
   getOrdersController,
+  getAllUsersController,
 } from "../controller/authController.js";
 import { isAdmin, requireSignIn } from "../middleware/authMiddleware.js";
 
@@ -51,5 +52,9 @@ router.put(
   isAdmin,
   updateOrderStatusController,
 ); // অর্ডার স্ট্যাটাস আপডেট করার জন্য নতুন রুট
+
+// Admin এর জন্য সব ইউজার দেখার রুট
+
+router.get("/all-users", requireSignIn, isAdmin, getAllUsersController);
 
 export default router;

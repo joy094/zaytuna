@@ -3,6 +3,7 @@
 import { comparePassword, hashPassword } from "../helpers/auth_helper.js";
 import user_model from "../model/user_model.js";
 import orderModel from "../model/orderModel.js"; // নতুন অর্ডার মডেল ইমপোর্ট
+import userModel from "../model/user_model.js"; // নতুন ইউজার মডেল ইমপোর্ট
 import JWT from "jsonwebtoken";
 //REGISTE ROUTE LOGIC POST
 
@@ -250,8 +251,21 @@ export const updateOrderStatusController = async (req, res) => {
   }
 };
 
+// Admin এর জন্য সব ইউজার দেখার কন্ট্রোলার
 
-
+export const getAllUsersController = async (req, res) => {
+  try {
+    const users = await userModel.find({}).sort({ createdAt: -1 });
+    res.status(200).send({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ success: false, message: "Error in fetching users" });
+  }
+};
 
 // ইউজারের নিজস্ব অর্ডার দেখার কন্ট্রোলার
 export const getOrdersController = async (req, res) => {
@@ -260,9 +274,9 @@ export const getOrdersController = async (req, res) => {
     const orders = await orderModel
       .find({ buyer: req.user._id })
       .populate("products", "-photo") // প্রোডাক্টের ডিটেইলস (ছবি ছাড়া)
-      .populate("buyer", "name")     // বায়ারের নাম
-      .sort({ createdAt: -1 });      // নতুন অর্ডার আগে দেখাবে
-      
+      .populate("buyer", "name") // বায়ারের নাম
+      .sort({ createdAt: -1 }); // নতুন অর্ডার আগে দেখাবে
+
     res.json(orders);
   } catch (error) {
     console.log(error);

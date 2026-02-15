@@ -1,0 +1,61 @@
+/* Admin Menu Sidebar Style */
+.admin-menu-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: fit-content;
+}
+
+.menu-title {
+  background-color: #333;
+  color: #fff;
+  padding: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 0;
+}
+
+.list-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  border-bottom: 1px solid #eee;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+/* Hover Effect */
+.menu-item:hover {
+  background-color: #fff5f3; /* Light tomato tint */
+  color: #ff6347; /* Tomato color */
+  padding-left: 25px; /* Slight sliding animation */
+}
+
+/* Active Menu Style */
+.menu-item.active {
+  background-color: #ff6347;
+  color: #fff;
+}
+
+.menu-item.active:hover {
+  color: #fff;
+  padding-left: 20px;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .admin-menu-container {
+    margin-bottom: 20px;
+  }
+}
