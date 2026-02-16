@@ -33,6 +33,8 @@ import CreateProduct from "./components/AdminRoute/CreateProduct";
 import Users from "./components/AdminRoute/Users";
 import CartPage from "./components/UserPrivateRoute/Cart"; // Cart Page ইমপোর্ট
 
+import ProductDetails from "./components/pages/ProductDetaills"; // Product Details Page ইমপোর্ট
+
 // ================= PAGES =================
 // Home Page Updated slider logic
 
@@ -549,8 +551,11 @@ const App = () => (
     <Route path="/login" element={<Login />} />
     <Route path="/fogot-password" element={<ForgotPassword />} />
 
+
+
     {/* Cart Route (Public Access) */}
     <Route path="/cart" element={<CartPage />} />
+    <Route path="/product/:slug" element={<ProductDetails />} />
 
     {/* User Routes */}
     <Route path="/dashboard" element={<PrivateRoute />}>

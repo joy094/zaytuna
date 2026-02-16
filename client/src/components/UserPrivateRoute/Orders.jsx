@@ -14,7 +14,7 @@ const Orders = () => {
   const getOrders = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:3001/api/v1/auth/orders",
+        "/api/v1/auth/orders",
       );
       setOrders(data);
     } catch (error) {
@@ -77,7 +77,7 @@ const Orders = () => {
                     style={{ padding: "10px", borderBottom: "1px solid #eee" }}
                   >
                     <img
-                      src={`http://localhost:3001/api/v1/product/product-photo/${p._id}`}
+                      src={`/api/v1/product/product-photo/${p._id}`}
                       alt={p.name}
                       style={{
                         width: "50px",
@@ -89,7 +89,7 @@ const Orders = () => {
                       <p className="mb-0">
                         <strong>{p.name}</strong>
                       </p>
-                      <p className="mb-0 text-muted">Price: ${p.price}</p>
+                      <p className="mb-0 text-muted">Price: ৳ {p.price}</p>
                     </div>
                   </div>
                 ))}

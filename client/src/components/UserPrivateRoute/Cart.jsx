@@ -27,7 +27,7 @@ const Cart = () => {
       });
       return total.toLocaleString("en-US", {
         style: "currency",
-        currency: "USD",
+        currency: "BDT",
       });
     } catch (error) {
       console.log(error);
@@ -64,7 +64,7 @@ const Cart = () => {
       };
 
       const { data } = await axios.post(
-        "http://localhost:3001/api/v1/product/place-order",
+        "/api/v1/product/place-order",
         orderData,
       );
 
@@ -108,13 +108,13 @@ const Cart = () => {
               {cart?.map((p) => (
                 <div className="cart-item-row" key={p._id}>
                   <img
-                    src={`http://localhost:3001/api/v1/product/product-photo/${p._id}`}
+                    src={`/api/v1/product/product-photo/${p._id}`}
                     alt={p.name}
                     className="cart-item-img"
                   />
                   <div className="cart-item-info">
                     <h3>{p.name}</h3>
-                    <p className="price">${p.price}</p>
+                    <p className="price">৳ {p.price}</p>
                     <button
                       className="btn-remove"
                       onClick={() => removeCartItem(p._id)}
