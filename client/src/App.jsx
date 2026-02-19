@@ -35,6 +35,9 @@ import CartPage from "./components/UserPrivateRoute/Cart"; // Cart Page ইম�
 
 import ProductDetails from "./components/pages/ProductDetaills"; // Product Details Page ইমপোর্ট
 
+import UpdateProduct from "./components/AdminRoute/UpdateProduct";
+import Products from "./components/AdminRoute/Products";
+
 // ================= PAGES =================
 // Home Page Updated slider logic
 
@@ -47,9 +50,7 @@ const Home = () => {
   // প্রোডাক্ট লোড করার ফাংশন (আগের মতোই)
   const getAllProducts = async () => {
     try {
-      const { data } = await axios.get(
-        "/api/v1/product/get-product",
-      );
+      const { data } = await axios.get("/api/v1/product/get-product");
       if (data?.success) setProducts(data.products);
     } catch (error) {
       toast.error("Something went wrong");
@@ -186,17 +187,14 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "/api/v1/auth/register",
-        {
-          name,
-          email,
-          password,
-          phone,
-          address,
-          answer,
-        },
-      );
+      const res = await axios.post("/api/v1/auth/register", {
+        name,
+        email,
+        password,
+        phone,
+        address,
+        answer,
+      });
       if (res.data.success) {
         toast.success("Registration successful");
         setTimeout(() => navigate("/login"), 2000);
@@ -335,10 +333,11 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "/api/v1/auth/forgot-password",
-        { email, answer, newPassword },
-      );
+      const res = await axios.post("/api/v1/auth/forgot-password", {
+        email,
+        answer,
+        newPassword,
+      });
       if (res.data.success) {
         toast.success(res.data.message);
         setTimeout(() => navigate("/login"), 2000);
@@ -481,12 +480,17 @@ const Header = () => {
           <NavLink to="/" onClick={() => setIsOpen(false)}>
             Home
           </NavLink>
+      
+          
           <NavLink
             to="/cart"
             className="cart-nav-link"
             onClick={() => setIsOpen(false)}
           >
-            Cart <span className="cart-count">{cart?.length}</span>
+            <div className="cart-icon-container">
+              <i className="fa-solid fa-cart-shopping"></i>
+              <span className="cart-badge">{cart?.length}</span>
+            </div>
           </NavLink>
           {!auth.user ? (
             <>
@@ -532,15 +536,58 @@ const Footer = () => (
   </footer>
 );
 
-export const Layout = ({ children }) => (
-  <div className="layout-wrapper">
-    <Header />
-    <main className="main-content">{children}</main>
-    <ToastContainer autoClose={2000} />
-    <Footer />
-  </div>
-);
 
+// Layout Component
+export const Layout = ({ children, title = "Barakahmart" }) => {
+  const [cart] = useCart();
+  const [auth] = useAuth();
+
+  return (
+    <div className="layout-wrapper">
+      <Header />
+      
+      {/* Floating Social Buttons */}
+      <div className="social-float">
+        <a href="https://wa.me/8801XXXXXXXXX" target="_blank" rel="noreferrer" className="whatsapp-float">
+          <i className="fa-brands fa-whatsapp"></i>
+        </a>
+        <a href="https://m.me/yourpage" target="_blank" rel="noreferrer" className="fb-float">
+          <i className="fa-brands fa-facebook-messenger"></i>
+        </a>
+      </div>
+
+      <main className="main-content" style={{ minHeight: "80vh" }}>
+        {children}
+      </main>
+
+      {/* Bottom Navigation for Mobile */}
+      <div className="bottom-nav">
+        <Link to="/" className="nav-item">
+          <i className="fa-solid fa-house"></i>
+          <span>Home</span>
+        </Link>
+        <Link to="/dashboard/user/orders" className="nav-item">
+          <i className="fa-solid fa-bag-shopping"></i>
+          <span>Orders</span>
+        </Link>
+        <Link to="/cart" className="nav-item">
+          <div className="cart-icon-container">
+            <i className="fa-solid fa-cart-shopping"></i>
+            <span className="cart-badge">{cart?.length}</span>
+          </div>
+          <span>Cart</span>
+        </Link>
+        <Link to={auth?.user ? `/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}` : "/login"} className="nav-item">
+          <i className="fa-solid fa-user"></i>
+          <span>Account</span>
+        </Link>
+      </div>
+
+      <ToastContainer autoClose={2000} />
+      <Footer />
+    </div>
+  );
+};
 // ================= MAIN APP COMPONENT =================
 
 const App = () => (
@@ -550,8 +597,6 @@ const App = () => (
     <Route path="/register" element={<Register />} />
     <Route path="/login" element={<Login />} />
     <Route path="/fogot-password" element={<ForgotPassword />} />
-
-
 
     {/* Cart Route (Public Access) */}
     <Route path="/cart" element={<CartPage />} />
@@ -567,7 +612,10 @@ const App = () => (
     {/* Admin Routes */}
     <Route path="/dashboard" element={<AdminRoute />}>
       <Route path="admin" element={<AdminDashboard />} />
+
       <Route path="admin/create-category" element={<CreateCategory />} />
+      <Route path="admin/products" element={<Products />} />
+      <Route path="admin/update-product/:slug" element={<UpdateProduct />} />
       <Route path="admin/create-product" element={<CreateProduct />} />
       <Route path="admin/users" element={<Users />} />
       <Route path="admin/orders" element={<AdminOrders />} />

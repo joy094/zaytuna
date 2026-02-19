@@ -1,10 +1,22 @@
 /* App.css */
 /* Global Reset */
+
+/* Importing Google  Tiro Bangla Font */
+
+@import url("https://fonts.googleapis.com/css2?family=Tiro+Bangla&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Hind Siliguri", "Segoe UI", Tahoma, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", "Tiro Bangla", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 :root {
@@ -187,9 +199,7 @@ input:focus {
   padding: 20px;
   margin-top: auto;
 }
-
-/*home page css */
-/* Home.css */
+/* --- Home.css Updated --- */
 
 .home-container {
   overflow-x: hidden;
@@ -288,7 +298,7 @@ input:focus {
   border-radius: 10px;
 }
 
-/* Product Grid */
+/* Product Section */
 .product-section {
   padding: 50px 5%;
 }
@@ -299,6 +309,7 @@ input:focus {
   text-align: center;
 }
 
+/* Product Grid - Desktop Default */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -311,42 +322,59 @@ input:focus {
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover {
   transform: translateY(-5px);
 }
 
-.product-img-wrapper img {
+/* Photo Adjustment - ছবিতে Contain ব্যবহার করা হয়েছে যাতে না কাটে */
+.product-img-wrapper {
   width: 100%;
-  height: 200px;
-  object-fit: cover;
+  height: 200px; /* ফিক্সড হাইট */
+  background: #f8f9fa; /* ছবির পেছনে হালকা ব্যাকগ্রাউন্ড */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 8px;
+  overflow: hidden;
+}
+
+.product-img-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain; /* ছবি পুরোপুরি দেখাবে, কাটবে না */
 }
 
 .product-name {
   margin: 15px 0 10px;
   font-size: 1.1rem;
+  height: 2.4em; /* নাম লম্বা হলেও যাতে কার্ডের সাইজ ঠিক থাকে */
+  overflow: hidden;
 }
 
 .price-tag {
   color: #28a745;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.3rem; /* একটু ছোট করা হয়েছে মোবাইল এডজাস্টমেন্টের জন্য */
   margin-bottom: 15px;
 }
 
 .product-actions {
   display: flex;
   gap: 10px;
+  margin-top: auto; /* বাটনগুলো নিচে ফিক্সড থাকবে */
 }
 
 .product-actions button {
   flex: 1;
-  padding: 8px;
+  padding: 8px 5px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.9rem;
 }
 
 .btn-view {
@@ -358,50 +386,61 @@ input:focus {
   color: white;
 }
 
-/* Animations */
-.animate-top {
-  animation: slideInTop 0.8s ease-out;
-}
-.animate-bottom {
-  animation: slideInBottom 0.8s ease-out;
-}
+/* --- Responsive Layout --- */
 
-@keyframes slideInTop {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInBottom {
-  from {
-    transform: translateY(50px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-/* Responsive */
 @media (max-width: 768px) {
   .slider-content {
     flex-direction: column-reverse;
     text-align: center;
+    padding: 20px 5%;
   }
   .slider-text h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   .custom-slider {
-    height: 600px;
+    height: 500px;
   }
   .slider-image img {
-    max-height: 350px;
+    max-height: 250px;
+  }
+
+  /* ড্যাশবোর্ড গ্রিড মোবাইল ভিউ */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* মোবাইল ভিউ - ২ কলাম গ্রিড */
+@media (max-width: 576px) {
+  .product-section {
+    padding: 30px 2%;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr); /* ২ কলাম */
+    gap: 10px; /* মোবাইল গ্যাপ একটু কম */
+  }
+
+  .product-card {
+    padding: 10px;
+  }
+
+  .product-img-wrapper {
+    height: 150px; /* মোবাইলে ছবির বক্স একটু ছোট */
+  }
+
+  .product-name {
+    font-size: 0.9rem;
+    height: 2.8em;
+  }
+
+  .price-tag {
+    font-size: 1.1rem;
+  }
+
+  .product-actions {
+    flex-direction: column; /* মোবাইলে বাটন একটির নিচে একটি */
+    gap: 5px;
   }
 }
 
@@ -416,15 +455,8 @@ input:focus {
   background: white;
   padding: 25px;
   border-radius: 10px;
-  box-shadow: var(--shadow);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
-
-@media (max-width: 768px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /*  Create Product Form Styling */
 .product-form-card {
   background: #ffffff;
@@ -858,5 +890,111 @@ input:focus {
   .dropdown-content a {
     color: white !important;
     padding-left: 20px;
+  }
+}
+
+/*newly added  page */
+
+/* --- Floating Social Buttons --- */
+.social-float {
+  position: fixed;
+  right: 20px;
+  bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 999;
+}
+
+.social-float a {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.whatsapp-float {
+  background: #25d366;
+}
+.fb-float {
+  background: #0084ff;
+}
+.social-float a:hover {
+  transform: scale(1.1);
+}
+
+/* --- Bottom Navigation (Mobile Only) --- */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  background: #ffffff;
+  display: none; /* ডিফল্টভাবে হাইড */
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  border-top: 1px solid #eee;
+}
+
+/* --- Cart Badge Styles --- */
+.cart-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #e94560;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  font-weight: bold;
+}
+
+/* --- Responsive Viewport Adjustment --- */
+@media (max-width: 768px) {
+  .bottom-nav {
+    display: flex; /* মোবাইলে শো করবে */
+  }
+
+  .nav-item {
+    text-decoration: none;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .nav-item i {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .nav-item.active {
+    color: #e94560;
+  }
+
+  /* মোবাইলে যাতে কন্টেন্ট নিচের মেনুর নিচে না ঢাকা পড়ে */
+  .main-content {
+    padding-bottom: 70px;
+  }
+
+  .footer {
+    margin-bottom: 65px; /* ফিক্সড মেনুর জন্য জায়গা ছাড়া */
   }
 }

@@ -1,5 +1,3 @@
-//src/components/AdminRoute/AdminMenu.jsx
-
 import { NavLink } from "react-router-dom";
 import "./AdminMenu.css";
 
@@ -27,7 +25,16 @@ function AdminMenu() {
           Create Product
         </NavLink>
 
-        {/* --- এটি নতুন যুক্ত করা হয়েছে --- */}
+        {/* --- এটি অবশ্যই যুক্ত করতে হবে (প্রোডাক্ট এডিট/ডিলিট করার গেটওয়ে) --- */}
+        <NavLink
+          to="/dashboard/admin/products"
+          className={({ isActive }) =>
+            isActive ? "menu-item active" : "menu-item"
+          }
+        >
+          All Products
+        </NavLink>
+
         <NavLink
           to="/dashboard/admin/orders"
           className={({ isActive }) =>
@@ -36,7 +43,6 @@ function AdminMenu() {
         >
           Manage Orders
         </NavLink>
-        {/* --------------------------- */}
 
         <NavLink
           to="/dashboard/admin/users"
@@ -52,4 +58,3 @@ function AdminMenu() {
 }
 
 export default AdminMenu;
-   

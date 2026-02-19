@@ -1,10 +1,9 @@
-// --- প্রোডাক্ট কন্ট্রোলার (Product Controller) ---
-
 import slugify from "slugify";
 import productModel from "../model/productModel.js";
 import orderModel from "../model/orderModel.js";
 import fs from "fs";
 import JWT from "jsonwebtoken";
+
 // --- ১. প্রোডাক্ট তৈরি (Create Product) ---
 export const createProductController = async (req, res) => {
   try {
@@ -12,21 +11,23 @@ export const createProductController = async (req, res) => {
       req.fields;
     const { photo } = req.files;
 
-    // ১. ভ্যালিডেশন চেক (এরর হ্যান্ডলিং)
+    // ভ্যালিডেশন
     if (!name || !description || !price || !category || !quantity) {
       return res.status(400).send({ error: "All text fields are required" });
     }
-    if (!photo || photo.size > 1000000) {
-      return res
-        .status(400)
-        .send({ error: "Photo is required and should be less than 1MB" });
+
+    // ইউনিকোড নিরাপদ স্লাগ জেনারেশন
+    let slug = slugify(name, { lower: true, strict: false });
+    if (!slug) {
+      slug = name.trim().replace(/\s+/g, "-").toLowerCase();
     }
 
-    // ২. নতুন প্রোডাক্ট অবজেক্ট তৈরি
-    const products = new productModel({ ...req.fields, slug: slugify(name) });
+    const products = new productModel({ ...req.fields, slug });
 
-    // ৩. ফটো বাইনারি ডাটা হিসেবে সেভ করা
     if (photo) {
+      if (photo.size > 1000000) {
+        return res.status(400).send({ error: "Photo should be less than 1MB" });
+      }
       products.photo.data = fs.readFileSync(photo.path);
       products.photo.contentType = photo.type;
     }
@@ -38,7 +39,7 @@ export const createProductController = async (req, res) => {
       products,
     });
   } catch (error) {
-    console.error("SERVER ERROR:", error); // এটি আপনার টার্মিনালে আসল এরর দেখাবে
+    console.error("SERVER ERROR:", error);
     res.status(500).send({
       success: false,
       error: error.message,
@@ -46,6 +47,7 @@ export const createProductController = async (req, res) => {
     });
   }
 };
+
 // --- ২. সব প্রোডাক্ট দেখা (Get All) ---
 export const getProductController = async (req, res) => {
   try {
@@ -78,6 +80,13 @@ export const getSingleProductController = async (req, res) => {
       .findOne({ slug: req.params.slug })
       .select("-photo")
       .populate("category");
+
+    if (!product) {
+      return res
+        .status(404)
+        .send({ success: false, message: "Product Not Found" });
+    }
+
     res.status(200).send({
       success: true,
       product,
@@ -103,53 +112,75 @@ export const productPhotoController = async (req, res) => {
   }
 };
 
-// --- ৫. প্রোডাক্ট আপডেট (Update) ---
+// --- ৫. প্রোডাক্ট আপডেট (Update - Admin Action) ---
 export const updateProductController = async (req, res) => {
   try {
-    const { name, price, description, category, quantity } = req.fields;
+    const { name, description, price, category, quantity, shipping } =
+      req.fields;
     const { photo } = req.files;
 
+    // ১. ভ্যালিডেশন (ঐচ্ছিক কিন্তু নিরাপদ)
+    if (!name) return res.status(400).send({ error: "Name is required" });
+
+    // ২. বাংলা ইউনিকোড নিরাপদ স্লাগ জেনারেশন (আপডেটের জন্য)
+    let slug = slugify(name, { lower: true, strict: false });
+
+    // যদি স্লাগিফাই বাংলা সাপোর্ট না করে খালি স্ট্রিং দেয়, তবে ম্যানুয়ালি হ্যান্ডেল করা
+    if (!slug || slug === "") {
+      slug = name.trim().replace(/\s+/g, "-").toLowerCase();
+    }
+
+    // ৩. প্রোডাক্ট আপডেট করা
     const product = await productModel.findByIdAndUpdate(
       req.params.pid,
-      { ...req.fields, slug: slugify(name) },
+      { ...req.fields, slug: slug }, // এখানে নিশ্চিতভাবে নতুন স্লাগ পাঠানো হচ্ছে
       { new: true },
     );
 
+    // ৪. ফটো আপডেট লজিক
     if (photo) {
+      if (photo.size > 1000000) {
+        return res.status(400).send({ error: "Photo should be less than 1MB" });
+      }
       product.photo.data = fs.readFileSync(photo.path);
       product.photo.contentType = photo.type;
+      await product.save();
     }
-    await product.save();
+
     res.status(200).send({
       success: true,
-      message: "Product updated successfully",
+      message: "Product Updated Successfully",
       product,
     });
   } catch (error) {
-    res.status(500).send({ success: false, message: "Error updating product" });
+    console.error("UPDATE ERROR:", error);
+    res.status(500).send({
+      success: false,
+      error: error.message,
+      message: "Error while updating product",
+    });
   }
 };
 
-// --- ৬. প্রোডাক্ট ডিলিট (Delete) ---
+// --- ৬. প্রোডাক্ট ডিলিট (Delete - Admin Action) ---
 export const deleteProductController = async (req, res) => {
   try {
     await productModel.findByIdAndDelete(req.params.pid).select("-photo");
     res.status(200).send({
       success: true,
-      message: "Product deleted",
+      message: "Product deleted successfully",
     });
   } catch (error) {
     res.status(500).send({ success: false, message: "Error deleting product" });
   }
 };
 
-// --- ৭. // --- স্মার্ট অর্ডার কন্ট্রোলার (User & Guest Both) ---
+// --- ৭. স্মার্ট অর্ডার কন্ট্রোলার ---
 export const createOrderController = async (req, res) => {
   try {
     const { cart, customerDetails } = req.body;
     let userId = null;
 
-    // টোকেন চেক করা (যদি ইউজার লগইন থাকে)
     const authHeader = req.headers.authorization;
     if (authHeader) {
       try {
@@ -164,8 +195,8 @@ export const createOrderController = async (req, res) => {
       products: cart,
       payment: { method: "COD", status: "Pending" },
       paymentMethod: "COD",
-      buyer: userId, // আইডি থাকলে ইউজার অর্ডার, না থাকলে গেস্ট
-      guestDetails: userId ? null : customerDetails, // ইউজার হলে গেস্ট ডিটেইলস দরকার নেই
+      buyer: userId,
+      guestDetails: userId ? null : customerDetails,
       status: "Not Process",
     });
 
@@ -175,6 +206,8 @@ export const createOrderController = async (req, res) => {
       message: "Order Placed Successfully",
     });
   } catch (error) {
-    res.status(500).send({ success: false, message: "Error", error });
+    res
+      .status(500)
+      .send({ success: false, message: "Error placing order", error });
   }
 };

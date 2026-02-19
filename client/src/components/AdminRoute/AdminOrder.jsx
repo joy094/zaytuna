@@ -22,9 +22,7 @@ const AdminOrders = () => {
   // সব অর্ডার ডাটাবেস থেকে নিয়ে আসা
   const getOrders = async () => {
     try {
-      const { data } = await axios.get(
-        "/api/v1/auth/all-orders",
-      );
+      const { data } = await axios.get("/api/v1/auth/all-orders");
       setOrders(data);
     } catch (error) {
       console.log(error);
@@ -148,7 +146,7 @@ const AdminOrders = () => {
                       <div className="product-info-box ms-3">
                         <p className="mb-0 fw-bold">{p.name}</p>
                         <p className="mb-0 text-muted small">
-                          Price: ${p.price}
+                          Price: ৳ {p.price}
                         </p>
                       </div>
                     </div>
