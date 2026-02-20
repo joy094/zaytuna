@@ -5,33 +5,42 @@ import { useAuth } from "../../context/auth";
 import axios from "axios";
 import { Outlet } from "react-router-dom";
 import Redirect from "../Redirect";
-import { set } from "mongoose";
-
-
-
-// Admin private route component
 
 const AdminRoute = () => {
   const [ok, setOk] = useState(false);
+  const [loading, setLoading] = useState(true); // লোডিং স্টেট যোগ করা হয়েছে
   const [auth, setAuth] = useAuth();
 
   useEffect(() => {
     const authCheck = async () => {
-      const res = await axios.get(
-        "/api/v1/auth/admin-auth"
-      );
-      if (res.data.ok) {
-        setOk(true);
-      } else {
+      try {
+        const res = await axios.get("/api/v1/auth/admin-auth");
+        if (res.data.ok) {
+          setOk(true);
+        } else {
+          setOk(false);
+        }
+      } catch (error) {
         setOk(false);
+      } finally {
+        setLoading(false); // চেক শেষ হলে লোডিং ফলস হবে
       }
     };
 
-    if (auth?.token) authCheck();
+    if (auth?.token) {
+      authCheck();
+    } else {
+      // যদি টোকেনই না থাকে, তবে লোডিং বন্ধ করে রিডাইরেক্টে পাঠাবে
+      setLoading(false);
+    }
   }, [auth?.token]);
 
-  //চেক করবে যদি admin প্রাইভেট রাউটের রেসপন্স Ok থাকে তাহলে<Outlet /> কল হবে,,<Outlet />
-  //   কল হলেই রাউট থেকে নেস্টেড <Redirect />; রাউট রেন্ডার হবে।
-  return ok ? <Outlet /> : <h1 path="">You have don't admin access go back home</h1>
+  // ১. যখন টোকেন ভেরিফাই হচ্ছে, তখন শুধু একটি সাদা স্ক্রিন বা ছোট স্পিনার দেখাবে
+  if (loading) return null;
+
+  // ২. যদি ভেরিফিকেশন সফল হয় (ok === true), তবে অ্যাডমিন ড্যাশবোর্ড দেখাবে
+  // ৩. যদি ব্যর্থ হয়, তবে আপনার বানানো Redirect কম্পোনেন্টটি কল হবে
+  return ok ? <Outlet /> : <Redirect path="" />;
 };
+
 export default AdminRoute;

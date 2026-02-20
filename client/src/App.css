@@ -196,6 +196,7 @@ input:focus {
   background-color: var(--dark);
   color: white;
   text-align: center;
+  font-size: 11px;
   padding: 20px;
   margin-top: auto;
 }
@@ -277,7 +278,7 @@ input:focus {
 /* Dots */
 .slider-dots {
   position: absolute;
-  bottom: 20px;
+  bottom: 6px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -903,10 +904,12 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  
   z-index: 999;
 }
 
 .social-float a {
+  text-decoration: none;
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -998,3 +1001,83 @@ input:focus {
     margin-bottom: 65px; /* ফিক্সড মেনুর জন্য জায়গা ছাড়া */
   }
 }
+
+/* ================================================================
+   RESPONSIVE MEDIA QUERIES
+   ================================================================ */
+
+/* --- 11. MEDIA QUERIES (RESPONSIVE) --- */
+
+/* Tablet & Smaller (Max 768px) */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+  }
+  .nav-links {
+    position: fixed;
+    top: 60px;
+    right: -100%;
+    width: 250px;
+    height: calc(100vh - 60px);
+    background: var(--dark);
+    flex-direction: column;
+    padding: 30px 20px;
+    transition: 0.4s;
+  }
+  .nav-links.mobile-active {
+    right: 0;
+  }
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .bottom-nav {
+    display: flex;
+  }
+  .main-content {
+    padding-bottom: 70px;
+  }
+  .footer {
+    margin-bottom: 65px;
+  }
+  /* .custom-slider {
+    height: 450px;
+  }
+  .slider-content {
+    flex-direction: column-reverse;
+    text-align: center;
+    padding: 20px;
+  }
+  .slider-text h1 {
+    font-size: 1.8rem;
+  }
+  .slider-image img {
+    max-height: 250px;
+  } */
+}
+
+/* Mobile Devices (Max 576px) */
+@media (max-width: 576px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .product-img-wrapper {
+    height: 150px;
+  }
+  .product-name {
+    font-size: 0.9rem;
+  }
+  .cart-content-grid {
+    grid-template-columns: 1fr;
+  }
+  .auth-form {
+    padding: 20px;
+  }
+}
+
+
+

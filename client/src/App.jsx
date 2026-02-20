@@ -394,7 +394,7 @@ const About = () => (
 
 // ================= COMPONENTS =================
 
-// ৩. User Dashboard (এটি মিসিং ছিল বলে এরর আসছিল)
+// ৩. User Dashboard
 const Dashboard = () => {
   const [auth] = useAuth();
   return (
@@ -480,8 +480,7 @@ const Header = () => {
           <NavLink to="/" onClick={() => setIsOpen(false)}>
             Home
           </NavLink>
-      
-          
+
           <NavLink
             to="/cart"
             className="cart-nav-link"
@@ -536,7 +535,6 @@ const Footer = () => (
   </footer>
 );
 
-
 // Layout Component
 export const Layout = ({ children, title = "Barakahmart" }) => {
   const [cart] = useCart();
@@ -545,14 +543,24 @@ export const Layout = ({ children, title = "Barakahmart" }) => {
   return (
     <div className="layout-wrapper">
       <Header />
-      
+
       {/* Floating Social Buttons */}
       <div className="social-float">
-        <a href="https://wa.me/8801XXXXXXXXX" target="_blank" rel="noreferrer" className="whatsapp-float">
+        <a
+          href="https://wa.me/8801860989372"
+          target="_blank"
+          rel="noreferrer"
+          className="whatsapp-float"
+        >
           <i className="fa-brands fa-whatsapp"></i>
         </a>
-        <a href="https://m.me/yourpage" target="_blank" rel="noreferrer" className="fb-float">
-          <i className="fa-brands fa-facebook-messenger"></i>
+        <a
+          href="https://www.facebook.com/share/1CYYZC9q9F/"
+          target="_blank"
+          rel="noreferrer"
+          className="fb-float"
+        >
+          <i className="fa-brands fa-facebook"></i>
         </a>
       </div>
 
@@ -566,10 +574,20 @@ export const Layout = ({ children, title = "Barakahmart" }) => {
           <i className="fa-solid fa-house"></i>
           <span>Home</span>
         </Link>
-        <Link to="/dashboard/user/orders" className="nav-item">
+
+        {/* Orders Button (Conditional Logic) */}
+        <Link
+          to={`/dashboard/${auth?.user?.role === 1 ? "admin/orders" : "user/orders"}`}
+          className="nav-item"
+        >
+          <i className="fa-solid fa-bag-shopping"></i>
+          <span>{auth?.user?.role === 1 ? "Manage" : "Orders"}</span>
+        </Link>
+
+        {/* <Link to="/dashboard/user/orders" className="nav-item">
           <i className="fa-solid fa-bag-shopping"></i>
           <span>Orders</span>
-        </Link>
+        </Link> */}
         <Link to="/cart" className="nav-item">
           <div className="cart-icon-container">
             <i className="fa-solid fa-cart-shopping"></i>
@@ -577,7 +595,14 @@ export const Layout = ({ children, title = "Barakahmart" }) => {
           </div>
           <span>Cart</span>
         </Link>
-        <Link to={auth?.user ? `/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}` : "/login"} className="nav-item">
+        <Link
+          to={
+            auth?.user
+              ? `/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`
+              : "/login"
+          }
+          className="nav-item"
+        >
           <i className="fa-solid fa-user"></i>
           <span>Account</span>
         </Link>
