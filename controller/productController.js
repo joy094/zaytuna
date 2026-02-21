@@ -1,5 +1,8 @@
+//productController.js
+
 import slugify from "slugify";
 import productModel from "../model/productModel.js";
+import categoryModel from "../model/categoryModel.js"; // নিশ্চিত করুন এই ইম্পোর্টটি উপরে আছে
 import orderModel from "../model/orderModel.js";
 import fs from "fs";
 import JWT from "jsonwebtoken";
@@ -209,5 +212,38 @@ export const createOrderController = async (req, res) => {
     res
       .status(500)
       .send({ success: false, message: "Error placing order", error });
+  }
+};
+
+// --- ৮. ক্যাটাগরি অনুযায়ী প্রোডাক্ট ফিল্টার (Product by Category) ---
+export const productCategoryController = async (req, res) => {
+  try {
+    // ১. ইউআরএল থেকে আসা স্লাগ দিয়ে ক্যাটাগরি খুঁজে বের করা
+    const category = await categoryModel.findOne({ slug: req.params.slug });
+
+    if (!category) {
+      return res.status(404).send({
+        success: false,
+        message: "Category Not Found",
+      });
+    }
+
+    // ২. ওই ক্যাটাগরির আইডি ব্যবহার করে প্রোডাক্টগুলো খুঁজে বের করা
+    const products = await productModel
+      .find({ category: category._id })
+      .populate("category");
+
+    res.status(200).send({
+      success: true,
+      category,
+      products,
+    });
+  } catch (error) {
+    console.error("Category Product Error:", error);
+    res.status(400).send({
+      success: false,
+      error: error.message,
+      message: "Error while getting products by category",
+    });
   }
 };

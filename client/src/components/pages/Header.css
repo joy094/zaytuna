@@ -1,0 +1,209 @@
+
+
+/*new css */
+/* --- Global Variables --- */
+:root {
+  --primary: #ff6347;
+  --dark: #333;
+  --white: #ffffff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* --- Navbar Core --- */
+.navbar {
+  background-color: var(--primary);
+  padding: 0.8rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.logo a {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--white);
+  text-decoration: none;
+}
+
+/* --- Navigation Links --- */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+/* --- Cart Icon --- */
+.cart-nav-link .cart-icon-container {
+  position: relative;
+  font-size: 1.3rem;
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: var(--dark);
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  border: 1px solid white;
+}
+
+/* --- Desktop View Controls (বড় স্ক্রিনে যা হবে) --- */
+@media (min-width: 769px) {
+  /* ডেক্সটপে মোবাইল সাইডবার এবং কল বাটন হাইড থাকবে */
+  .sidebar-categories,
+  .hamburger {
+    display: none !important;
+  }
+
+  /* ডেক্সটপ ড্রপডাউন */
+  .dropdown {
+    position: relative;
+  }
+
+  .dropdown-title {
+    cursor: pointer;
+    list-style: none;
+    font-weight: bold;
+    color: white;
+  }
+
+  .dropdown-content {
+    position: absolute;
+    top: 150%;
+    right: 0;
+    background: white;
+    min-width: 200px;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+    display: none; /* শুরুতে হাইড */
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* details ট্যাগ ওপেন হলে বা হোভারে শো হবে */
+  .dropdown[open] .dropdown-content,
+  .desktop-nav-category:hover .dropdown-content {
+    display: flex;
+  }
+
+  .dropdown-content a {
+    color: var(--dark) !important;
+    padding: 12px 20px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  .dropdown-content a:hover {
+    background: #fff5f3;
+    color: var(--primary) !important;
+  }
+
+  .logout-link {
+    color: #d32f2f !important;
+  }
+}
+
+/* --- Mobile View Design (ছোট স্ক্রিনে যা হবে) --- */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  /* ডেক্সটপ ক্যাটাগরি মেনু মোবাইলে হাইড */
+  .desktop-nav-category {
+    display: none;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 280px;
+    height: 100vh;
+    background: white !important;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: 0.4s;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    padding-top: 20px;
+  }
+
+  .nav-links.mobile-active {
+    left: 0;
+  }
+
+  /* মোবাইলে সব লিংকের টেক্সট কালার ডার্ক */
+  .nav-links a {
+    color: var(--dark) !important;
+    width: 100%;
+    padding: 15px 25px;
+    border-bottom: 1px solid #f1f1f1;
+  }
+
+  /* মোবাইল ক্যাটাগরি সেকশন */
+  .sidebar-categories {
+    width: 100%;
+    display: block;
+  }
+
+  .category-label {
+    background: #f8f9fa;
+    padding: 10px 25px;
+    font-weight: bold;
+    color: #888;
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  .call-order {
+    margin: 15px;
+    width: calc(100% - 30px);
+    padding: 12px;
+    background: white;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    border-radius: 8px;
+    font-weight: bold;
+  }
+
+  .sidebar-cat-item {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* মোবাইলে ড্রপডাউন স্টাইল */
+  .dropdown-content {
+    position: static;
+    width: 100%;
+    box-shadow: none;
+    background: #fafafa;
+  }
+}

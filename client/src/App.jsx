@@ -44,6 +44,7 @@ import Users from "./components/AdminRoute/Users";
 import CartPage from "./components/UserPrivateRoute/Cart"; // Cart Page ইমপোর্ট
 
 import ProductDetails from "./components/pages/ProductDetaills"; // Product Details Page ইমপোর্ট
+import CategoryProduct from "./components/pages/CategoryProduct"; // Category Product Page ইমপোর্ট
 
 import UpdateProduct from "./components/AdminRoute/UpdateProduct";
 import Products from "./components/AdminRoute/Products";
@@ -84,6 +85,7 @@ const App = () => (
     {/* Cart Route (Public Access) */}
     <Route path="/cart" element={<CartPage />} />
     <Route path="/product/:slug" element={<ProductDetails />} />
+    <Route path="/category/:slug" element={<CategoryProduct />} />
 
     {/* User Routes */}
     <Route path="/dashboard" element={<PrivateRoute />}>

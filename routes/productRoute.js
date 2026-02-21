@@ -11,7 +11,9 @@ import {
   getSingleProductController,
   productPhotoController,
   updateProductController,
-  createOrderController, // নতুন কন্ট্রোলার ইমপোর্ট
+  createOrderController,
+  productCategoryController,
+  // নতুন কন্ট্রোলার ইমপোর্ট
 } from "../controller/productController.js";
 
 const router = express.Router();
@@ -58,5 +60,8 @@ router.delete(
 //user & guest user order route
 
 router.post("/place-order", createOrderController);
+
+// productCategoryController ইম্পোর্ট নিশ্চিত করুন
+router.get("/product-category/:slug", productCategoryController);
 
 export default router;
