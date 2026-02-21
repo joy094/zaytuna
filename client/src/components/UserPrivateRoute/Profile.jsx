@@ -1,7 +1,7 @@
 
 
 import { useEffect, useState } from "react";
-import { Layout } from "../../App";
+import Layout from "../../components/pages/Layout";
 import UserMenu from "./UserMenu";
 import { useAuth } from "../../context/auth";
 import { toast } from "react-toastify";

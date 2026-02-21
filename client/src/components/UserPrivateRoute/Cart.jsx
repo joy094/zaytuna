@@ -1,7 +1,7 @@
 //src/components/UserPrivateRoute/Cart.jsx
 
 import React, { useState } from "react";
-import { Layout } from "../../App";
+import Layout from "../../components/pages/Layout";
 import { useCart } from "../../context/cart";
 import { useAuth } from "../../context/auth";
 import { useNavigate } from "react-router-dom";

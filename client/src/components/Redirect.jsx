@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { Layout } from "../App"; // আপনার পাথ অনুযায়ী Layout ইমপোর্ট নিশ্চিত করুন
+import Layout from "./pages/Layout";
 
 const Redirect = ({ path = "login" }) => {
   const [count, setCount] = useState(5);

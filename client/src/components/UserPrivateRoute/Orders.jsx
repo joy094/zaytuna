@@ -1,6 +1,6 @@
 //src/components/UserPrivateRoute/Orders.jsx
 import React, { useState, useEffect } from "react";
-import { Layout } from "../../App";
+import Layout from "../../components/pages/Layout";
 import UserMenu from "./UserMenu";
 import axios from "axios";
 import { useAuth } from "../../context/auth";

@@ -1,4 +1,5 @@
-import { Layout } from "../../App";
+import React from "react";
+import Layout from "../../components/pages/Layout";
 import AdminMenu from "./AdminMenu";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";

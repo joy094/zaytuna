@@ -1,7 +1,7 @@
 //src/components/AdminRoute/UpdateProduct.jsx
 
 import React, { useState, useEffect } from "react";
-import { Layout } from "../../App";
+import Layout from "../../components/pages/Layout";
 import AdminMenu from "./AdminMenu";
 import { toast } from "react-toastify";
 import axios from "axios";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout } from "../../App"; // আপনার পাথ অনুযায়ী Layout ইমপোর্ট করুন
+import Layout from "../../components/pages/Layout";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/cart";

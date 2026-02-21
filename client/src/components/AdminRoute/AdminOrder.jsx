@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/auth";
-import { Layout } from "../../App";
+import Layout from "../../components/pages/Layout";
 import AdminMenu from "./AdminMenu";
 import moment from "moment";
 import "./AdminOrder.css";
