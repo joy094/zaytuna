@@ -30,7 +30,7 @@ import Login from "./components/pages/LoginPage";
 import Dashboard from "./components/UserPrivateRoute/UserDashboard";
 import AdminDashboard from "./components/AdminRoute/AdminDashboard";
 import Search from "./components/pages/Search";
-
+import NotfoundPage from "./components/NotfoundPage";
 import ForgotPassword from "./components/pages/FogetPassword";
 import Layout from "./components/pages/Layout";
 
@@ -99,14 +99,7 @@ const App = () => (
       <Route path="admin/orders" element={<AdminOrders />} />
     </Route>
 
-    <Route
-      path="*"
-      element={
-        <div className="container">
-          <h1>404 Not Found</h1>
-        </div>
-      }
-    />
+    <Route path="*" element={<NotfoundPage />} />
   </Routes>
 );
 
