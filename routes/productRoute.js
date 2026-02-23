@@ -13,6 +13,7 @@ import {
   updateProductController,
   createOrderController,
   productCategoryController,
+  searchProductController,
   // নতুন কন্ট্রোলার ইমপোর্ট
 } from "../controller/productController.js";
 
@@ -63,5 +64,6 @@ router.post("/place-order", createOrderController);
 
 // productCategoryController ইম্পোর্ট নিশ্চিত করুন
 router.get("/product-category/:slug", productCategoryController);
+router.get("/search/:keyword", searchProductController); // সার্চ রাউট
 
 export default router;

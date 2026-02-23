@@ -1,0 +1,206 @@
+/* --- CategorySection.css --- */
+
+:root {
+  --primary-color: #ff6347;
+  --text-dark: #333;
+  --text-light-grey: #666;
+  --card-bg: #ffffff;
+  --border-light: #f0f0f0;
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.category-section {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.see-all-button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.see-all-button:hover {
+  opacity: 0.8;
+  gap: 8px;
+}
+
+/* --- Product Slider (Swiper) styles --- */
+.product-slider-wrapper {
+  position: relative;
+}
+
+.productSwiper {
+  width: 100%;
+  padding-bottom: 15px; /* নেভিগেশন অ্যারোর জন্য স্পেস */
+}
+
+.product-card-link {
+  text-decoration: none;
+  display: block;
+}
+
+.product-card {
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+  transition: all 0.3s ease;
+  min-height: 280px; /* কার্ডের মিনিমাম হাইট */
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+.product-img-box {
+  width: 100%;
+  height: 180px; /* ইমেজের হাইট */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.product-img-box img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-img-box img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  padding: 15px;
+  text-align: left;
+  flex-grow: 1; /* নিচের অংশে যাতে স্পেস ঠিক থাকে */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.product-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  height: 40px; /* নির্দিষ্ট হাইট যাতে টেক্সট ছোট-বড় হলে কার্ডের ডিজাইন না ভাঙে */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 2 লাইন পর্যন্ত দেখাবে */
+  -webkit-box-orient: vertical;
+}
+
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+/* Swiper Navigation (Arrow) styles */
+.product-slider-wrapper .swiper-button-next,
+.product-slider-wrapper .swiper-button-prev {
+  color: var(--primary-color) !important;
+  background-color: var(--card-bg);
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  box-shadow: var(--shadow-light);
+  transition: all 0.3s ease;
+  top: 45%; /* মাঝ বরাবর */
+}
+
+.product-slider-wrapper .swiper-button-next:hover,
+.product-slider-wrapper .swiper-button-prev:hover {
+  background-color: #fff8f8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-slider-wrapper .swiper-button-next::after,
+.product-slider-wrapper .swiper-button-prev::after {
+  font-size: 1rem !important;
+}
+
+/* Hide navigation arrows on mobile */
+@media (max-width: 768px) {
+  .product-slider-wrapper .swiper-button-next,
+  .product-slider-wrapper .swiper-button-prev {
+    display: none !important;
+  }
+  .category-section {
+    margin: 25px auto;
+    padding: 0 15px;
+  }
+  .section-title {
+    font-size: 1.5rem;
+  }
+  .product-card {
+    min-height: 250px;
+  }
+  .product-img-box {
+    height: 150px;
+  }
+  .product-name {
+    font-size: 0.95rem;
+  }
+  .product-price {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 1.3rem;
+  }
+  .see-all-button {
+    font-size: 0.9rem;
+  }
+  .product-card {
+    min-height: 230px;
+  }
+  .product-img-box {
+    height: 130px;
+  }
+
+}
+
+/* Loading and Error Styles */
+.category-section-loading,
+.category-section-error {
+  text-align: center;
+  padding: 30px 20px;
+  font-size: 1.1rem;
+  color: #666;
+}
+.category-section-error {
+  color: #d32f2f;
+}

@@ -6,6 +6,7 @@ import categoryModel from "../model/categoryModel.js"; // নিশ্চিত 
 import orderModel from "../model/orderModel.js";
 import fs from "fs";
 import JWT from "jsonwebtoken";
+import Fuse from "fuse.js"; // ফিউজ লাইব্রেরি ইম্পোর্ট
 
 // --- ১. প্রোডাক্ট তৈরি (Create Product) ---
 export const createProductController = async (req, res) => {
@@ -244,6 +245,101 @@ export const productCategoryController = async (req, res) => {
       success: false,
       error: error.message,
       message: "Error while getting products by category",
+    });
+  }
+};
+
+// --- ৯. প্রোডাক্ট সার্চ কন্ট্রোলার (Search) ---
+// Product Search Controller
+// export const searchProductController = async (req, res) => {
+//   try {
+//     const { keyword } = req.params;
+//     const results = await productModel
+//       .find({
+//         $or: [
+//           { name: { $regex: keyword, $options: "i" } },
+//           { description: { $regex: keyword, $options: "i" } },
+//         ],
+//       })
+//       .select("-photo");
+
+//     // ফ্রন্টএন্ডে সহজে ধরার জন্য এই ফরম্যাটে পাঠান
+//     res.status(200).send({
+//       success: true,
+//       products: results,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(400).send({
+//       success: false,
+//       message: "Error In Search Product API",
+//       error,
+//     });
+//   }
+// };
+
+//feuze ব্যবহার করে উন্নত সার্চ কন্ট্রোলার
+
+// বাংলার বানান বৈচিত্র্য হ্যান্ডেল করার জন্য (Normalize)
+const normalizeText = (text) => {
+  if (!text) return "";
+  return text
+    .toLowerCase()
+    .replace(/[শষ]/g, "স")
+    .replace(/[ঈী]/g, "ি")
+    .replace(/[ঊূ]/g, "ু")
+    .replace(/[ড়ঢ়]/g, "র")
+    .trim();
+};
+
+export const searchProductController = async (req, res) => {
+  try {
+    const { keyword } = req.params;
+
+    // ১. ডাটাবেজ থেকে পণ্য নিয়ে আসা
+    const products = await productModel.find({}).populate("category");
+
+    // ২. সার্চের জন্য ডাটা প্রস্তুত করা (অরিজিনাল ডাটার সাথে নরমাল টেক্সট ম্যাপ করা)
+    const processedData = products.map((p) => ({
+      ...p._doc,
+      // ডাটাবেজের নামকেও নরমাল করে সার্চের জন্য আলাদা ফিল্ডে রাখা
+      searchName: normalizeText(p.name),
+      searchCategory: normalizeText(p.category?.name || ""),
+    }));
+
+    // ৩. Fuse.js কনফিগারেশন
+    const fuseOptions = {
+      keys: [
+        { name: "name", weight: 0.7 }, // আসল নাম (বেশি গুরুত্ব)
+        { name: "searchName", weight: 0.5 }, // নরমাল করা নাম (বানান ভুলের জন্য)
+        { name: "category.name", weight: 0.3 },
+        { name: "searchCategory", weight: 0.2 },
+        "description",
+      ],
+      threshold: 0.4,
+      distance: 100,
+      ignoreLocation: true,
+      minMatchCharLength: 2,
+    };
+
+    const fuse = new Fuse(processedData, fuseOptions);
+
+    // ৪. কি-ওয়ার্ডকেও নরমাল করে সার্চ করা
+    const results = fuse.search(normalizeText(keyword));
+
+    // ৫. রেজাল্ট ফিল্টার করা
+    const finalProducts = results.map((result) => result.item);
+
+    res.status(200).send({
+      success: true,
+      products: finalProducts.slice(0, 10),
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error in Search API",
+      error,
     });
   }
 };

@@ -7,6 +7,7 @@ import { useAuth } from "../../context/auth";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import "./Cart.css"; // Cart এর জন্য আলাদা CSS ফাইল
 
 const Cart = () => {
   const [auth] = useAuth();

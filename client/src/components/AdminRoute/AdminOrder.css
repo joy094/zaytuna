@@ -1,193 +1,131 @@
 /* AdminOrder.css */
 
-.admin-orders-container {
-  padding: 20px;
-  background-color: #f8f9fa;
-  min-height: 100vh;
+/* মেইন কন্টেইনার */
+.admin-orders-main {
+  padding-top: 20px;
+  background-color: #fcfcfc;
 }
 
 .page-title {
-  font-size: 24px;
+  font-size: 28px;
+  color: #2c3e50;
   font-weight: 700;
-  color: #333;
-  margin-bottom: 25px;
-  border-bottom: 3px solid #007bff;
-  display: inline-block;
-  padding-bottom: 5px;
+  position: relative;
+  padding-bottom: 10px;
 }
 
-/* Order Card Wrapper */
-.order-card {
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin-bottom: 30px;
+/* অর্ডার কার্ড স্টাইল */
+.order-wrapper {
+  background: #ffffff;
+  border-radius: 15px;
   overflow: hidden;
-  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  border: none !important;
 }
 
-/* Table Responsive Styling */
-.table-container {
-  overflow-x: auto;
+.order-wrapper:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
 }
 
+/* টেবিল ডিজাইন */
 .custom-table {
-  width: 100%;
-  border-collapse: collapse;
   margin-bottom: 0;
-}
-
-.custom-table th {
-  background-color: #343a40;
-  color: #fff;
-  padding: 12px;
-  text-align: left;
-  font-size: 14px;
-}
-
-.custom-table td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
   vertical-align: middle;
+}
+
+.custom-table thead th {
+  background-color: #f8f9fa;
+  color: #495057;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  padding: 15px;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.custom-table tbody td {
+  padding: 15px;
   font-size: 14px;
 }
 
-/* User & Guest Badge/Text Styles */
-.user-name {
-  color: #007bff;
+/* স্ট্যাটাস ড্রপডাউন স্টাইল */
+.status-select-dropdown {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
   font-weight: 600;
-  display: block;
+  color: #495057;
+  cursor: pointer;
+  outline: none;
+  transition: 0.2s;
+}
+
+.status-select-dropdown:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* ইউজার এবং গেস্ট ব্যাজ */
+.user-name {
+  color: #0d6efd;
+  font-weight: 600;
 }
 
 .guest-name {
   color: #dc3545;
   font-weight: 600;
-  display: block;
 }
 
-.contact-info {
-  font-size: 13px;
-  color: #555;
-  font-weight: 500;
-}
-
-/* Status Dropdown Styling */
-.status-select {
-  padding: 6px 10px;
+.payment-method {
+  background: #e9ecef;
+  padding: 4px 10px;
   border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  cursor: pointer;
-  font-weight: 600;
-  width: 140px;
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: bold;
 }
 
-.status-select:focus {
-  outline: none;
-  border-color: #007bff;
+/* প্রোডাক্ট লিস্ট এরিয়া */
+.admin-product-list {
+  border-top: 1px dashed #ddd;
 }
 
-/* Product List inside Order */
-.order-products-section {
-  padding: 15px;
-  background-color: #fafafa;
+.product-row {
+  transition: background 0.2s;
 }
 
-.product-item-row {
-  display: flex;
-  align-items: center;
+.product-row:hover {
+  background-color: #f1f3f5;
+}
+
+.product-img-box img {
+  transition: transform 0.3s ease;
+}
+
+.product-img-box img:hover {
+  transform: scale(1.1);
+}
+
+.order-footer {
+  background: #fff9db;
   padding: 10px;
-  border-bottom: 1px solid #ededed;
-  gap: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #fcc419;
 }
 
-.product-item-row:last-child {
-  border-bottom: none;
-}
+/* --- রেসপনসিভনেস --- */
 
-.product-img {
-  width: 70px;
-  height: 70px;
-  object-fit: cover;
-  border-radius: 5px;
-  border: 1px solid #ddd;
-}
-
-.product-info h4 {
-  margin: 0;
-  font-size: 16px;
-  color: #444;
-}
-
-.product-info p {
-  margin: 0;
-  color: #777;
-  font-size: 14px;
-}
-
-.price-text {
-  font-weight: 700;
-  color: #28a745;
-}
-
-/* Responsive Queries */
 @media (max-width: 768px) {
   .dashboard-grid {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
-  .admin-menu-container {
-    width: 100%;
-    margin-bottom: 20px;
+  .table-responsive {
+    border: 0;
   }
 
-  .custom-table th,
-  .custom-table td {
-    padding: 8px;
-    font-size: 12px;
-  }
-
-  .product-img {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-@media (max-width: 576px) {
-  .custom-table thead {
-    display: none;
-  }
-
-  .custom-table tr {
-    display: block;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    padding: 10px;
-    background: #fff;
-  }
-
-  .custom-table td {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #eee;
-    text-align: right;
-    padding: 10px 5px;
-  }
-
-  .custom-table td:last-child {
-    border-bottom: none;
-  }
-
-  .custom-table td::before {
-    content: attr(data-label);
-    font-weight: bold;
-    float: left;
-    color: #555;
-    margin-right: 10px;
-  }
-
-  .status-select {
-    width: 120px;
+  .page-title {
+    font-size: 22px;
   }
 }

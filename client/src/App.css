@@ -37,10 +37,8 @@ body {
   padding: 20px;
 }
 
-
-
 /* Layout */
-.layout-wrapper {
+/* .layout-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -52,17 +50,17 @@ body {
 
 .product-card {
   max-width: 3000px;
-}
+} */
 
 /*projuct img css */
-* {
+/* * {
   product-img {
     width: 100%;
     height: 80px;
     border-radius: 8px;
     object-fit: cover;
   }
-}
+} */
 
 /*Forms(Register,login)*/
 .auth-container {
@@ -134,128 +132,6 @@ input:focus {
   margin-top: auto;
 }
 
-
-/* Dashboard Grid */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 30px;
-}
-
-.details-card {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-/*  Create Product Form Styling */
-.product-form-card {
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-  max-width: 700px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #444;
-  font-size: 14px;
-}
-
-.form-control {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 15px;
-  transition: border-color 0.3s;
-}
-
-.form-control:focus {
-  border-color: #ff6347;
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 99, 71, 0.1);
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-/* Custom File Upload Button */
-.custom-file-upload {
-  display: inline-block;
-  padding: 12px 20px;
-  cursor: pointer;
-  background: #f8f9fa;
-  border: 2px dashed #ccc;
-  border-radius: 8px;
-  width: 100%;
-  text-align: center;
-  color: #666;
-  transition: 0.3s;
-}
-
-.custom-file-upload:hover {
-  border-color: #ff6347;
-  color: #ff6347;
-  background: #fff5f3;
-}
-
-/* Image Preview */
-.image-preview-box {
-  margin-bottom: 20px;
-  text-align: center;
-  border: 1px solid #eee;
-  padding: 10px;
-  border-radius: 8px;
-  background: #fafafa;
-}
-
-.img-fluid {
-  max-width: 100%;
-  max-height: 250px;
-  border-radius: 4px;
-  object-fit: contain;
-}
-
-/* Submit Button */
-.btn-submit {
-  width: 100%;
-  background-color: #333;
-  color: white;
-  padding: 15px;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s ease;
-  margin-top: 10px;
-  letter-spacing: 1px;
-}
-
-.btn-submit:hover {
-  background-color: #ff6347; /* Changes to theme color on hover */
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
-}
-
-/* Tablet Responsive */
-@media (max-width: 600px) {
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* user css  */
 /* Badge Styles */
 .badge {
@@ -283,111 +159,7 @@ input:focus {
   background: transparent;
 }
 
-/* শ্যাডো এবং বর্ডার রেডিয়াস যা আমরা আগের টেবিলে ব্যবহার করেছি তা এখানেও অটোমেটিক কাজ করবে */
-/*order.jsx css */
-/* Status Badges */
-.status-badge {
-  padding: 6px 12px;
-  border-radius: 50px;
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-/* Status Colors */
-.status-badge.processing {
-  background-color: #fff3e0;
-  color: #ef6c00;
-  border: 1px solid #ffe0b2;
-}
-
-.status-badge.shipped {
-  background-color: #e3f2fd;
-  color: #1565c0;
-  border: 1px solid #bbdefb;
-}
-
-.status-badge.delivered {
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  border: 1px solid #c8e6c9;
-}
-
-.status-badge.cancel {
-  background-color: #ffebee;
-  color: #c62828;
-  border: 1px solid #ffcdd2;
-}
-
-/* Payment Status Style */
-.payment-status {
-  color: #2e7d32;
-  font-weight: 600;
-  font-size: 14px;
-}
-
-.payment-status::before {
-  content: "● ";
-  font-size: 12px;
-}
-
-/* Profile.jsx css */
-/* Profile Specific Styles */
-.profile-form-card {
-  background: white;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  max-width: 600px;
-}
-
-.profile-form-card .form-control:disabled {
-  background-color: #f1f1f1;
-  cursor: not-allowed;
-  color: #888;
-}
-
-/*usermenu css */
-/* User Menu Sidebar Style */
-.user-menu-container {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  height: fit-content;
-}
-
-/* User Menu Title (Different color from Admin for visual distinction) */
-.user-menu-container .menu-title {
-  background-color: #ff6347; /* Theme Color (Tomato) */
-  color: #fff;
-  padding: 15px;
-  font-size: 1.2rem;
-  text-align: center;
-  margin: 0;
-}
-
-/* List group and items inherited from previous styles */
-.menu-item {
-  padding: 15px 20px;
-  text-decoration: none;
-  color: #555;
-  font-weight: 500;
-  border-bottom: 1px solid #eee;
-  transition: all 0.3s ease;
-  display: block;
-}
-
-.menu-item:hover {
-  background-color: #fff5f3;
-  color: #ff6347;
-  padding-left: 25px;
-}
-
-.menu-item.active {
-  background-color: #333; /* Active state dark color */
-  color: #fff;
-}
+/* Cart Page Styling */
 
 /* Cart Page Styling */
 .cart-page-wrapper {
@@ -469,122 +241,7 @@ input:focus {
   color: #28a745;
 }
 
-/* Guest Form */
-.guest-checkout-form {
-  background: #f9f9f9;
-  padding: 15px;
-  border-radius: 8px;
-  margin-top: 20px;
-}
-
-.guest-checkout-form h4 {
-  margin-top: 0;
-  color: #555;
-  font-size: 14px;
-}
-
-.guest-checkout-form .form-control {
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.btn-place-order {
-  width: 100%;
-  background: #333;
-  color: #fff;
-  padding: 15px;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-place-order:hover:not(:disabled) {
-  background: #ff6347;
-}
-
-.btn-place-order:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-/* Responsive */
-@media (max-width: 850px) {
-  .cart-content-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 /* --- Responsive Navbar CSS --- */
-
-/* হ্যামবার্গার বাটন স্টাইল (ডেক্সটপে লুকানো থাকবে) */
-.hamburger {
-  display: none;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 28px;
-  cursor: pointer;
-  padding: 5px;
-  transition: 0.3s;
-}
-
-@media (max-width: 768px) {
-  .hamburger {
-    display: block; /* ছোট স্ক্রিনে হ্যামবার্গার দেখা যাবে */
-  }
-
-  .nav-links {
-    position: fixed;
-    top: 60px; /* আপনার নেভিবার উচ্চতা অনুযায়ী */
-    right: -100%; /* শুরুতে স্ক্রিনের বাইরে থাকবে */
-    width: 250px;
-    height: calc(100vh - 60px);
-    background-color: var(--dark); /* মোবাইল মেনু ডার্ক ব্যাকগ্রাউন্ড */
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 30px 20px;
-    gap: 15px;
-    transition: 0.4s ease-in-out;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-  }
-
-  /* মোবাইল মেনু একটিভ হলে (mobile-active ক্লাস অ্যাড হলে) */
-  .nav-links.mobile-active {
-    right: 0; /* স্ক্রিনে চলে আসবে */
-  }
-
-  .nav-links a {
-    width: 100%;
-    padding: 10px 0;
-    border-bottom: 1px solid #444;
-    font-size: 18px;
-  }
-
-  /* ড্রপডাউন মেনু মোবাইলে ঠিক করা */
-  .dropdown {
-    width: 100%;
-  }
-
-  .dropdown-content {
-    position: static; /* মোবাইলে হোভারের বদলে নিচে খুলে যাবে */
-    background: #444;
-    box-shadow: none;
-    margin-top: 10px;
-  }
-
-  .dropdown-content a {
-    color: white !important;
-    padding-left: 20px;
-  }
-}
-
-/*newly added  page */
 
 /* --- Floating Social Buttons --- */
 .social-float {
@@ -594,7 +251,7 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: 15px;
-  
+
   z-index: 999;
 }
 
@@ -691,86 +348,3 @@ input:focus {
     margin-bottom: 65px; /* ফিক্সড মেনুর জন্য জায়গা ছাড়া */
   }
 }
-
-/* ================================================================
-   RESPONSIVE MEDIA QUERIES
-   ================================================================ */
-
-/* --- 11. MEDIA QUERIES (RESPONSIVE) --- */
-
-/* Tablet & Smaller (Max 768px) */
-@media (max-width: 768px) {
-  .hamburger {
-    display: block;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 28px;
-  }
-  .nav-links {
-    position: fixed;
-    top: 60px;
-    right: -100%;
-    width: 250px;
-    height: calc(100vh - 60px);
-    background: var(--dark);
-    flex-direction: column;
-    padding: 30px 20px;
-    transition: 0.4s;
-  }
-  .nav-links.mobile-active {
-    right: 0;
-  }
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-  .bottom-nav {
-    display: flex;
-  }
-  .main-content {
-    padding-bottom: 70px;
-  }
-  .footer {
-    margin-bottom: 65px;
-  }
-  /* .custom-slider {
-    height: 450px;
-  }
-  .slider-content {
-    flex-direction: column-reverse;
-    text-align: center;
-    padding: 20px;
-  }
-  .slider-text h1 {
-    font-size: 1.8rem;
-  }
-  .slider-image img {
-    max-height: 250px;
-  } */
-}
-
-/* Mobile Devices (Max 576px) */
-@media (max-width: 576px) {
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  .product-img-wrapper {
-    height: 150px;
-  }
-  .product-name {
-    font-size: 0.9rem;
-  }
-  .cart-content-grid {
-    grid-template-columns: 1fr;
-  }
-  .auth-form {
-    padding: 20px;
-  }
-}
-
-
-
-
-
-

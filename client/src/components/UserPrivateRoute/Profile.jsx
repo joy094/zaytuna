@@ -6,7 +6,7 @@ import UserMenu from "./UserMenu";
 import { useAuth } from "../../context/auth";
 import { toast } from "react-toastify";
 import axios from "axios";
-
+import "./Profile.css"; // Profile এর জন্য আলাদা CSS ফাইল
 const Profile = () => {
   // Context
   const [auth, setAuth] = useAuth();

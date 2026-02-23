@@ -1,0 +1,63 @@
+/* Cart Page Styling (Already have App.css)*/
+
+/* .cart-item-row {
+  display: flex;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  align-items: center;
+}
+
+.cart-item-img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+}
+
+.cart-item-info h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+}
+
+.cart-item-info .price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ff6347;
+}
+
+.btn-remove {
+  background: #fff5f5;
+  color: #ff4d4d;
+  border: 1px solid #ff4d4d;
+  padding: 5px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+} */
+
+/* Summary Card */
+/*
+ .summary-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 20px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.total-price {
+  color: #28a745;
+} */

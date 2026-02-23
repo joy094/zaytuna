@@ -1,0 +1,223 @@
+/* Responsive Design User Orders.jsx */
+/* Order.css */
+
+/* মেইন লেআউট গ্রিড */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 30px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 25px;
+  border-left: 5px solid #007bff;
+  padding-left: 15px;
+}
+
+/* টেবিল কন্টেইনার */
+.table-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: 0.3s;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.table-wrapper:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* কাস্টম টেবিল স্টাইল */
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table th {
+  background-color: #f8f9fa;
+  color: #555;
+  font-weight: 600;
+  padding: 15px;
+  text-align: left;
+  border-bottom: 2px solid #eee;
+}
+
+.custom-table td {
+  padding: 15px;
+  color: #444;
+  vertical-align: middle;
+}
+
+/* স্ট্যাটাস ব্যাজ */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* ডাইনামিক কালার (আপনার JSX ক্লাসের সাথে মিল রেখে) */
+.not-process {
+  background: #e2e3e5;
+  color: #383d41;
+}
+.processing {
+  background: #cce5ff;
+  color: #004085;
+}
+.shipped {
+  background: #fff3cd;
+  color: #856404;
+}
+.delivered {
+  background: #d4edda;
+  color: #155724;
+}
+.cancel {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* প্রোডাক্ট লিস্ট এরিয়া */
+.order-products-list {
+  background-color: #fafafa;
+}
+
+.cart-item-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: 0.2s;
+}
+
+.cart-item-row:last-child {
+  border-bottom: none !important;
+}
+
+.cart-item-row img {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.cart-item-row strong {
+  color: #222;
+  font-size: 15px;
+}
+
+/*guest user  formএর জন্য স্টাইল */
+/* Guest Form */
+.guest-checkout-form {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.guest-checkout-form h4 {
+  margin-top: 0;
+  color: #555;
+  font-size: 14px;
+}
+
+.guest-checkout-form .form-control {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.btn-place-order {
+  width: 100%;
+  background: #333;
+  color: #fff;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-place-order:hover:not(:disabled) {
+  background: #ff6347;
+}
+
+.btn-place-order:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+  .cart-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* --- রেসপনসিভনেস --- */
+
+@media (max-width: 992px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr; /* সাইডবার উপরে চলে আসবে */
+  }
+}
+
+@media (max-width: 768px) {
+  .custom-table thead {
+    display: none; /* মোবাইলে টেবিল হেড লুকানো */
+  }
+
+  .custom-table,
+  .custom-table tbody,
+  .custom-table tr,
+  .custom-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .custom-table tr {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .custom-table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  /* মোবাইলে টেবিলের বাম পাশে লেবেল দেখানোর জন্য */
+  .custom-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    width: 45%;
+    font-weight: bold;
+    text-align: left;
+  }
+}

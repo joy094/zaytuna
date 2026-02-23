@@ -1,0 +1,43 @@
+
+
+/*usermenu css */
+/* User Menu Sidebar Style */
+.user-menu-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: fit-content;
+}
+
+/* User Menu Title (Different color from Admin for visual distinction) */
+.user-menu-container .menu-title {
+  background-color: #ff6347; /* Theme Color (Tomato) */
+  color: #fff;
+  padding: 15px;
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 0;
+}
+
+/* List group and items inherited from previous styles */
+.menu-item {
+  padding: 15px 20px;
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  border-bottom: 1px solid #eee;
+  transition: all 0.3s ease;
+  display: block;
+}
+
+.menu-item:hover {
+  background-color: #fff5f3;
+  color: #ff6347;
+  padding-left: 25px;
+}
+
+.menu-item.active {
+  background-color: #333; /* Active state dark color */
+  color: #fff;
+}

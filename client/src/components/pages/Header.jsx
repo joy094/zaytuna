@@ -7,6 +7,8 @@ import { useCart } from "../../context/cart";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Search from "./Search";
 import "./Header.css"; // Header এর জন্য আলাদা CSS ফাইল
 
 //Header Components
@@ -51,9 +53,14 @@ const Header = () => {
               fontSize: "1.5rem",
             }}
           >
-            🛒 Barakahmart
+            Barakahmart
           </Link>
         </div>
+       
+
+       <div className="search-container">
+         <Search />
+       </div>
 
         {/* হ্যামবার্গার আইকন বাটন */}
         <button className="hamburger" onClick={() => setIsOpen(!isOpen)}>

@@ -1,35 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Layout from "../../components/pages/Layout";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { useCart } from "../../context/cart";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import AdminMenu from "./AdminMenu";
+import "./AdminDashboard.css"; // নতুন CSS ফাইল
 
-// ৪. Admin Dashboard
 const AdminDashboard = () => {
   const [auth] = useAuth();
   return (
-    <Layout>
-      <div
-        className="container dashboard-grid"
-        style={{ display: "flex", gap: "20px", padding: "20px" }}
-      >
+    <Layout title={"Admin Dashboard"}>
+      <div className="container admin-dashboard-grid">
         <AdminMenu />
-        <div
-          className="details-card"
-          style={{ flex: 1, padding: "20px", border: "1px solid #ddd" }}
-        >
-          <h1>Admin Details</h1>
-          <h3>Admin Name: {auth?.user?.name}</h3>
-          <h3>Admin Email: {auth?.user?.email}</h3>
-          <h3>Admin Phone: {auth?.user?.phone}</h3>
+        <div className="admin-content-area">
+          <div className="admin-profile-card">
+            <div className="admin-card-header">
+              <div className="admin-badge">ADMIN</div>
+              <h1 className="admin-title">Admin Information</h1>
+            </div>
+            
+            <div className="admin-info-body">
+              <div className="info-box">
+                <label>Full Name</label>
+                <p>{auth?.user?.name}</p>
+              </div>
+              <div className="info-box">
+                <label>Email Address</label>
+                <p>{auth?.user?.email}</p>
+              </div>
+              <div className="info-box">
+                <label>Contact Number</label>
+                <p>{auth?.user?.phone || "Not Provided"}</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
   );
 };
-
 
 export default AdminDashboard;

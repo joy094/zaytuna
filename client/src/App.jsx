@@ -29,6 +29,7 @@ import Register from "./components/pages/RegisterPage";
 import Login from "./components/pages/LoginPage";
 import Dashboard from "./components/UserPrivateRoute/UserDashboard";
 import AdminDashboard from "./components/AdminRoute/AdminDashboard";
+import Search from "./components/pages/Search";
 
 import ForgotPassword from "./components/pages/FogetPassword";
 import Layout from "./components/pages/Layout";
@@ -51,10 +52,6 @@ import Products from "./components/AdminRoute/Products";
 
 // ================= PAGES =================
 
-
-
-
-
 // // About Page
 // const About = () => (
 //   <Layout>
@@ -67,11 +64,6 @@ import Products from "./components/AdminRoute/Products";
 
 // ================= COMPONENTS =================
 
-
-
-
-
-
 // ================= MAIN APP COMPONENT =================
 
 const App = () => (
@@ -81,6 +73,7 @@ const App = () => (
     <Route path="/register" element={<Register />} />
     <Route path="/login" element={<Login />} />
     <Route path="/fogot-password" element={<ForgotPassword />} />
+    <Route path="/search/:keyword" element={<Search />} />
 
     {/* Cart Route (Public Access) */}
     <Route path="/cart" element={<CartPage />} />

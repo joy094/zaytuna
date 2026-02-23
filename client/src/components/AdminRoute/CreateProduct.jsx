@@ -4,7 +4,8 @@ import AdminMenu from "./AdminMenu";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../../App.css";
+// import "../../App.css";
+import "./CreateProduct.css"; // CreateProduct এর জন্য আলাদা CSS ফাইল
 
 const CreateProduct = () => {
   const navigate = useNavigate();

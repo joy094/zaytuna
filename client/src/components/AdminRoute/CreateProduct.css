@@ -1,0 +1,107 @@
+/*  Create Product Form Styling */
+.product-form-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  max-width: 700px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #444;
+  font-size: 14px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: #ff6347;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 99, 71, 0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Custom File Upload Button */
+.custom-file-upload {
+  display: inline-block;
+  padding: 12px 20px;
+  cursor: pointer;
+  background: #f8f9fa;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  width: 100%;
+  text-align: center;
+  color: #666;
+  transition: 0.3s;
+}
+
+.custom-file-upload:hover {
+  border-color: #ff6347;
+  color: #ff6347;
+  background: #fff5f3;
+}
+
+/* Image Preview */
+.image-preview-box {
+  margin-bottom: 20px;
+  text-align: center;
+  border: 1px solid #eee;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.img-fluid {
+  max-width: 100%;
+  max-height: 250px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+/* Submit Button */
+.btn-submit {
+  width: 100%;
+  background-color: #333;
+  color: white;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 10px;
+  letter-spacing: 1px;
+}
+
+.btn-submit:hover {
+  background-color: #ff6347; /* Changes to theme color on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 99, 71, 0.3);
+}
+
+/* Tablet Responsive */
+@media (max-width: 600px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}

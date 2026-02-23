@@ -5,6 +5,7 @@ import UserMenu from "./UserMenu";
 import axios from "axios";
 import { useAuth } from "../../context/auth";
 import moment from "moment"; // সময় সুন্দর দেখানোর জন্য (ইন্সটল না থাকলে npm i moment)
+import "./Order.css"; // Orders এর জন্য আলাদা CSS ফাইল
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
