@@ -53,7 +53,7 @@ const Header = () => {
               fontSize: "1.5rem",
             }}
           >
-            Barakahmart
+            LOGO
           </Link>
         </div>
        
