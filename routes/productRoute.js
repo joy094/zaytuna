@@ -14,6 +14,7 @@ import {
   createOrderController,
   productCategoryController,
   searchProductController,
+  extraPhotoController,
   // নতুন কন্ট্রোলার ইমপোর্ট
 } from "../controller/productController.js";
 
@@ -26,7 +27,7 @@ router.post(
   "/create-product",
   requireSignIn,
   isAdmin,
-  formidable(),
+  formidable({ multiples: true }),
   createProductController,
 );
 
@@ -44,7 +45,7 @@ router.put(
   "/update-product/:pid",
   requireSignIn,
   isAdmin,
-  formidable(),
+  formidable({ multiples: true }),
   updateProductController,
 );
 
@@ -65,5 +66,7 @@ router.post("/place-order", createOrderController);
 // productCategoryController ইম্পোর্ট নিশ্চিত করুন
 router.get("/product-category/:slug", productCategoryController);
 router.get("/search/:keyword", searchProductController); // সার্চ রাউট
+// Get Extra Photos
+router.get("/extra-photo/:pid/:index", extraPhotoController);
 
 export default router;

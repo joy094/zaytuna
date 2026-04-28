@@ -8,32 +8,57 @@ import fs from "fs";
 import JWT from "jsonwebtoken";
 import Fuse from "fuse.js"; // ফিউজ লাইব্রেরি ইম্পোর্ট
 
-// --- ১. প্রোডাক্ট তৈরি (Create Product) ---
 export const createProductController = async (req, res) => {
   try {
-    const { name, description, price, category, quantity, shipping } =
-      req.fields;
-    const { photo } = req.files;
+    const {
+      name,
+      description,
+      price,
+      category,
+      quantity,
+      shipping,
+      brand,
+      discountPrice,
+      highlights,
+      variants,
+      specifications,
+    } = req.fields;
+    const { photo, extraPhotos } = req.files;
 
-    // ভ্যালিডেশন
+    // ১. ভ্যালিডেশন
     if (!name || !description || !price || !category || !quantity) {
-      return res.status(400).send({ error: "All text fields are required" });
+      return res.status(400).send({ error: "Required fields are missing" });
     }
 
-    // ইউনিকোড নিরাপদ স্লাগ জেনারেশন
-    let slug = slugify(name, { lower: true, strict: false });
-    if (!slug) {
-      slug = name.trim().replace(/\s+/g, "-").toLowerCase();
-    }
+    const products = new productModel({
+      ...req.fields,
+      slug: slugify(name, { lower: true, strict: false }),
+    });
 
-    const products = new productModel({ ...req.fields, slug });
+    // ২. ডাইনামিক ডাটা প্রসেসিং (JSON String থেকে Object/Array তে রূপান্তর)
+    if (highlights) products.highlights = JSON.parse(highlights);
+    if (variants) products.variants = JSON.parse(variants);
+    if (specifications) products.specifications = JSON.parse(specifications);
 
+    // ৩. মেইন ফটো হ্যান্ডেলিং
     if (photo) {
-      if (photo.size > 1000000) {
-        return res.status(400).send({ error: "Photo should be less than 1MB" });
-      }
       products.photo.data = fs.readFileSync(photo.path);
       products.photo.contentType = photo.type;
+    }
+
+    // ৪. মাল্টিপল এক্সট্রা ফটো হ্যান্ডেলিং
+    if (extraPhotos) {
+      const photosArray = Array.isArray(extraPhotos)
+        ? extraPhotos
+        : [extraPhotos];
+
+      console.log("রিসিভ করা ছবির সংখ্যা:", photosArray.length);
+
+      const extraPhotosData = photosArray.map((p) => ({
+        data: fs.readFileSync(p.path),
+        contentType: p.type,
+      }));
+      products.extraPhotos = extraPhotosData;
     }
 
     await products.save();
@@ -43,15 +68,14 @@ export const createProductController = async (req, res) => {
       products,
     });
   } catch (error) {
-    console.error("SERVER ERROR:", error);
+    console.error(error);
     res.status(500).send({
       success: false,
+      message: "Error in creation",
       error: error.message,
-      message: "Error in creating product",
     });
   }
 };
-
 // --- ২. সব প্রোডাক্ট দেখা (Get All) ---
 export const getProductController = async (req, res) => {
   try {
@@ -116,32 +140,40 @@ export const productPhotoController = async (req, res) => {
   }
 };
 
-// --- ৫. প্রোডাক্ট আপডেট (Update - Admin Action) ---
 export const updateProductController = async (req, res) => {
   try {
-    const { name, description, price, category, quantity, shipping } =
-      req.fields;
+    const {
+      name,
+      description,
+      price,
+      category,
+      quantity,
+      shipping,
+      variants,
+      specifications,
+    } = req.fields;
     const { photo } = req.files;
 
-    // ১. ভ্যালিডেশন (ঐচ্ছিক কিন্তু নিরাপদ)
     if (!name) return res.status(400).send({ error: "Name is required" });
 
-    // ২. বাংলা ইউনিকোড নিরাপদ স্লাগ জেনারেশন (আপডেটের জন্য)
     let slug = slugify(name, { lower: true, strict: false });
-
-    // যদি স্লাগিফাই বাংলা সাপোর্ট না করে খালি স্ট্রিং দেয়, তবে ম্যানুয়ালি হ্যান্ডেল করা
     if (!slug || slug === "") {
       slug = name.trim().replace(/\s+/g, "-").toLowerCase();
     }
 
-    // ৩. প্রোডাক্ট আপডেট করা
+    // ডাটা আপডেট অবজেক্ট তৈরি
+    const updateData = { ...req.fields, slug };
+
+    // স্ট্রিং ডাটাকে অবজেক্টে রূপান্তর
+    if (variants) updateData.variants = JSON.parse(variants);
+    if (specifications) updateData.specifications = JSON.parse(specifications);
+
     const product = await productModel.findByIdAndUpdate(
       req.params.pid,
-      { ...req.fields, slug: slug }, // এখানে নিশ্চিতভাবে নতুন স্লাগ পাঠানো হচ্ছে
+      updateData,
       { new: true },
     );
 
-    // ৪. ফটো আপডেট লজিক
     if (photo) {
       if (photo.size > 1000000) {
         return res.status(400).send({ error: "Photo should be less than 1MB" });
@@ -341,5 +373,32 @@ export const searchProductController = async (req, res) => {
       message: "Error in Search API",
       error,
     });
+  }
+};
+
+// ব্যাকএন্ড কন্ট্রোলার উদাহরণ
+// এক্সট্রা ফটো কন্ট্রোলার
+export const extraPhotoController = async (req, res) => {
+  try {
+    const product = await productModel
+      .findById(req.params.pid)
+      .select("extraPhotos");
+
+    // ইউআরএল থেকে আসা ইন্ডেক্সটিকে নাম্বারে রূপান্তর করা হলো
+    const index = parseInt(req.params.index, 10);
+
+    if (product?.extraPhotos && product.extraPhotos[index]?.data) {
+      res.set("Content-Type", product.extraPhotos[index].contentType);
+      return res.status(200).send(product.extraPhotos[index].data);
+    } else {
+      return res
+        .status(404)
+        .send({ success: false, message: "Photo not found" });
+    }
+  } catch (error) {
+    console.error("Extra Photo Error:", error);
+    res
+      .status(500)
+      .send({ success: false, message: "Error in loading extra photo" });
   }
 };

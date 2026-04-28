@@ -127,11 +127,12 @@ const AdminOrders = () => {
                 </div>
 
                 {/* অর্ডারের ভেতরে থাকা প্রোডাক্টগুলো */}
+                {/* অর্ডারের ভেতরে থাকা প্রোডাক্টগুলো */}
                 <div className="admin-product-list p-3 bg-light">
-                  {o?.products?.map((p) => (
+                  {o?.products?.map((p, index) => (
                     <div
                       className="product-row d-flex align-items-center mb-2 border-bottom pb-2"
-                      key={p._id}
+                      key={index}
                     >
                       <div className="product-img-box">
                         <img
@@ -145,19 +146,51 @@ const AdminOrders = () => {
                       </div>
                       <div className="product-info-box ms-3">
                         <p className="mb-0 fw-bold">{p.name}</p>
-                        <p className="mb-0 text-muted small">
-                          Price: ৳ {p.price}
+
+                        {/* ভেরিয়েন্ট ইনফো (যদি থাকে) */}
+                        <div className="mt-1">
+                          {p.selectedVariant ? (
+                            <>
+                              <span className="variant-badge">
+                                🎨 {p.selectedVariant.color}
+                              </span>
+                              <span className="variant-badge">
+                                💾 {p.selectedVariant.ram}/
+                                {p.selectedVariant.storage}
+                              </span>
+                              <span className="variant-badge">
+                                📍 {p.selectedVariant.region}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="text-muted small">
+                              No variant selected
+                            </span>
+                          )}
+                        </div>
+
+                        <p className="mb-0 text-dark small mt-1">
+                          <strong>Price:</strong> ৳ {p.price} |{" "}
+                          <strong>Qty:</strong> 1
                         </p>
                       </div>
                     </div>
                   ))}
 
-                  {/* ডেলিভারি অ্যাড্রেস দেখার জন্য (গেস্টের ক্ষেত্রে খুব জরুরি) */}
-                  <div className="order-footer mt-2">
+                  {/* ডেলিভারি অ্যাড্রেস সেকশন */}
+                  <div className="order-footer mt-3">
                     <p className="small mb-0">
-                      <strong>Delivery Address:</strong>{" "}
-                      {o?.guestDetails?.address || "Registered User Address"}
+                      <i className="fa fa-map-marker-alt text-danger me-2"></i>
+                      <strong>Shipping To:</strong>{" "}
+                      {o?.guestDetails?.address ||
+                        o?.buyer?.address ||
+                        "Address not provided"}
                     </p>
+                    {o?.guestDetails?.note && (
+                      <p className="small mb-0 text-muted mt-1">
+                        <strong>Note:</strong> {o.guestDetails.note}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>

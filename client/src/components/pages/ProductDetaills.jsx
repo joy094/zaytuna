@@ -1,76 +1,311 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../components/pages/Layout";
+import Layout from "./Layout"; // আপনার ফোল্ডার পাথ অনুযায়ী ঠিক করে নিবেন
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useCart } from "../../context/cart";
-
 import { toast } from "react-toastify";
-import "./ProductDetails.css"; // আপনার স্টাইল ফাইল পাথ অনুযায়ী ইমপোর্ট করুন
+import "./ProductDetails.css";
 
 const ProductDetails = () => {
   const params = useParams();
-  const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [cart, setCart] = useCart();
 
-  // প্রোডাক্টের বিস্তারিত তথ্য আনার ফাংশন
+  // ডাইনামিক স্টেট
+  const [mainImage, setMainImage] = useState("");
+  const [selectedVariant, setSelectedVariant] = useState(null);
+
+  // কোন বাটনটি অ্যাক্টিভ আছে তা বোঝার জন্য স্টেট
+  const [activeTab, setActiveTab] = useState("specification");
+
   const getProduct = async () => {
     try {
       const { data } = await axios.get(
         `/api/v1/product/get-product/${params.slug}`,
       );
       setProduct(data?.product);
+      setMainImage(`/api/v1/product/product-photo/${data?.product._id}`);
+      if (data?.product?.variants?.length > 0) {
+        setSelectedVariant(data.product.variants[0]);
+      }
     } catch (error) {
       console.log(error);
-      toast.error("Error fetching product details");
+      toast.error("Error loading product details");
     }
   };
 
-  // পেজ লোড হলে এবং স্লাগ পরিবর্তন হলে ডাটা ফেচ করবে
   useEffect(() => {
     if (params?.slug) getProduct();
   }, [params?.slug]);
 
+  const groupedSpecs = product?.specifications?.reduce((acc, curr) => {
+    if (!acc[curr.category]) acc[curr.category] = [];
+    acc[curr.category].push(curr);
+    return acc;
+  }, {});
+
+  const getValidColor = (colorName) => {
+    const colors = {
+      black: "#1c1c1c",
+      white: "#f8f9fa",
+      silver: "#c0c0c0",
+      gray: "#808080",
+      "space gray": "#535150",
+      titanium: "#878681",
+      "natural titanium": "#b5b5b1",
+      blue: "#215f9b",
+      "pacific blue": "#2e4755",
+      red: "#d92027",
+      green: "#4caf50",
+      midnight: "#191f28",
+      starlight: "#f8f9f4",
+      gold: "#e6c387",
+      purple: "#7f5283",
+      yellow: "#ffd23f",
+      pink: "#ffc0cb",
+    };
+    const normalized = colorName?.toLowerCase().trim() || "";
+    return colors[normalized] || normalized;
+  };
+
+  // স্ক্রল করার ফাংশন
+  const scrollToSection = (sectionId) => {
+    setActiveTab(sectionId);
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
-    <Layout title={`${product.name || "Product Details"} - E-Shop`}>
+    <Layout>
       <div className="container product-details-page">
+        {/* ================= টপ সেকশন: ছবি ও ইনফো ================= */}
         <div className="details-grid">
-          {/* বাম পাশে প্রোডাক্টের ইমেজ */}
-          <div className="details-img">
-            {product._id && (
-              <img
-                src={`/api/v1/product/product-photo/${product._id}`}
-                alt={product.name}
-              />
-            )}
+          <div className="details-img-container">
+            <div className="main-img-box">
+              {mainImage ? (
+                <img src={mainImage} alt={product.name} />
+              ) : (
+                <div className="text-center p-5">Loading Image...</div>
+              )}
+            </div>
+            <div className="thumbnail-gallery">
+              {product?._id && (
+                <img
+                  src={`/api/v1/product/product-photo/${product._id}`}
+                  className={`thumb ${mainImage.includes("product-photo") ? "active" : ""}`}
+                  onClick={() =>
+                    setMainImage(`/api/v1/product/product-photo/${product._id}`)
+                  }
+                  alt="main"
+                />
+              )}
+              {product?.extraPhotos?.map((p, index) => (
+                <img
+                  key={index}
+                  src={`/api/v1/product/extra-photo/${product._id}/${index}`}
+                  className={`thumb ${mainImage.includes(`/extra-photo/${product._id}/${index}`) ? "active" : ""}`}
+                  onClick={() =>
+                    setMainImage(
+                      `/api/v1/product/extra-photo/${product._id}/${index}`,
+                    )
+                  }
+                  alt={`gallery-${index}`}
+                />
+              ))}
+            </div>
           </div>
 
-          {/* ডান পাশে প্রোডাক্টের তথ্য */}
           <div className="details-info">
+            {product?.brand && (
+              <span className="brand-badge">{product.brand}</span>
+            )}
             <h1 className="details-title">{product.name}</h1>
-            <p className="details-category">
-              Category: <b>{product?.category?.name}</b>
-            </p>
-            <hr />
-            <div className="details-price">৳ {product.price}</div>
-            <div className="details-description">
-              <h4>Product Description:</h4>
-              <p>{product.description}</p>
+            {product?.highlights?.length > 0 && (
+              <ul className="product-highlights">
+                {product.highlights.map((h, i) => (
+                  <li key={i}>✓ {h}</li>
+                ))}
+              </ul>
+            )}
+            <div className="price-section">
+              <span className="details-price">
+                ৳ {selectedVariant ? selectedVariant.price : product.price}
+              </span>
+              {product.discountPrice > 0 && (
+                <span className="discount-price">
+                  ৳ {product.discountPrice}
+                </span>
+              )}
+            </div>
+
+            {product?.variants?.length > 0 && (
+              <div className="variant-section mt-4">
+                <h6>Available Options (Select One):</h6>
+                <div className="variant-grid">
+                  {product.variants.map((v, index) => (
+                    <div
+                      key={index}
+                      className={`variant-card ${selectedVariant === v ? "active" : ""}`}
+                      onClick={() => setSelectedVariant(v)}
+                    >
+                      <div className="var-main">
+                        {v.ram} / {v.storage}
+                      </div>
+                      <div className="var-sub">
+                        {v.region} • {v.simType}
+                      </div>
+                      <div className="var-color-wrapper">
+                        <span
+                          className="color-circle"
+                          style={{ backgroundColor: getValidColor(v.color) }}
+                          title={v.color}
+                        ></span>
+                        <span className="var-color-text">
+                          {v.color} {v.condition ? `(${v.condition})` : ""}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="stock-info mt-3">
+              Status:{" "}
+              <b
+                className={
+                  selectedVariant?.stock > 0 ? "text-success" : "text-danger"
+                }
+              >
+                {selectedVariant?.stock > 0 ? `In Stock` : "Out of Stock"}
+              </b>
             </div>
 
             <button
-              className="btn-cart-large"
+              className="btn-cart-large mt-4"
+              disabled={selectedVariant?.stock <= 0}
               onClick={() => {
-                setCart([...cart, product]);
+                const finalProduct = selectedVariant
+                  ? {
+                      ...product,
+                      price: selectedVariant.price,
+                      selectedVariant,
+                    }
+                  : product;
+                setCart([...cart, finalProduct]);
                 localStorage.setItem(
                   "cart",
-                  JSON.stringify([...cart, product]),
+                  JSON.stringify([...cart, finalProduct]),
                 );
-                toast.success("Item Added to cart");
+                toast.success("Added to cart successfully!");
               }}
             >
-              ADD TO CART
+              {selectedVariant?.stock > 0 ? "ADD TO CART" : "OUT OF STOCK"}
             </button>
+          </div>
+        </div>
+
+        {/* ================= ন্যাভিগেশন বাটন (Tabs) ================= */}
+        <div className="product-nav-tabs">
+          <button
+            className={`nav-tab-btn ${activeTab === "specification" ? "active" : ""}`}
+            onClick={() => scrollToSection("specification")}
+          >
+            Specification
+          </button>
+          <button
+            className={`nav-tab-btn ${activeTab === "description" ? "active" : ""}`}
+            onClick={() => scrollToSection("description")}
+          >
+            Description
+          </button>
+          <button
+            className={`nav-tab-btn ${activeTab === "warranty" ? "active" : ""}`}
+            onClick={() => scrollToSection("warranty")}
+          >
+            Warranty Policy
+          </button>
+          <button
+            className={`nav-tab-btn ${activeTab === "reviews" ? "active" : ""}`}
+            onClick={() => scrollToSection("reviews")}
+          >
+            Customer Reviews (0)
+          </button>
+        </div>
+
+        {/* ================= বিস্তারিত সেকশনসমূহ (স্ক্রল টার্গেট) ================= */}
+        <div className="scrollable-content-area">
+          {/* স্পেসিফিকেশন সেকশন */}
+          <div id="specification" className="scroll-section">
+            <h4 className="section-heading border-bottom pb-2">
+              Technical Specifications
+            </h4>
+            <div className="spec-table-wrapper mt-3">
+              {groupedSpecs &&
+                Object.keys(groupedSpecs).map((category, index) => (
+                  <div key={index} className="spec-group">
+                    <table className="spec-table">
+                      <tbody>
+                        {groupedSpecs[category].map((spec, i) => (
+                          <tr key={i}>
+                            <td className="spec-category">
+                              {i === 0 ? category : ""}
+                            </td>
+                            <td className="spec-name">{spec.name}</td>
+                            <td className="spec-value">{spec.value}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ))}
+            </div>
+          </div>
+
+          {/* ডেসক্রিপশন সেকশন */}
+          <div id="description" className="scroll-section mt-5">
+            <h4 className="section-heading border-bottom pb-2">
+              Product Overview
+            </h4>
+            <div
+              className="rich-content mt-3"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
+          </div>
+
+          {/* ওয়ারেন্টি সেকশন */}
+          <div id="warranty" className="scroll-section mt-5">
+            <h4 className="section-heading border-bottom pb-2">
+              Warranty Policy
+            </h4>
+            <div className="mt-3">
+              <p>✔ 10 Days Replacement Warranty</p>
+              <p>
+                ✔ 1 Year Service Warranty (Depends on official/unofficial
+                variant)
+              </p>
+              <p>
+                <i>
+                  Note: Physical damage or liquid damage is not covered under
+                  warranty.
+                </i>
+              </p>
+            </div>
+          </div>
+
+          {/* রিভিউ সেকশন (আপাতত ফাঁকা) */}
+          <div id="reviews" className="scroll-section mt-5 mb-5">
+            <h4 className="section-heading border-bottom pb-2">
+              Customer Reviews
+            </h4>
+            <div className="text-muted mt-3">
+              <p>
+                No reviews have been submitted yet. Be the first to review this
+                product!
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -20,35 +20,75 @@ const Products = () => {
     }
   };
 
-  // লাইফসাইকেল মেথড
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  // HTML ট্যাগ রিমুভ করে শুধু প্লেইন টেক্সট দেখানোর ফাংশন
+  const stripHtml = (html) => {
+    if (!html) return "";
+    return html.replace(/<[^>]+>/g, ""); // রেগুলার এক্সপ্রেশন দিয়ে সব < > ট্যাগ মুছে ফেলা
+  };
 
   return (
     <Layout title={"All Products - Admin Dashboard"}>
       <div className="container dashboard-grid">
         <AdminMenu />
         <div className="content-area">
-          <h1 className="page-title">All Products List ({products.length})</h1>
+          <h1 className="page-title">Manage Products ({products.length})</h1>
+
           <div className="admin-product-grid">
             {products?.map((p) => (
               <Link
                 key={p._id}
-                to={`/dashboard/admin/update-product/${p.slug}`}
+                to={`/dashboard/admin/update-product/${p.slug}`} // আপনার রাউটের নাম অনুযায়ী ঠিক করে নিবেন (যেমন update-product)
                 className="admin-product-link"
               >
                 <div className="admin-product-card">
-                  <img
-                    src={`/api/v1/product/product-photo/${p._id}`}
-                    alt={p.name}
-                  />
+                  {/* স্ট্যাটাস ব্যাজ */}
+                  <span
+                    className={`status-badge ${p.quantity > 0 ? "in-stock" : "out-of-stock"}`}
+                  >
+                    {p.quantity > 0
+                      ? `In Stock: ${p.quantity}`
+                      : "Out of Stock"}
+                  </span>
+
+                  <div className="img-wrapper">
+                    <img
+                      src={`/api/v1/product/product-photo/${p._id}`}
+                      alt={p.name}
+                    />
+                  </div>
+
                   <div className="admin-product-info">
-                    <h5 className="admin-product-name">{p.name}</h5>
+                    <div className="d-flex justify-content-between align-items-start mb-2">
+                      <h5 className="admin-product-name" title={p.name}>
+                        {p.name.length > 35
+                          ? p.name.substring(0, 35) + "..."
+                          : p.name}
+                      </h5>
+                    </div>
+
+                    {/* ব্র্যান্ড এবং ভেরিয়েন্ট ইনফো */}
+                    <div className="meta-info mb-2">
+                      {p.brand && <span className="meta-brand">{p.brand}</span>}
+                      {p.variants?.length > 0 && (
+                        <span className="meta-variants">
+                          {p.variants.length} Variants
+                        </span>
+                      )}
+                    </div>
+
+                    {/* ক্লিন করা ডেসক্রিপশন */}
                     <p className="admin-product-desc">
-                      {p.description.substring(0, 60)}...
+                      {stripHtml(p.description).substring(0, 60)}...
                     </p>
-                    <p className="admin-product-price">৳ {p.price}</p>
+
+                    <div className="d-flex justify-content-between align-items-center mt-3">
+                      <p className="admin-product-price m-0">৳ {p.price}</p>
+                      <button className="btn-edit-sm">Edit / Update</button>
+                    </div>
                   </div>
                 </div>
               </Link>

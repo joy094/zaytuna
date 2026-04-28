@@ -211,4 +211,41 @@
   }
 }
 
+/* --- Search Container Fix --- */
+.search-container {
+  flex: 1;
+  margin: 0 20px;
+  max-width: 500px; /* ডেক্সটপে সার্চবার খুব বেশি চওড়া হবে না */
+}
 
+/* --- Mobile Cart Visibility --- */
+/* আপনি মোবাইলে কার্ট হাইড করেছিলেন, কিন্তু ই-কমার্সে এটি সবসময় দেখানো ভালো */
+@media (max-width: 768px) {
+  .cart-nav-link {
+    display: block !important; /* মোবাইলেও কার্ট দেখা যাবে */
+    order: 2; /* লোগোর পাশে বা হ্যামবার্গারের আগে রাখার জন্য */
+  }
+
+  .hamburger {
+    order: 3;
+  }
+
+  .logo {
+    order: 1;
+  }
+}
+
+/* --- Active Link Style --- */
+.nav-links a.active {
+  border-bottom: 2px solid var(--white);
+  padding-bottom: 5px;
+}
+
+@media (max-width: 768px) {
+  .nav-links a.active {
+    border-bottom: none;
+    background: #fff5f3;
+    color: var(--primary) !important;
+    border-left: 4px solid var(--primary);
+  }
+}

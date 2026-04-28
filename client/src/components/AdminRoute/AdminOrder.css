@@ -1,131 +1,116 @@
-/* AdminOrder.css */
-
-/* মেইন কন্টেইনার */
+/* Admin Order Main Wrapper */
 .admin-orders-main {
   padding-top: 20px;
-  background-color: #fcfcfc;
 }
 
-.page-title {
-  font-size: 28px;
-  color: #2c3e50;
-  font-weight: 700;
-  position: relative;
-  padding-bottom: 10px;
-}
-
-/* অর্ডার কার্ড স্টাইল */
 .order-wrapper {
-  background: #ffffff;
-  border-radius: 15px;
+  background: #fff;
+  border-radius: 12px;
   overflow: hidden;
-  transition: all 0.3s ease;
-  border: none !important;
+  margin-bottom: 40px;
+  border: 1px solid #eee !important;
 }
 
-.order-wrapper:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
-}
-
-/* টেবিল ডিজাইন */
+/* Table Styling */
 .custom-table {
   margin-bottom: 0;
-  vertical-align: middle;
 }
 
-.custom-table thead th {
-  background-color: #f8f9fa;
-  color: #495057;
-  text-transform: uppercase;
+.custom-table thead {
+  background: #f8f9fa;
+}
+
+.custom-table th {
   font-size: 13px;
-  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #666;
   padding: 15px;
-  border-bottom: 2px solid #dee2e6;
+  border-bottom: 2px solid #eee;
 }
 
-.custom-table tbody td {
+.custom-table td {
   padding: 15px;
+  vertical-align: middle;
   font-size: 14px;
 }
 
-/* স্ট্যাটাস ড্রপডাউন স্টাইল */
+/* Status Dropdown Styling */
 .status-select-dropdown {
   padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #ced4da;
-  background-color: #fff;
+  border-radius: 6px;
+  border: 1px solid #ddd;
   font-weight: 600;
-  color: #495057;
   cursor: pointer;
   outline: none;
-  transition: 0.2s;
+  background-color: #fff;
+  transition: 0.3s;
 }
 
-.status-select-dropdown:focus {
-  border-color: #80bdff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+/* Color coding for Status */
+.status-select-dropdown:has(option[value="Processing"]:checked) {
+  border-color: #ffc107;
+  color: #856404;
+}
+.status-select-dropdown:has(option[value="Shipped"]:checked) {
+  border-color: #17a2b8;
+  color: #0c5460;
+}
+.status-select-dropdown:has(option[value="Delivered"]:checked) {
+  border-color: #28a745;
+  color: #155724;
+}
+.status-select-dropdown:has(option[value="Cancel"]:checked) {
+  border-color: #dc3545;
+  color: #721c24;
 }
 
-/* ইউজার এবং গেস্ট ব্যাজ */
-.user-name {
-  color: #0d6efd;
-  font-weight: 600;
-}
-
+/* Buyer & Guest Badges */
+.user-name,
 .guest-name {
-  color: #dc3545;
-  font-weight: 600;
+  font-weight: 700;
+  display: block;
 }
 
-.payment-method {
-  background: #e9ecef;
-  padding: 4px 10px;
-  border-radius: 5px;
-  font-size: 12px;
-  font-weight: bold;
+.user-name small {
+  color: #007bff;
+}
+.guest-name small {
+  color: #fd7e14;
 }
 
-/* প্রোডাক্ট লিস্ট এরিয়া */
+/* Product Row in Order */
 .admin-product-list {
   border-top: 1px dashed #ddd;
 }
 
 .product-row {
-  transition: background 0.2s;
+  transition: 0.3s;
 }
 
 .product-row:hover {
-  background-color: #f1f3f5;
+  background: #f1f3f5;
 }
 
 .product-img-box img {
-  transition: transform 0.3s ease;
+  border: 1px solid #ddd;
+  padding: 2px;
+  background: #fff;
 }
 
-.product-img-box img:hover {
-  transform: scale(1.1);
+.variant-badge {
+  background: #e9ecef;
+  color: #495057;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  margin-right: 5px;
+  font-weight: 600;
 }
 
+/* Address Box */
 .order-footer {
   background: #fff9db;
-  padding: 10px;
+  padding: 10px 15px;
   border-radius: 8px;
   border-left: 4px solid #fcc419;
-}
-
-/* --- রেসপনসিভনেস --- */
-
-@media (max-width: 768px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .table-responsive {
-    border: 0;
-  }
-
-  .page-title {
-    font-size: 22px;
-  }
 }
