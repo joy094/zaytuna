@@ -27,7 +27,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Layout title={"Barakahmart - Best Online Grocery & Medicine"}>
+    <Layout title={"rupomiq - Best Online Grocery & Medicine"}>
       <div className="home-container">
         {/* ১. কাস্টম ব্যানার স্লাইডার (Hero Section) */}
         <HeroSlider />
