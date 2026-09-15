@@ -1,251 +1,345 @@
-/*new css */
-/* --- Global Variables --- */
+/* --- Header Variables (Premium Theme) --- */
 :root {
-  --primary: #ff6347;
-  --dark: #333;
-  --white: #ffffff;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --nav-bg: #0b1a2a; /* Dark Navy Blue */
+  --nav-primary: #ff6347; /* Tomato Red */
+  --nav-text: #ffffff;
+  --nav-text-muted: #a8b8c8;
 }
 
-/* --- Navbar Core --- */
-.navbar {
-  background-color: var(--primary);
-  padding: 0.8rem 0;
+/* --- Main Navbar Area --- */
+.navbar-area {
+  background-color: var(--nav-bg);
   position: sticky;
   top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 999;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  border-bottom: 2px solid rgba(255, 99, 71, 0.2);
 }
 
 .nav-container {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
+  max-width: 1250px;
   margin: 0 auto;
-  padding: 0 20px;
-}
-
-.logo a {
-  font-weight: bold;
-  font-size: 1.5rem;
-  color: var(--white);
-  text-decoration: none;
-}
-
-/* --- Navigation Links --- */
-.nav-links {
-  display: flex;
+  padding: 12px 20px;
   gap: 20px;
-  align-items: center;
 }
 
-.nav-links a {
-  color: var(--white);
+/* --- Brand Logo --- */
+.brand-logo a {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--nav-text);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+.brand-logo span {
+  color: var(--nav-primary);
+}
+
+/* --- Search Area --- */
+.search-wrapper {
+  flex: 1;
+  max-width: 500px;
+}
+
+.mobile-search-bar {
+  display: none; /* ডেক্সটপে হাইড থাকবে */
+}
+
+/* --- Nav Actions (Right Side) --- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-item {
+  color: var(--nav-text-muted);
   text-decoration: none;
   font-weight: 500;
-  transition: 0.3s;
+  font-size: 1rem;
+  transition: color 0.3s;
+  cursor: pointer;
 }
 
-/* --- Cart Icon --- */
-.cart-nav-link .cart-icon-container {
+.nav-item:hover,
+.nav-item.active {
+  color: var(--nav-primary);
+}
+
+/* --- Cart Button --- */
+.cart-btn {
   position: relative;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  color: var(--nav-text);
+}
+
+.cart-btn:hover {
+  color: var(--nav-primary);
 }
 
 .cart-badge {
   position: absolute;
   top: -8px;
-  right: -10px;
-  background: var(--dark);
+  right: -12px;
+  background-color: var(--nav-primary);
   color: white;
   font-size: 11px;
-  padding: 2px 6px;
+  font-weight: bold;
+  height: 18px;
+  min-width: 18px;
   border-radius: 50%;
-  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--nav-bg);
 }
 
-/* --- Desktop View Controls (বড় স্ক্রিনে যা হবে) --- */
-@media (min-width: 769px) {
-  /* ডেক্সটপে মোবাইল সাইডবার এবং কল বাটন হাইড থাকবে */
-  .sidebar-categories,
-  .hamburger {
+/* --- Dropdown Styling (Pure CSS Hover) --- */
+.dropdown-wrapper {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 150%;
+  right: 0;
+  background: white;
+  min-width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  transform: translateY(10px);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.dropdown-wrapper:hover .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-link {
+  padding: 12px 20px;
+  color: #333;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  border-bottom: 1px solid #f1f1f1;
+  transition: 0.2s;
+  background: none;
+  border: none;
+  text-align: left;
+  border-left: 3px solid transparent;
+}
+
+.dropdown-link:hover {
+  background-color: #fff5f3;
+  color: var(--nav-primary);
+  border-left-color: var(--nav-primary);
+  padding-left: 25px; /* Hover করলে একটু ডানে সরবে */
+}
+
+.logout-btn {
+  cursor: pointer;
+  color: #dc3545 !important;
+}
+
+/* --- Auth Links --- */
+.login-btn {
+  background: transparent;
+  border: 1px solid var(--nav-text-muted);
+  color: var(--nav-text-muted);
+  padding: 8px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  background: var(--nav-primary);
+  border-color: var(--nav-primary);
+  color: #fff;
+}
+
+/* =========================================
+   Mobile View Design (Sidebar & Toggle)
+========================================= */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--nav-text);
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+/* Overlay / Backdrop */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Sidebar Box */
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 280px;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 1001;
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 5px 0 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-sidebar.open {
+  left: 0;
+}
+
+.sidebar-header {
+  background: var(--nav-bg);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+/* Call Order Button */
+.call-order-btn {
+  width: 100%;
+  background: #fff0ed;
+  color: var(--nav-primary);
+  border: 1px dashed var(--nav-primary);
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.sidebar-label {
+  font-size: 0.85rem;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 20px 0 10px;
+}
+
+/* Mobile Sidebar Links */
+.mobile-auth-section a,
+.mobile-logout {
+  display: block;
+  width: 100%;
+  padding: 12px 15px;
+  background: #f8f9fa;
+  color: #333;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+}
+
+.mobile-auth-section i {
+  margin-right: 8px;
+  color: var(--nav-primary);
+}
+
+.sidebar-cat-link {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  color: #444;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.sidebar-cat-link:hover {
+  color: var(--nav-primary);
+}
+
+.arrow-icon {
+  font-size: 0.8rem;
+  color: #ccc;
+}
+
+/* --- Media Queries (Mobile Fixes) --- */
+@media (max-width: 992px) {
+  .desktop-only {
     display: none !important;
   }
-
-  /* ডেক্সটপ ড্রপডাউন */
-  .dropdown {
-    position: relative;
-  }
-
-  .dropdown-title {
-    cursor: pointer;
-    list-style: none;
-    font-weight: bold;
-    color: white;
-  }
-
-  .dropdown-content {
-    position: absolute;
-    top: 150%;
-    right: 0;
-    background: white;
-    min-width: 200px;
-    box-shadow: var(--shadow);
-    border-radius: 8px;
-    display: none; /* শুরুতে হাইড */
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  /* details ট্যাগ ওপেন হলে বা হোভারে শো হবে */
-  .dropdown[open] .dropdown-content,
-  .desktop-nav-category:hover .dropdown-content {
-    display: flex;
-  }
-
-  .dropdown-content a {
-    color: var(--dark) !important;
-    padding: 12px 20px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-    width: 100%;
-  }
-
-  .dropdown-content a:hover {
-    background: #fff5f3;
-    color: var(--primary) !important;
-  }
-
-  .logout-link {
-    color: #d32f2f !important;
-  }
-}
-
-/* --- Mobile View Design (ছোট স্ক্রিনে যা হবে) --- */
-@media (max-width: 768px) {
-  .hamburger {
+  .hamburger-btn {
     display: block;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.8rem;
-    cursor: pointer;
-  }
-
-  /* ডেক্সটপ ক্যাটাগরি মেনু মোবাইলে হাইড */
-  .desktop-nav-category {
-    display: none;
-  }
-
-  .nav-links {
-    position: fixed;
-    top: 0;
-    left: -100%;
-    width: 280px;
-    height: 100vh;
-    background: white !important;
-    flex-direction: column;
-    align-items: flex-start;
-    transition: 0.4s;
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    padding-top: 20px;
-  }
-
-  .nav-links.mobile-active {
-    left: 0;
-  }
-
-  /* মোবাইলে সব লিংকের টেক্সট কালার ডার্ক */
-  .nav-links a {
-    color: var(--dark) !important;
-    width: 100%;
-    padding: 15px 25px;
-    border-bottom: 1px solid #f1f1f1;
-  }
-
-  /* মোবাইল ক্যাটাগরি সেকশন */
-  .sidebar-categories {
-    width: 100%;
-    display: block;
-  }
-
-  .category-label {
-    background: #f8f9fa;
-    padding: 10px 25px;
-    font-weight: bold;
-    color: #888;
-    font-size: 12px;
-    text-transform: uppercase;
-  }
-
-  .call-order {
-    margin: 15px;
-    width: calc(100% - 30px);
-    padding: 12px;
-    background: white;
-    border: 1px solid var(--primary);
-    color: var(--primary);
-    border-radius: 8px;
-    font-weight: bold;
-  }
-
-  .sidebar-cat-item {
-    display: flex !important;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  /* মোবাইলে ড্রপডাউন স্টাইল */
-  .dropdown-content {
-    position: static;
-    width: 100%;
-    box-shadow: none;
-    background: #fafafa;
-  }
-
-  /* --- Cart hidden small screen --- */
-  .cart-nav-link {
-    display: none;
-  }
-}
-
-/* --- Search Container Fix --- */
-.search-container {
-  flex: 1;
-  margin: 0 20px;
-  max-width: 500px; /* ডেক্সটপে সার্চবার খুব বেশি চওড়া হবে না */
-}
-
-/* --- Mobile Cart Visibility --- */
-/* আপনি মোবাইলে কার্ট হাইড করেছিলেন, কিন্তু ই-কমার্সে এটি সবসময় দেখানো ভালো */
-@media (max-width: 768px) {
-  .cart-nav-link {
-    display: block !important; /* মোবাইলেও কার্ট দেখা যাবে */
-    order: 2; /* লোগোর পাশে বা হ্যামবার্গারের আগে রাখার জন্য */
-  }
-
-  .hamburger {
     order: 3;
   }
-
-  .logo {
+  .brand-logo {
     order: 1;
   }
-}
 
-/* --- Active Link Style --- */
-.nav-links a.active {
-  border-bottom: 2px solid var(--white);
-  padding-bottom: 5px;
-}
+  .cart-btn {
+    display: block;
+    order: 2;
+    margin-right: 15px;
+  }
 
-@media (max-width: 768px) {
-  .nav-links a.active {
-    border-bottom: none;
-    background: #fff5f3;
-    color: var(--primary) !important;
-    border-left: 4px solid var(--primary);
+  .desktop-search {
+    display: none;
+  }
+
+  /* মোবাইলের সার্চবার হেডারের নিচে ফুল-উইডথ হয়ে আসবে */
+  .mobile-search-bar {
+    display: block;
+    padding: 10px 20px 15px;
+    background-color: var(--nav-bg);
   }
 }

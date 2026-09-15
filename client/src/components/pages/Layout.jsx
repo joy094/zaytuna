@@ -26,7 +26,7 @@ export const Layout = ({ children, title = "Barakahmart" }) => {
       {/* Floating Social Buttons */}
       <div className="social-float">
         <a
-          href="https://wa.me/8801860989372"
+          href="https://wa.me/+8801817141213"
           target="_blank"
           rel="noreferrer"
           className="whatsapp-float"
@@ -34,7 +34,7 @@ export const Layout = ({ children, title = "Barakahmart" }) => {
           <i className="fa-brands fa-whatsapp"></i>
         </a>
         <a
-          href="https://www.facebook.com/share/1CYYZC9q9F/"
+          href="https://www.facebook.com/profile.php?id=61594049798811"
           target="_blank"
           rel="noreferrer"
           className="fb-float"

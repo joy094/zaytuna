@@ -50,6 +50,8 @@ import CategoryProduct from "./components/pages/CategoryProduct"; // Category Pr
 import UpdateProduct from "./components/AdminRoute/UpdateProduct";
 import Products from "./components/AdminRoute/Products";
 
+import ScrollToTop from "./components/ScrollToTop"; // ScrollToTop Component ইমপোর্ট
+
 // ================= PAGES =================
 
 // // About Page

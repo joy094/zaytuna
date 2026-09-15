@@ -1,25 +1,19 @@
-//src/components/pages/Header.jsx
-
-import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/auth";
 import { useCart } from "../../context/cart";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import Search from "./Search";
-import "./Header.css"; // Header এর জন্য আলাদা CSS ফাইল
-
-//Header Components
+import "./Header.css";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [cart] = useCart();
-  const [isOpen, setIsOpen] = useState(false); // মোবাইল মেনু স্ট্যাটাস
-  const [categories, setCategories] = useState([]); // ক্যাটাগরি স্টেট
+  const [isOpen, setIsOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
-  // সব ক্যাটাগরি ডাটাবেজ থেকে আনার ফাংশন
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get("/api/v1/category/get-category");
@@ -39,128 +33,175 @@ const Header = () => {
     setAuth({ ...auth, user: null, token: "" });
     localStorage.removeItem("auth");
     toast.success("Logout successful");
+    setIsOpen(false);
+    navigate("/login");
   };
 
   return (
-    <header className="navbar">
-      <nav className="nav-container">
-        <div className="logo">
-          <Link
-            to="/"
-            style={{
-              textDecoration: "none",
-              color: "white",
-              fontSize: "1.5rem",
-            }}
-          >
-            LOGO
-          </Link>
-        </div>
-       
+    <>
+      {/* ১. মোবাইল সাইডবার ওভারলে (Backdrop) */}
+      <div
+        className={`sidebar-overlay ${isOpen ? "active" : ""}`}
+        onClick={() => setIsOpen(false)}
+      ></div>
 
-       <div className="search-container">
-         <Search />
-       </div>
+      {/* ২. মূল হেডার */}
+      <header className="navbar-area">
+        <div className="nav-container">
+          {/* হ্যামবার্গার আইকন (মোবাইলের জন্য) */}
+          <button className="hamburger-btn" onClick={() => setIsOpen(true)}>
+            <i className="fa-solid fa-bars"></i>
+          </button>
 
-        {/* হ্যামবার্গার আইকন বাটন */}
-        <button className="hamburger" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? "✕" : "☰"}
-        </button>
-
-        <div className={`nav-links ${isOpen ? "mobile-active" : ""}`}>
-          {/* --- মোবাইল ভিউ ক্যাটাগরি সেকশন --- */}
-          <div className="sidebar-categories">
-            <div className="sidebar-header-box">
-              <button
-                className="call-order"
-                onClick={() => (window.location.href = "tel:+8801860989372")}
-              >
-                <i className="fa-solid fa-phone"></i> Call for Order
-              </button>
-            </div>
-
-            <p className="category-label">All Categories</p>
-            <div className="category-list">
-              {categories?.map((c) => (
-                <NavLink
-                  key={c._id}
-                  to={`/category/${c.slug}`}
-                  className="sidebar-cat-item"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <span>{c.name}</span>
-                  <i className="fa-solid fa-chevron-right arrow-icon"></i>
-                </NavLink>
-              ))}
-            </div>
+          {/* ব্র্যান্ড লোগো */}
+          <div className="brand-logo">
+            <Link to="/">
+              Rupomiq<span>Bd</span>
+            </Link>
           </div>
-          {/* ---------------------------------- */}
 
-          <NavLink to="/" onClick={() => setIsOpen(false)}>
-            Home
-          </NavLink>
+          {/* ডেক্সটপ সার্চ বার */}
+          <div className="search-wrapper desktop-search">
+            <Search />
+          </div>
 
-          {/* --- ডেক্সটপ ক্যাটাগরি ড্রপডাউন (নতুন যোগ করা হলো) --- */}
-          {/* ডেক্সটপ ক্যাটাগরি */}
-          <div className="desktop-nav-category">
-            <details className="dropdown">
-              <summary className="dropdown-title">Categories ▾</summary>
-              <div className="dropdown-content">
+          {/* ডানপাশের একশন লিংকস */}
+          <div className="nav-actions">
+            {/* ডেক্সটপ ক্যাটাগরি ড্রপডাউন (Hover Effect) */}
+            <div className="dropdown-wrapper desktop-only">
+              <span className="nav-item has-dropdown">
+                Categories <i className="fa-solid fa-angle-down ms-1"></i>
+              </span>
+              <div className="dropdown-menu">
                 {categories?.map((c) => (
-                  <NavLink key={c._id} to={`/category/${c.slug}`}>
+                  <NavLink
+                    key={c._id}
+                    to={`/category/${c.slug}`}
+                    className="dropdown-link"
+                  >
                     {c.name}
                   </NavLink>
                 ))}
               </div>
-            </details>
-          </div>
-          {/* --------------------------------------------------- */}
-
-          <NavLink
-            to="/cart"
-            className="cart-nav-link"
-            onClick={() => setIsOpen(false)}
-          >
-            <div className="cart-icon-container">
-              <i className="fa-solid fa-cart-shopping"></i>
-              <span className="cart-badge">{cart?.length}</span>
             </div>
-          </NavLink>
-          {!auth.user ? (
-            <>
-              <NavLink to="/register" onClick={() => setIsOpen(false)}>
-                Register
-              </NavLink>
-              <NavLink to="/login" onClick={() => setIsOpen(false)}>
-                Login
-              </NavLink>
-            </>
-          ) : (
-            <details className="dropdown">
-              <summary className="dropdown-title">{auth?.user?.name} ▾</summary>
-              <div className="dropdown-content">
-                <NavLink
-                  onClick={() => setIsOpen(false)}
-                  to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
-                >
-                  Dashboard
+
+            <NavLink to="/" className="nav-item desktop-only">
+              Home
+            </NavLink>
+
+            {/* কার্ট আইকন */}
+            <NavLink to="/cart" className="nav-item cart-btn">
+              <i className="fa-solid fa-cart-shopping"></i>
+              {cart?.length > 0 && (
+                <span className="cart-badge">{cart.length}</span>
+              )}
+            </NavLink>
+
+            {/* ইউজার অথেন্টিকেশন / ড্রপডাউন */}
+            {!auth.user ? (
+              <div className="auth-links desktop-only">
+                <NavLink to="/login" className="login-btn">
+                  Login
                 </NavLink>
-                <Link
-                  onClick={() => {
-                    handleLogout();
-                    setIsOpen(false);
-                  }}
-                  to="/login"
-                  className="logout-link"
-                >
-                  Logout
-                </Link>
               </div>
-            </details>
-          )}
+            ) : (
+              <div className="dropdown-wrapper desktop-only">
+                <span className="nav-item has-dropdown user-name-badge">
+                  <i className="fa-regular fa-circle-user me-1"></i>
+                  {auth?.user?.name.split(" ")[0]}
+                </span>
+                <div className="dropdown-menu user-menu">
+                  <NavLink
+                    to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
+                    className="dropdown-link"
+                  >
+                    Dashboard
+                  </NavLink>
+                  <button
+                    onClick={handleLogout}
+                    className="dropdown-link logout-btn"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
-      </nav>
-    </header>
+
+        {/* মোবাইলের জন্য আলাদা সার্চ বার (হেডারের নিচে বসবে) */}
+        <div className="mobile-search-bar">
+          <Search />
+        </div>
+      </header>
+
+      {/* ৩. মোবাইল সাইডবার (Drawer) */}
+      <div className={`mobile-sidebar ${isOpen ? "open" : ""}`}>
+        <div className="sidebar-header">
+          <h3>
+            <i className="fa-regular fa-compass me-2"></i> Menu
+          </h3>
+          <button className="close-btn" onClick={() => setIsOpen(false)}>
+            <i className="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div className="sidebar-content">
+          <button
+            className="call-order-btn"
+            onClick={() => (window.location.href = "tel:+8801817141213")}
+          >
+            <i className="fa-solid fa-phone-volume"></i> Call for Order
+          </button>
+
+          <div className="mobile-auth-section">
+            {!auth.user ? (
+              <>
+                <NavLink to="/login" onClick={() => setIsOpen(false)}>
+                  <i className="fa-solid fa-arrow-right-to-bracket"></i> Login
+                </NavLink>
+                <NavLink to="/register" onClick={() => setIsOpen(false)}>
+                  <i className="fa-solid fa-user-plus"></i> Register
+                </NavLink>
+              </>
+            ) : (
+              <>
+                <div className="mobile-user-info">
+                  <span className="fw-bold text-dark">
+                    Hi, {auth?.user?.name}
+                  </span>
+                </div>
+                <NavLink
+                  to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <i className="fa-solid fa-border-all"></i> Dashboard
+                </NavLink>
+                <button onClick={handleLogout} className="mobile-logout">
+                  <i className="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+              </>
+            )}
+          </div>
+
+          <p className="sidebar-label">Shop by Categories</p>
+          <div className="sidebar-category-list">
+            {categories?.map((c) => (
+              <NavLink
+                key={c._id}
+                to={`/category/${c.slug}`}
+                className="sidebar-cat-link"
+                onClick={() => setIsOpen(false)}
+              >
+                <span>{c.name}</span>
+                <i className="fa-solid fa-chevron-right arrow-icon"></i>
+              </NavLink>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
+
 export default Header;
