@@ -365,3 +365,41 @@ input:focus {
     padding-bottom: 80px;
   }
 }
+
+/* =========================================
+   Global Mobile Overflow Fix (পেজ ডানে-বামে সরে যাওয়া বন্ধ করতে)
+========================================= */
+html,
+body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+/* যেকোনো কনটেইনার যাতে স্ক্রিনের বাইরে না যায় */
+.container,
+.product-details-page,
+.details-img-container {
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box !important;
+}
+
+/* টেবিল বা গ্যালারি যেন পেজ না ভাঙে */
+.spec-table-wrapper,
+.product-nav-tabs,
+.thumbnail-gallery {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box !important;
+}
+
+/* মোবাইলের সার্চবার যেন ওভারফ্লো না করে */
+.mobile-search-bar,
+.navbar-area {
+  max-width: 100vw;
+  box-sizing: border-box !important;
+}
