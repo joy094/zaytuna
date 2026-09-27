@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Layout from "./Layout"; // আপনার ফোল্ডার পাথ অনুযায়ী ঠিক করে নিবেন
+import Layout from "./Layout";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useCart } from "../../context/cart";
@@ -14,8 +14,6 @@ const ProductDetails = () => {
   // ডাইনামিক স্টেট
   const [mainImage, setMainImage] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
-
-  // কোন বাটনটি অ্যাক্টিভ আছে তা বোঝার জন্য স্টেট
   const [activeTab, setActiveTab] = useState("specification");
 
   const getProduct = async () => {
@@ -68,7 +66,6 @@ const ProductDetails = () => {
     return colors[normalized] || normalized;
   };
 
-  // স্ক্রল করার ফাংশন
   const scrollToSection = (sectionId) => {
     setActiveTab(sectionId);
     const element = document.getElementById(sectionId);
@@ -122,24 +119,53 @@ const ProductDetails = () => {
               <span className="brand-badge">{product.brand}</span>
             )}
             <h1 className="details-title">{product.name}</h1>
-            {product?.highlights?.length > 0 && (
-              <ul className="product-highlights">
-                {product.highlights.map((h, i) => (
-                  <li key={i}>✓ {h}</li>
-                ))}
-              </ul>
-            )}
+
+            {/* ================= Highlights Fix ================= */}
+            {(() => {
+              let highlightsArray = [];
+              if (product?.highlights) {
+                try {
+                  if (typeof product.highlights === "string") {
+                    highlightsArray = JSON.parse(product.highlights);
+                  } else if (Array.isArray(product.highlights)) {
+                    if (
+                      product.highlights.length > 0 &&
+                      typeof product.highlights[0] === "string" &&
+                      product.highlights[0].startsWith("[")
+                    ) {
+                      highlightsArray = JSON.parse(product.highlights[0]);
+                    } else {
+                      highlightsArray = product.highlights;
+                    }
+                  }
+                } catch (e) {
+                  highlightsArray = Array.isArray(product.highlights)
+                    ? product.highlights
+                    : [];
+                }
+              }
+
+              return highlightsArray.length > 0 ? (
+                <ul className="product-highlights">
+                  {highlightsArray.map((h, i) => (
+                    <li key={i}>✓ {h}</li>
+                  ))}
+                </ul>
+              ) : null;
+            })()}
+
             <div className="price-section">
               <span className="details-price">
-                ৳ {selectedVariant ? selectedVariant.price : product.price}
+                ৳ {selectedVariant ? selectedVariant.price : product?.price}
               </span>
-              {product.discountPrice > 0 && (
+              {product?.discountPrice > 0 && (
                 <span className="discount-price">
                   ৳ {product.discountPrice}
                 </span>
               )}
             </div>
 
+            {/* ================= Variant Box Fix ================= */}
             {product?.variants?.length > 0 && (
               <div className="variant-section mt-4">
                 <h6>Available Options (Select One):</h6>
@@ -150,22 +176,40 @@ const ProductDetails = () => {
                       className={`variant-card ${selectedVariant === v ? "active" : ""}`}
                       onClick={() => setSelectedVariant(v)}
                     >
-                      <div className="var-main">
-                        {v.ram} / {v.storage}
-                      </div>
-                      <div className="var-sub">
-                        {v.region} • {v.simType}
-                      </div>
-                      <div className="var-color-wrapper">
-                        <span
-                          className="color-circle"
-                          style={{ backgroundColor: getValidColor(v.color) }}
-                          title={v.color}
-                        ></span>
-                        <span className="var-color-text">
-                          {v.color} {v.condition ? `(${v.condition})` : ""}
-                        </span>
-                      </div>
+                      {/* যদি RAM বা Storage থাকে, তবেই দেখাবে */}
+                      {(v.ram || v.storage) && (
+                        <div className="var-main">
+                          {v.ram ? `${v.ram}` : ""}{" "}
+                          {v.ram && v.storage ? "/" : ""}{" "}
+                          {v.storage ? `${v.storage}` : ""}
+                        </div>
+                      )}
+
+                      {/* যদি Region বা SimType থাকে, তবেই দেখাবে */}
+                      {(v.region || v.simType) && (
+                        <div className="var-sub">
+                          {v.region} {v.simType ? `• ${v.simType}` : ""}
+                        </div>
+                      )}
+
+                      {/* কালার থাকলে দেখাবে */}
+                      {v.color && (
+                        <div className="var-color-wrapper">
+                          <span
+                            className="color-circle"
+                            style={{ backgroundColor: getValidColor(v.color) }}
+                            title={v.color}
+                          ></span>
+                          <span className="var-color-text">
+                            {v.color} {v.condition ? `(${v.condition})` : ""}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* যদি উপরের কিছুই না থাকে (যেমন সাবানের ক্ষেত্রে), তবে শুধু অপশনের নাম বা ডিফল্ট কিছু দেখাবে */}
+                      {!v.ram && !v.storage && !v.color && (
+                        <div className="var-main">Variant {index + 1}</div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -271,7 +315,7 @@ const ProductDetails = () => {
             </h4>
             <div
               className="rich-content mt-3"
-              dangerouslySetInnerHTML={{ __html: product.description }}
+              dangerouslySetInnerHTML={{ __html: product?.description }}
             />
           </div>
 
