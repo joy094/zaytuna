@@ -308,20 +308,93 @@
   font-weight: 700;
 }
 
+/* =========================================
+   Mobile Responsive Fixes (100% Locked Fit)
+========================================= */
 @media (max-width: 768px) {
+  /* 100vw এর বদলে 100% ব্যবহার করা হলো, যাতে স্ক্রলবারের কারণে পেজ না সরে */
+  html,
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  * {
+    box-sizing: border-box !important;
+  }
+
+  /* প্রোডাক্ট কন্টেইনার */
+  .container.product-details-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 15px 0 !important;
+    padding: 15px !important;
+    overflow-x: hidden !important;
+    border-radius: 8px !important;
+  }
+
   .details-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+    width: 100% !important;
   }
+
+  .details-img-container,
+  .details-info {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+
   .main-img-box {
-    height: 350px;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 300px !important;
+    padding: 10px !important;
+    margin: 0 !important;
   }
+
+  .main-img-box img {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 300px !important;
+    object-fit: contain !important;
+  }
+
+  .thumbnail-gallery {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .details-title {
+    font-size: 1.3rem !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    width: 100% !important;
+    line-height: 1.4 !important;
+  }
+
+  .details-price {
+    font-size: 1.8rem !important;
+  }
+
   .spec-category {
-    display: none;
-  } /* মোবাইলে শুধু Name ও Value দেখাবে জায়গা বাঁচানোর জন্য */
-  .spec-name {
-    width: 40%;
+    display: none !important;
   }
+
+  .spec-name {
+    width: 40% !important;
+    font-size: 13px !important;
+  }
+
   .spec-value {
-    width: 60%;
+    width: 60% !important;
+    font-size: 13px !important;
+  }
+
+  .variant-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
   }
 }
