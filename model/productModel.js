@@ -6,11 +6,11 @@ const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     slug: { type: String, required: true, lowercase: true },
-    brand: { type: String }, // যেমন: Xiaomi, Samsung, Apple
+    brand: { type: String }, // যেমন: Gucci, Ray-Ban, Local
     category: { type: mongoose.ObjectId, ref: "Category", required: true },
 
     // ছোট হাইলাইটস (ছবির ডান পাশে দেখানোর জন্য)
-    // যেমন: ["Brand New (Unofficial)", "10 Days Replacement Warranty"]
+    // যেমন: ["Premium Leather", "UV400 Protection"]
     highlights: [String],
 
     description: { type: String, required: true }, // রিচ টেক্সট (সাধারণ বর্ণনার জন্য)
@@ -23,27 +23,24 @@ const productSchema = new mongoose.Schema(
     photo: { data: Buffer, contentType: String },
     extraPhotos: [{ data: Buffer, contentType: String }],
 
-    // === ১. ডাইনামিক ভেরিয়েন্ট (Advanced) ===
+    // === ১. ডাইনামিক ভেরিয়েন্ট (Fashion & Accessories) ===
     variants: [
       {
-        color: String, // Black, Silver
-        ram: String, // 6GB, 8GB
-        storage: String, // 128GB, 256GB
-        region: String, // Global, IND, China, USA
-        simType: String, // Physical SIM, e-SIM, Dual SIM
-        condition: String, // Official, Unofficial, Refurbished
-        price: Number, // এই নির্দিষ্ট ভেরিয়েন্টের দাম
-        stock: Number, // এই নির্দিষ্ট ভেরিয়েন্টের স্টক
+        size: String, // যেমন: M, L, XL, One Size
+        color: String, // যেমন: Black, Brown, Red
+        material: String, // যেমন: Leather, Canvas, UV Glass
+        style: String, // যেমন: Aviator, Tote Bag, Crossbody
+        price: Number, // এই নির্দিষ্ট ভেরিয়েন্টের দাম
+        stock: Number, // এই নির্দিষ্ট ভেরিয়েন্টের স্টক
       },
     ],
 
     // === ২. ডাইনামিক স্পেসিফিকেশন (টেবিলের জন্য) ===
-    // এটি আগে Object ছিল, এখন Array করা হলো যাতে আপনি যত খুশি স্পেক্স যোগ করতে পারেন
     specifications: [
       {
-        category: String, // যেমন: "Network", "Display", "Platform"
-        name: String, // যেমন: "Technology", "Size", "OS"
-        value: String, // যেমন: "GSM / 5G", "6.7 inches", "Android 14"
+        category: String, // যেমন: "Material Info", "Dimensions"
+        name: String, // যেমন: "Fabric", "Weight"
+        value: String, // যেমন: "100% Cotton", "500g"
       },
     ],
 

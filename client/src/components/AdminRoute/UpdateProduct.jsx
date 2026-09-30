@@ -1,3 +1,5 @@
+//UpdateProduct.jsx
+
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/pages/Layout";
 import AdminMenu from "./AdminMenu";
@@ -8,72 +10,43 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "./UpdateProduct.css";
 
-// --- কনস্ট্যান্টস (Dropdown & Presets) ---
+// --- কনস্ট্যান্টস (Fashion, Bags & Accessories Presets) ---
 const BRAND_OPTIONS = [
-  "Apple",
-  "Samsung",
-  "Xiaomi",
-  "Vivo",
-  "Oppo",
-  "Realme",
-  "OnePlus",
-  "Google",
-  "Motorola",
-  "Infinix",
-  "Tecno",
-  "Nothing",
+  "Gucci",
+  "Ray-Ban",
+  "Prada",
+  "Zara",
+  "Nike",
+  "Adidas",
+  "Puma",
+  "Local Brand",
+  "Non-Brand",
+  "Other",
 ];
-const RAM_OPTIONS = ["2GB", "4GB", "6GB", "8GB", "12GB", "16GB", "24GB"];
-const STORAGE_OPTIONS = ["32GB", "64GB", "128GB", "256GB", "512GB", "1TB"];
-const REGION_OPTIONS = [
-  "Global",
-  "Official",
-  "USA",
-  "HK",
-  "China",
-  "India",
-  "VN",
-];
-const SIM_OPTIONS = [
-  "Single SIM",
-  "Dual Physical",
-  "e-SIM + Physical",
-  "Dual e-SIM",
-];
-const CONDITION_OPTIONS = [
-  "Brand New",
-  "Unofficial",
-  "Refurbished",
-  "Pre-owned",
-];
+
 const COLOR_OPTIONS = [
   "Black",
   "White",
   "Silver",
   "Gray",
-  "Space Gray",
-  "Titanium",
-  "Natural Titanium",
-  "Blue",
-  "Pacific Blue",
-  "Sierra Blue",
-  "Midnight",
-  "Starlight",
-  "Gold",
-  "Deep Purple",
+  "Brown",
+  "Navy Blue",
   "Red",
   "Green",
   "Yellow",
   "Pink",
+  "Gold",
+  "Multi-Color",
 ];
 
+const SIZE_OPTIONS = ["One Size", "XS", "S", "M", "L", "XL", "XXL"];
+
 const SPEC_PRESETS = [
-  { category: "Display", name: "Type" },
-  { category: "Display", name: "Size" },
-  { category: "Platform", name: "OS" },
-  { category: "Platform", name: "Chipset" },
-  { category: "Main Camera", name: "Modules" },
-  { category: "Battery", name: "Capacity" },
+  { category: "Material Info", name: "Fabric/Material" },
+  { category: "Material Info", name: "Care Instructions" },
+  { category: "Dimensions", name: "Width" },
+  { category: "Dimensions", name: "Height" },
+  { category: "Dimensions", name: "Weight" },
 ];
 
 const UpdateProduct = () => {
@@ -107,7 +80,7 @@ const UpdateProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`,
+        `/api/v1/product/get-product/${params.slug}`
       );
       setName(data.product.name);
       setId(data.product._id);
@@ -120,10 +93,31 @@ const UpdateProduct = () => {
       setStatus(data.product.status);
       setCategory(data.product.category._id);
 
-      // হাইলাইটস, ভেরিয়েন্ট ও স্পেকস সেট করা
-      setHighlights(
-        data.product.highlights?.length ? data.product.highlights : [""],
-      );
+      // === Highlights Parse Fix ===
+      let parsedHighlights = [""];
+      if (data.product.highlights) {
+        try {
+          if (typeof data.product.highlights === "string") {
+            parsedHighlights = JSON.parse(data.product.highlights);
+          } else if (Array.isArray(data.product.highlights)) {
+            if (
+              data.product.highlights.length > 0 &&
+              typeof data.product.highlights[0] === "string" &&
+              data.product.highlights[0].startsWith("[")
+            ) {
+              parsedHighlights = JSON.parse(data.product.highlights[0]);
+            } else {
+              parsedHighlights = data.product.highlights;
+            }
+          }
+        } catch (e) {
+          parsedHighlights = Array.isArray(data.product.highlights)
+            ? data.product.highlights
+            : [""];
+        }
+      }
+      
+      setHighlights(parsedHighlights.length > 0 ? parsedHighlights : [""]);
       setVariants(data.product.variants || []);
       setSpecifications(data.product.specifications || []);
       setExistingExtraPhotosCount(data.product.extraPhotos?.length || 0);
@@ -429,7 +423,7 @@ const UpdateProduct = () => {
 
             {/* --- হাইলাইটস (Quick Features) --- */}
             <div className="variant-box p-3 mb-4">
-              <h6>Quick Highlights (e.g. 1 Year Warranty)</h6>
+              <h6>Quick Highlights (e.g. Premium Leather, UV Protection)</h6>
               {highlights.map((h, i) => (
                 <div key={i} className="mb-2 d-flex gap-2">
                   <input
@@ -457,111 +451,81 @@ const UpdateProduct = () => {
               </button>
             </div>
 
-            {/* --- ভেরিয়েন্ট এডিট (Dropdowns) --- */}
+            {/* --- ভেরিয়েন্ট এডিট (Fashion Dropdowns) --- */}
             <div className="variant-box p-3 mb-4">
-              <h6>Edit Variants (Smart Dropdowns)</h6>
+              <h6>Edit Variants (Size, Color, Material, Style)</h6>
               {variants.map((v, i) => (
                 <div key={i} className="variant-grid-row mb-2">
                   <select
                     className="form-control"
-                    value={v.color}
+                    value={v.size || ""}
+                    onChange={(e) =>
+                      handleVariantChange(i, "size", e.target.value)
+                    }
+                  >
+                    <option value="">Select Size</option>
+                    {SIZE_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    className="form-control"
+                    value={v.color || ""}
                     onChange={(e) =>
                       handleVariantChange(i, "color", e.target.value)
                     }
                   >
-                    <option value="">Color</option>
+                    <option value="">Select Color</option>
                     {COLOR_OPTIONS.map((c) => (
                       <option key={c} value={c}>
                         {c}
                       </option>
                     ))}
                   </select>
-                  <select
+
+                  <input
+                    type="text"
                     className="form-control"
-                    value={v.ram}
+                    placeholder="Material (e.g. Leather)"
+                    value={v.material || ""}
                     onChange={(e) =>
-                      handleVariantChange(i, "ram", e.target.value)
+                      handleVariantChange(i, "material", e.target.value)
                     }
-                  >
-                    <option value="">RAM</option>
-                    {RAM_OPTIONS.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
-                    ))}
-                  </select>
-                  <select
+                  />
+
+                  <input
+                    type="text"
                     className="form-control"
-                    value={v.storage}
+                    placeholder="Style (e.g. Tote, Aviator)"
+                    value={v.style || ""}
                     onChange={(e) =>
-                      handleVariantChange(i, "storage", e.target.value)
+                      handleVariantChange(i, "style", e.target.value)
                     }
-                  >
-                    <option value="">ROM</option>
-                    {STORAGE_OPTIONS.map((s) => (
-                      <option key={s} value={s}>
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="form-control"
-                    value={v.region}
-                    onChange={(e) =>
-                      handleVariantChange(i, "region", e.target.value)
-                    }
-                  >
-                    <option value="">Region</option>
-                    {REGION_OPTIONS.map((reg) => (
-                      <option key={reg} value={reg}>
-                        {reg}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="form-control"
-                    value={v.simType}
-                    onChange={(e) =>
-                      handleVariantChange(i, "simType", e.target.value)
-                    }
-                  >
-                    <option value="">SIM</option>
-                    {SIM_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    className="form-control"
-                    value={v.condition}
-                    onChange={(e) =>
-                      handleVariantChange(i, "condition", e.target.value)
-                    }
-                  >
-                    <option value="">Condition</option>
-                    {CONDITION_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
+                  />
+
                   <input
                     type="number"
+                    className="form-control"
                     placeholder="Price"
-                    value={v.price}
+                    value={v.price || ""}
                     onChange={(e) =>
                       handleVariantChange(i, "price", e.target.value)
                     }
                   />
+
                   <input
                     type="number"
+                    className="form-control"
                     placeholder="Stock"
-                    value={v.stock}
+                    value={v.stock || ""}
                     onChange={(e) =>
                       handleVariantChange(i, "stock", e.target.value)
                     }
                   />
+
                   <button
                     type="button"
                     className="btn btn-danger btn-sm"
@@ -575,17 +539,15 @@ const UpdateProduct = () => {
               ))}
               <button
                 type="button"
-                className="btn btn-sm btn-dark"
+                className="btn btn-sm btn-dark mt-1"
                 onClick={() =>
                   setVariants([
                     ...variants,
                     {
+                      size: "",
                       color: "",
-                      ram: "",
-                      storage: "",
-                      region: "",
-                      simType: "",
-                      condition: "",
+                      material: "",
+                      style: "",
                       price: "",
                       stock: "",
                     },
@@ -598,7 +560,7 @@ const UpdateProduct = () => {
 
             {/* --- স্পেসিফিকেশন (Technical Specs) --- */}
             <div className="spec-box p-3 mb-4">
-              <h6>Technical Specifications</h6>
+              <h6>Product Specifications</h6>
               <div className="spec-presets mb-3">
                 <span className="text-muted" style={{ fontSize: "12px" }}>
                   Quick Add:{" "}
@@ -642,7 +604,7 @@ const UpdateProduct = () => {
                   <div className="col-md-4">
                     <input
                       className="form-control"
-                      placeholder="Value (e.g. 5000mAh)"
+                      placeholder="Value (e.g. Leather)"
                       value={s.value}
                       onChange={(e) =>
                         handleSpecChange(i, "value", e.target.value)

@@ -1,3 +1,5 @@
+// CreateProduct.jsx
+
 import React, { useState, useEffect } from "react";
 import Layout from "../../components/pages/Layout";
 import AdminMenu from "./AdminMenu";
@@ -27,7 +29,7 @@ const CreateProduct = () => {
   const [photo, setPhoto] = useState(null);
   const [extraPhotos, setExtraPhotos] = useState([]);
 
-  // === নতুন: এক্সট্রা ছবি অ্যাড ও রিমুভ করার ফাংশন ===
+  // এক্সট্রা ছবি অ্যাড ও রিমুভ করার ফাংশন
   const handleExtraPhotoUpload = (e) => {
     const files = Array.from(e.target.files);
     setExtraPhotos((prevPhotos) => [...prevPhotos, ...files]);
@@ -42,32 +44,30 @@ const CreateProduct = () => {
   // ডাইনামিক ডাটা স্টেট
   const [highlights, setHighlights] = useState([""]);
 
+  // === ফ্যাশন রিলেটেড ভেরিয়েন্ট স্টেট ===
   const [variants, setVariants] = useState([
     {
+      size: "",
       color: "",
-      ram: "",
-      storage: "",
-      region: "",
-      simType: "",
-      condition: "",
+      material: "",
+      style: "",
       price: "",
       stock: "",
     },
   ]);
 
+  // ফ্যাশন ও এক্সেসরিজ ব্র্যান্ড অপশন (ইচ্ছেমতো পরিবর্তন করতে পারবেন)
   const BRAND_OPTIONS = [
-    "Apple",
-    "Samsung",
-    "Xiaomi",
-    "Vivo",
-    "Oppo",
-    "Realme",
-    "OnePlus",
-    "Google",
-    "Motorola",
-    "Infinix",
-    "Tecno",
-    "Nothing",
+    "Gucci",
+    "Ray-Ban",
+    "Prada",
+    "Zara",
+    "Nike",
+    "Adidas",
+    "Puma",
+    "Local Brand",
+    "Non-Brand",
+    "Other",
   ];
 
   const COLOR_OPTIONS = [
@@ -75,64 +75,24 @@ const CreateProduct = () => {
     "White",
     "Silver",
     "Gray",
-    "Space Gray",
-    "Titanium",
-    "Natural Titanium",
-    "Blue",
-    "Pacific Blue",
-    "Sierra Blue",
-    "Midnight",
-    "Starlight",
-    "Gold",
-    "Deep Purple",
+    "Brown",
+    "Navy Blue",
     "Red",
     "Green",
     "Yellow",
     "Pink",
-  ];
-  const RAM_OPTIONS = ["2GB", "4GB", "6GB", "8GB", "12GB", "16GB", "24GB"];
-  const STORAGE_OPTIONS = ["32GB", "64GB", "128GB", "256GB", "512GB", "1TB"];
-  const REGION_OPTIONS = [
-    "Global",
-    "Official",
-    "USA",
-    "HK",
-    "China",
-    "India",
-    "VN",
-  ];
-  const SIM_OPTIONS = [
-    "Single SIM",
-    "Dual Physical",
-    "e-SIM + Physical",
-    "Dual e-SIM",
-  ];
-  const CONDITION_OPTIONS = [
-    "Brand New",
-    "Unofficial",
-    "Refurbished",
-    "Pre-owned",
+    "Gold",
+    "Multi-Color",
   ];
 
-  // টেকনিক্যাল স্পেকসের জন্য প্রিসেট
-  const SPEC_PRESETS = [
-    { category: "Display", name: "Type" },
-    { category: "Display", name: "Size" },
-    { category: "Display", name: "Resolution" },
-    { category: "Platform", name: "OS" },
-    { category: "Platform", name: "Chipset" },
-    { category: "Main Camera", name: "Triple" },
-    { category: "Main Camera", name: "Features" },
-    { category: "Selfie Camera", name: "Single" },
-    { category: "Battery", name: "Capacity" },
-    { category: "Battery", name: "Charging" },
-  ];
+  const SIZE_OPTIONS = ["One Size", "XS", "S", "M", "L", "XL", "XXL"];
 
+  // স্পেসিফিকেশন স্টেট
   const [specifications, setSpecifications] = useState([
-    { category: "Network", name: "Technology", value: "" },
+    { category: "Material Info", name: "Fabric/Material", value: "" },
   ]);
 
-  // === ক্যাটাগরি আনা ===
+  // ক্যাটাগরি আনা
   const getAllCategory = async () => {
     try {
       const { data } = await axios.get("/api/v1/category/get-category");
@@ -149,7 +109,7 @@ const CreateProduct = () => {
     getAllCategory();
   }, []);
 
-  // === ডাইনামিক ফিল্ড হ্যান্ডেলার ===
+  // ডাইনামিক ফিল্ড হ্যান্ডেলার
   const handleHighlightChange = (index, value) => {
     const newHighlights = [...highlights];
     newHighlights[index] = value;
@@ -164,20 +124,20 @@ const CreateProduct = () => {
     newVariants[index][field] = value;
     setVariants(newVariants);
   };
+
   const addVariantRow = () =>
     setVariants([
       ...variants,
       {
+        size: "",
         color: "",
-        ram: "",
-        storage: "",
-        region: "",
-        simType: "",
-        condition: "",
+        material: "",
+        style: "",
         price: "",
         stock: "",
       },
     ]);
+
   const removeVariantRow = (index) =>
     setVariants(variants.filter((_, i) => i !== index));
 
@@ -194,7 +154,7 @@ const CreateProduct = () => {
   const removeSpecRow = (index) =>
     setSpecifications(specifications.filter((_, i) => i !== index));
 
-  // === ফর্ম সাবমিট ===
+  // ফর্ম সাবমিট
   const handleCreate = async (e) => {
     e.preventDefault();
     try {
@@ -272,7 +232,6 @@ const CreateProduct = () => {
                     ? "✅ Main Photo Selected"
                     : "📸 Click to Upload Main Image"}
                 </label>
-                {/* মেইন ফটোর প্রিভিউ */}
                 {photo && (
                   <div className="mt-2 text-center">
                     <img
@@ -305,7 +264,6 @@ const CreateProduct = () => {
                   />
                   ➕ Add More Images
                 </label>
-                {/* এক্সট্রা ফটোর প্রিভিউ গ্যালারি */}
                 {extraPhotos && extraPhotos.length > 0 && (
                   <div
                     style={{
@@ -382,8 +340,6 @@ const CreateProduct = () => {
                       {opt}
                     </option>
                   ))}
-                  {/* আপনি চাইলে নিচে একটি 'Other' অপশনও রাখতে পারেন */}
-                  <option value="Other">Other</option>
                 </select>
               </div>
             </div>
@@ -464,7 +420,7 @@ const CreateProduct = () => {
 
             {/* === ৩. হাইলাইটস === */}
             <div className="variant-box p-3 mb-4">
-              <h6>Quick Highlights (e.g. 1 Year Warranty, Free Delivery)</h6>
+              <h6>Quick Highlights (e.g. Premium Leather, UV Protection)</h6>
               {highlights.map((h, i) => (
                 <div key={i} className="mb-2 d-flex gap-2">
                   <input
@@ -494,12 +450,28 @@ const CreateProduct = () => {
               </button>
             </div>
 
-            {/* === ৪. অ্যাডভান্সড ভেরিয়েন্ট === */}
+            {/* === ৪. অ্যাডভান্সড ভেরিয়েন্ট (Fashion Options) === */}
             <div className="variant-box p-3 mb-4">
-              <h6>Product Variants (Region, SIM, Specs)</h6>
+              <h6>Product Variants (Size, Color, Material, Style)</h6>
               {variants.map((v, i) => (
-                <div className="variant-grid-row mb-2">
-                  {/* কালার ড্রপডাউন */}
+                <div className="variant-grid-row mb-2" key={i}>
+                  {/* Size Dropdown */}
+                  <select
+                    className="form-control"
+                    value={v.size}
+                    onChange={(e) =>
+                      handleVariantChange(i, "size", e.target.value)
+                    }
+                  >
+                    <option value="">Select Size</option>
+                    {SIZE_OPTIONS.map((opt) => (
+                      <option key={opt} value={opt}>
+                        {opt}
+                      </option>
+                    ))}
+                  </select>
+
+                  {/* Color Dropdown */}
                   <select
                     className="form-control"
                     value={v.color}
@@ -515,97 +487,60 @@ const CreateProduct = () => {
                     ))}
                   </select>
 
-                  <select
-                    className="form-control"
-                    value={v.ram}
-                    onChange={(e) =>
-                      handleVariantChange(i, "ram", e.target.value)
-                    }
-                  >
-                    <option value="">RAM</option>
-                    {RAM_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    className="form-control"
-                    value={v.storage}
-                    onChange={(e) =>
-                      handleVariantChange(i, "storage", e.target.value)
-                    }
-                  >
-                    <option value="">Storage</option>
-                    {STORAGE_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    className="form-control"
-                    value={v.region}
-                    onChange={(e) =>
-                      handleVariantChange(i, "region", e.target.value)
-                    }
-                  >
-                    <option value="">Region</option>
-                    {REGION_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    className="form-control"
-                    value={v.simType}
-                    onChange={(e) =>
-                      handleVariantChange(i, "simType", e.target.value)
-                    }
-                  >
-                    <option value="">SIM</option>
-                    {SIM_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-
-                  <select
-                    className="form-control"
-                    value={v.condition}
-                    onChange={(e) =>
-                      handleVariantChange(i, "condition", e.target.value)
-                    }
-                  >
-                    <option value="">Condition</option>
-                    {CONDITION_OPTIONS.map((opt) => (
-                      <option key={opt} value={opt}>
-                        {opt}
-                      </option>
-                    ))}
-                  </select>
-
+                  {/* Material Input */}
                   <input
-                    placeholder="Price"
+                    type="text"
+                    className="form-control"
+                    placeholder="Material (e.g. Leather)"
+                    value={v.material}
+                    onChange={(e) =>
+                      handleVariantChange(i, "material", e.target.value)
+                    }
+                  />
+
+                  {/* Style Input */}
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Style (e.g. Tote, Aviator)"
+                    value={v.style}
+                    onChange={(e) =>
+                      handleVariantChange(i, "style", e.target.value)
+                    }
+                  />
+
+                  {/* Price Input */}
+                  <input
                     type="number"
+                    className="form-control"
+                    placeholder="Price"
                     value={v.price}
                     onChange={(e) =>
                       handleVariantChange(i, "price", e.target.value)
                     }
                   />
+
+                  {/* Stock Input */}
                   <input
-                    placeholder="Stock"
                     type="number"
+                    className="form-control"
+                    placeholder="Stock"
                     value={v.stock}
                     onChange={(e) =>
                       handleVariantChange(i, "stock", e.target.value)
                     }
                   />
+
+                  {variants.length > 1 && (
+                    <button
+                      type="button"
+                      className="btn btn-danger btn-sm ms-2"
+                      onClick={() => removeVariantRow(i)}
+                      style={{ padding: "8px 12px", height: "fit-content" }}
+                    >
+                      ✕
+                    </button>
+                  )}
                 </div>
               ))}
               <button
@@ -619,12 +554,12 @@ const CreateProduct = () => {
 
             {/* === ৫. স্পেসিফিকেশন টেবিল ডাটা === */}
             <div className="spec-box p-3 mb-4">
-              <h6>Technical Specifications (Table Content)</h6>
+              <h6>Product Specifications (Table Content)</h6>
               {specifications.map((s, i) => (
                 <div key={i} className="row g-2 mb-2">
                   <div className="col-md-3">
                     <input
-                      placeholder="Category (e.g. Battery)"
+                      placeholder="Category (e.g. Dimensions)"
                       className="form-control"
                       value={s.category}
                       onChange={(e) =>
@@ -634,7 +569,7 @@ const CreateProduct = () => {
                   </div>
                   <div className="col-md-4">
                     <input
-                      placeholder="Name (e.g. Capacity)"
+                      placeholder="Name (e.g. Weight)"
                       className="form-control"
                       value={s.name}
                       onChange={(e) =>
@@ -644,7 +579,7 @@ const CreateProduct = () => {
                   </div>
                   <div className="col-md-4">
                     <input
-                      placeholder="Value (e.g. 5000mAh)"
+                      placeholder="Value (e.g. 500g)"
                       className="form-control"
                       value={s.value}
                       onChange={(e) =>

@@ -14,7 +14,9 @@ const ProductDetails = () => {
   // ডাইনামিক স্টেট
   const [mainImage, setMainImage] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
-  const [activeTab, setActiveTab] = useState("specification");
+
+  // বাই-ডিফল্ট Description ট্যাব অ্যাক্টিভ থাকবে (যাতে স্পেসিফিকেশন না থাকলেও এরর না আসে)
+  const [activeTab, setActiveTab] = useState("description");
 
   const getProduct = async () => {
     try {
@@ -253,12 +255,16 @@ const ProductDetails = () => {
 
         {/* ================= ন্যাভিগেশন বাটন (Tabs) ================= */}
         <div className="product-nav-tabs">
-          <button
-            className={`nav-tab-btn ${activeTab === "specification" ? "active" : ""}`}
-            onClick={() => scrollToSection("specification")}
-          >
-            Specification
-          </button>
+          {/* স্পেসিফিকেশন ডাটা থাকলেই কেবল এই ট্যাব দেখাবে */}
+          {groupedSpecs && Object.keys(groupedSpecs).length > 0 && (
+            <button
+              className={`nav-tab-btn ${activeTab === "specification" ? "active" : ""}`}
+              onClick={() => scrollToSection("specification")}
+            >
+              Specifications
+            </button>
+          )}
+
           <button
             className={`nav-tab-btn ${activeTab === "description" ? "active" : ""}`}
             onClick={() => scrollToSection("description")}
@@ -281,14 +287,14 @@ const ProductDetails = () => {
 
         {/* ================= বিস্তারিত সেকশনসমূহ (স্ক্রল টার্গেট) ================= */}
         <div className="scrollable-content-area">
-          {/* স্পেসিফিকেশন সেকশন */}
-          <div id="specification" className="scroll-section">
-            <h4 className="section-heading border-bottom pb-2">
-              Technical Specifications
-            </h4>
-            <div className="spec-table-wrapper mt-3">
-              {groupedSpecs &&
-                Object.keys(groupedSpecs).map((category, index) => (
+          {/* স্পেসিফিকেশন সেকশন (ডাটা থাকলেই কেবল রেন্ডার হবে) */}
+          {groupedSpecs && Object.keys(groupedSpecs).length > 0 && (
+            <div id="specification" className="scroll-section">
+              <h4 className="section-heading border-bottom pb-2">
+                Product Specifications
+              </h4>
+              <div className="spec-table-wrapper mt-3">
+                {Object.keys(groupedSpecs).map((category, index) => (
                   <div key={index} className="spec-group">
                     <table className="spec-table">
                       <tbody>
@@ -305,8 +311,9 @@ const ProductDetails = () => {
                     </table>
                   </div>
                 ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* ডেসক্রিপশন সেকশন */}
           <div id="description" className="scroll-section mt-5">

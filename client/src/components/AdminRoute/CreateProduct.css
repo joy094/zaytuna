@@ -64,7 +64,7 @@
 }
 
 .form-control:focus {
-  border-color: #ff6347; /* মেইন থিম কালার */
+  border-color: #ff6347;
   box-shadow: 0 0 0 3px rgba(255, 99, 71, 0.1);
   outline: none;
 }
@@ -88,7 +88,7 @@
 
 .variant-grid-row {
   display: grid;
-  grid-template-columns: repeat(6, 1fr); /* ৬টি ইনপুট এক লাইনে */
+  grid-template-columns: repeat(6, 1fr);
   gap: 10px;
   background: #fff;
   padding: 10px;
@@ -154,16 +154,16 @@
 ========================================= */
 .btn-submit {
   width: 100%;
-  background-color: #222;
+  background-color: #0b1a2a;
   color: white;
-  padding: 14px;
+  padding: 16px;
   border: none;
   border-radius: 8px;
   font-weight: 700;
   font-size: 16px;
   cursor: pointer;
   transition: 0.3s ease;
-  margin-top: 15px;
+  margin-top: 25px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -182,38 +182,42 @@
 }
 
 /* =========================================
-   Responsive Design (Mobile & Tablet)
+   Responsive Design (Mobile & Tablet) - FIXED
 ========================================= */
 @media (max-width: 1200px) {
   .dashboard-grid {
-    flex-direction: column; /* ছোট স্ক্রিনে সাইডবার উপরে চলে যাবে */
+    flex-direction: column;
   }
 }
 
 @media (max-width: 992px) {
-  /* ৬ কলামের জায়গায় ৩ কলাম ২ রো হবে */
   .variant-grid-row {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 768px) {
+  /* পুরো ড্যাশবোর্ড কন্টেইনারের নিচে প্রচুর জায়গা রাখা হলো */
+  .dashboard-grid {
+    padding-bottom: 150px !important;
+  }
+
+  /* কার্ডের ভেতরে নিচে প্যাডিং বাড়ানো হলো যাতে বাটন বর্ডারে না লাগে */
   .product-form-card {
-    padding: 20px;
+    padding: 20px 20px 40px 20px !important;
+    margin-bottom: 80px !important;
   }
 
   .form-row {
-    grid-template-columns: 1fr; /* বেসিক ইনফো নিচে নিচে আসবে */
+    grid-template-columns: 1fr;
     gap: 0;
   }
 
-  /* মোবাইলে ভেরিয়েন্ট ইনপুট ২ কলাম করে হবে */
   .variant-grid-row {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
 
-  /* স্পেসিফিকেশন ইনপুট নিচে নিচে আসবে */
   .spec-box .row > div {
     width: 100%;
     margin-bottom: 10px;
@@ -222,10 +226,14 @@
   .page-title {
     font-size: 1.5rem;
   }
+
+  /* বাটনটির নিচেও মার্জিন দেওয়া হলো */
+  .btn-submit {
+    margin-bottom: 20px !important;
+  }
 }
 
 @media (max-width: 480px) {
-  /* একদম ছোট মোবাইলে সব ইনপুট এক কলামে */
   .variant-grid-row {
     grid-template-columns: 1fr;
   }
