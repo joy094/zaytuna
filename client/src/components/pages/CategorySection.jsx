@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 // Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-// Swiper modules (যদি Navigation Arrows লাগে)
+// Swiper modules
 import { Navigation } from "swiper/modules";
 
 // Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 
-import "./CategorySection.css"; // এই কম্পোনেন্টের জন্য CSS
+import "./CategorySection.css";
 
 const CategorySection = ({ title, slug }) => {
   const [products, setProducts] = useState([]);
@@ -25,7 +25,7 @@ const CategorySection = ({ title, slug }) => {
           `/api/v1/product/product-category/${slug}`,
         );
         if (data?.success) {
-          // শুধু প্রথম ১০-১২টি পণ্য দেখান যাতে হোমপেজ ভারী না হয়
+          // প্রথম ১২টি পণ্য দেখান
           setProducts(data?.products.slice(0, 12));
         } else {
           setError("Failed to fetch products for this category.");
@@ -46,7 +46,7 @@ const CategorySection = ({ title, slug }) => {
   if (loading)
     return <div className="category-section-loading">Loading {title}...</div>;
   if (error) return <div className="category-section-error">{error}</div>;
-  if (!products || products.length === 0) return null; // কোনো প্রোডাক্ট না থাকলে সেকশন দেখাবে না
+  if (!products || products.length === 0) return null;
 
   return (
     <div className="category-section">
@@ -59,35 +59,40 @@ const CategorySection = ({ title, slug }) => {
 
       <div className="product-slider-wrapper">
         <Swiper
-          slidesPerView={1.5} // মোবাইলে 1.5টি আইটেম
+          slidesPerView={2} // মোবাইলে ২টি আইটেম পাশাপাশি
           spaceBetween={15}
-          navigation={true} // নেভিগেশন অ্যারো দেখাবে
+          navigation={true}
           modules={[Navigation]}
           className="productSwiper"
           breakpoints={{
-            640: {
+            576: {
               slidesPerView: 2.5,
-              spaceBetween: 20,
+              spaceBetween: 15,
             },
             768: {
               slidesPerView: 3.5,
-              spaceBetween: 25,
+              spaceBetween: 20,
             },
-            1024: {
+            992: {
               slidesPerView: 4.5,
-              spaceBetween: 30,
+              spaceBetween: 20,
             },
             1200: {
-              slidesPerView: 5.5,
-              spaceBetween: 30,
+              slidesPerView: 5,
+              spaceBetween: 25,
             },
           }}
         >
           {products.map((p) => (
             <SwiperSlide key={p._id}>
-              <Link to={`/product/${p.slug}`} className="product-card-link">
+              <Link
+                to={`/product/${p.slug}`}
+                className="product-card-link"
+                style={{ textDecoration: "none" }}
+              >
                 <div className="product-card">
-                  <div className="product-img-box">
+                  {/* ক্লাসের নাম Home.css এর সাথে মেলানো হলো */}
+                  <div className="product-img-wrapper">
                     <img
                       src={`/api/v1/product/product-photo/${p._id}`}
                       alt={p.name}
@@ -95,10 +100,10 @@ const CategorySection = ({ title, slug }) => {
                   </div>
                   <div className="product-info">
                     <h5 className="product-name">
-                      {p.name.substring(0, 25)}
-                      {p.name.length > 25 ? "..." : ""}
+                      {p.name.substring(0, 40)}
+                      {p.name.length > 40 ? "..." : ""}
                     </h5>
-                    <p className="product-price">৳ {p.price}</p>
+                    <p className="price-tag">৳ {p.price}</p>
                   </div>
                 </div>
               </Link>

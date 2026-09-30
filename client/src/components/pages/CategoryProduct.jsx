@@ -1,10 +1,10 @@
 //src/components/pages/CategoryProduct.jsx
 
 import React, { useState, useEffect } from "react";
-import Layout from "./Layout"; // আপনার লেআউট পাথ অনুযায়ী ঠিক করে নিন
+import Layout from "./Layout";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./CategoryProduct.css"; // CSS ফাইল ইম্পোর্ট
+import "./CategoryProduct.css";
 import { useCart } from "../../context/cart";
 import { toast } from "react-toastify";
 
@@ -38,16 +38,18 @@ const CategoryProduct = () => {
           <h4 className="text-center category-title">
             Category - {category?.name}
           </h4>
-          <h6 className="text-center result-count">
+          <h6 className="text-center result-count mb-4">
             {products?.length} result found
           </h6>
 
           <div className="product-grid">
             {products?.map((p) => (
               <div className="product-card" key={p._id}>
+                {/* ইমেজ বক্সের ক্লাস product-img-wrapper করা হলো যাতে ছবি না কাটে */}
                 <div
-                  className="product-img-box"
+                  className="product-img-wrapper"
                   onClick={() => navigate(`/product/${p.slug}`)}
+                  style={{ cursor: "pointer" }}
                 >
                   <img
                     src={`/api/v1/product/product-photo/${p._id}`}
@@ -55,11 +57,15 @@ const CategoryProduct = () => {
                   />
                 </div>
                 <div className="product-info">
-                  <h5 className="product-name">{p.name.substring(0, 30)}...</h5>
-                  <p className="product-desc">
-                    {p.description.substring(0, 40)}...
-                  </p>
-                  <p className="product-price">৳ {p.price}</p>
+                  <h5 className="product-name">
+                    {p.name.substring(0, 35)}
+                    {p.name.length > 35 ? "..." : ""}
+                  </h5>
+
+                  {/* HTML ট্যাগ জনিত সমস্যা এড়াতে ডেসক্রিপশন অংশটি বাদ দেওয়া হলো */}
+
+                  <p className="price-tag">৳ {p.price}</p>
+
                   <div className="card-buttons">
                     <button
                       className="btn-details"
@@ -70,11 +76,18 @@ const CategoryProduct = () => {
                     <button
                       className="btn-add-cart"
                       onClick={() => {
-                        // কার্টে পণ্য যোগ করার লজিক
-                        setCart([...cart, p]);
+                        const cartItem = {
+                          _id: p._id,
+                          name: p.name,
+                          slug: p.slug,
+                          price: p.price,
+                          selectedVariant: null,
+                        };
+                        const updatedCart = [...cart, cartItem];
+                        setCart(updatedCart);
                         localStorage.setItem(
                           "cart",
-                          JSON.stringify([...cart, p]),
+                          JSON.stringify(updatedCart),
                         );
                         toast.success("পণ্যটি কার্টে যোগ করা হয়েছে");
                       }}
