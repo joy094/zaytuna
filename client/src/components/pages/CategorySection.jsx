@@ -8,24 +8,24 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./CategorySection.css";
 
-// ১. ইন-মেমোরি ক্যাশ অবজেক্ট (অবশ্যই কম্পোনেন্টের বাইরে রাখতে হবে)
-const categoryCache = {};
-
 const CategorySection = ({ title, slug }) => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // ১. ম্যাজিক: ব্রাউজারের লোকাল স্টোরেজ থেকে ডাটা নিয়ে সরাসরি স্টেট তৈরি (0ms লোডিং)
+  const [products, setProducts] = useState(() => {
+    const savedData = localStorage.getItem(`cache_${slug}`);
+    return savedData ? JSON.parse(savedData) : [];
+  });
+
+  // ২. যদি ডাটা আগে থেকেই সেভ করা থাকে, তবে শুরুতেই লোডিং false থাকবে!
+  const [loading, setLoading] = useState(() => {
+    return localStorage.getItem(`cache_${slug}`) ? false : true;
+  });
 
   useEffect(() => {
     const getProductsByCat = async () => {
-      // ২. ম্যাজিক ট্রিক: এপিআই কলের আগে চেক করা ডাটা ক্যাশে আছে কি না!
-      if (categoryCache[slug]) {
-        setProducts(categoryCache[slug]);
-        setLoading(false); // সাথে সাথে লোডিং বন্ধ করে ডাটা দেখিয়ে দেবে
-        return;
-      }
-
       try {
-        setLoading(true);
+        // শুধু তখনই লোডিং স্পিনার/স্কিলেটন দেখাবো যদি স্টোরেজে ডাটা না থাকে
+        if (products.length === 0) setLoading(true);
+
         const { data } = await axios.get(
           `/api/v1/product/product-category/${slug}`,
         );
@@ -33,8 +33,11 @@ const CategorySection = ({ title, slug }) => {
           const fetchedProducts = data?.products.slice(0, 12);
           setProducts(fetchedProducts);
 
-          // ৩. প্রথমবার ফেচ করার পর ক্যাশে সেভ করে রাখা হচ্ছে
-          categoryCache[slug] = fetchedProducts;
+          // ৩. ব্যাকগ্রাউন্ডে নতুন ডাটা আসলে সেটা সাথে সাথে স্টোরেজে আপডেট করে দেব
+          localStorage.setItem(
+            `cache_${slug}`,
+            JSON.stringify(fetchedProducts),
+          );
         }
       } catch (err) {
         console.error("Error fetching category products:", err);
@@ -46,9 +49,9 @@ const CategorySection = ({ title, slug }) => {
     if (slug) {
       getProductsByCat();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
 
-  // যদি কোনো প্রোডাক্ট না থাকে এবং লোডিংও শেষ হয়, তবে সেকশন দেখাবে না
   if (!loading && (!products || products.length === 0)) return null;
 
   return (
@@ -66,7 +69,7 @@ const CategorySection = ({ title, slug }) => {
         <Swiper
           slidesPerView={2}
           spaceBetween={15}
-          navigation={!loading} // লোডিংয়ের সময় অ্যারো হাইড থাকবে
+          navigation={!loading}
           modules={[Navigation]}
           className="productSwiper"
           breakpoints={{
@@ -77,7 +80,7 @@ const CategorySection = ({ title, slug }) => {
           }}
         >
           {loading
-            ? // ডেটা আসার আগে ৪টি ফেক স্কিলেটন কার্ড দেখাবে (ব্ল্যাংক ভাব দূর করার জন্য)
+            ? // ডেটা আসার আগে স্কিলেটন কার্ড (প্রথমবার ভিজিট করলে শুধু দেখাবে)
               [1, 2, 3, 4, 5].map((n) => (
                 <SwiperSlide key={n}>
                   <div className="product-card skeleton-card">
@@ -89,7 +92,7 @@ const CategorySection = ({ title, slug }) => {
                   </div>
                 </SwiperSlide>
               ))
-            : // আসল প্রোডাক্টগুলো
+            : // আসল প্রোডাক্টগুলো (রিলোড দিলে সাথে সাথে এটাই রেন্ডার হবে)
               products.map((p) => (
                 <SwiperSlide key={p._id}>
                   <Link
