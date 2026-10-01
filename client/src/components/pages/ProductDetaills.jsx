@@ -1,3 +1,5 @@
+// ProductDetails.jsx
+
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import axios from "axios";
@@ -15,7 +17,7 @@ const ProductDetails = () => {
   const [mainImage, setMainImage] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
 
-  // বাই-ডিফল্ট Description ট্যাব অ্যাক্টিভ থাকবে (যাতে স্পেসিফিকেশন না থাকলেও এরর না আসে)
+  // বাই-ডিফল্ট Description ট্যাব অ্যাক্টিভ থাকবে
   const [activeTab, setActiveTab] = useState("description");
 
   const getProduct = async () => {
@@ -24,9 +26,25 @@ const ProductDetails = () => {
         `/api/v1/product/get-product/${params.slug}`,
       );
       setProduct(data?.product);
-      setMainImage(`/api/v1/product/product-photo/${data?.product._id}`);
+
+      // মেইন ছবি সেট করা
+      setMainImage(data?.product?.photo);
+
       if (data?.product?.variants?.length > 0) {
-        setSelectedVariant(data.product.variants[0]);
+        const defaultVariant = data.product.variants[0];
+        setSelectedVariant(defaultVariant);
+
+        // ফিক্স: photoIndex স্ট্রিং হিসেবে আসলে সেটাকে Number এ কনভার্ট করা
+        if (
+          defaultVariant.photoIndex !== undefined &&
+          defaultVariant.photoIndex !== null &&
+          defaultVariant.photoIndex !== ""
+        ) {
+          const pIdx = Number(defaultVariant.photoIndex);
+          if (data.product.extraPhotos?.[pIdx]) {
+            setMainImage(data.product.extraPhotos[pIdx]);
+          }
+        }
       }
     } catch (error) {
       console.log(error);
@@ -89,27 +107,23 @@ const ProductDetails = () => {
                 <div className="text-center p-5">Loading Image...</div>
               )}
             </div>
+
+            {/* ================= ফিক্স: Cloudinary গ্যালারি থাম্বনেইল ================= */}
             <div className="thumbnail-gallery">
-              {product?._id && (
+              {product?.photo && (
                 <img
-                  src={`/api/v1/product/product-photo/${product._id}`}
-                  className={`thumb ${mainImage.includes("product-photo") ? "active" : ""}`}
-                  onClick={() =>
-                    setMainImage(`/api/v1/product/product-photo/${product._id}`)
-                  }
+                  src={product.photo}
+                  className={`thumb ${mainImage === product.photo ? "active" : ""}`}
+                  onClick={() => setMainImage(product.photo)}
                   alt="main"
                 />
               )}
-              {product?.extraPhotos?.map((p, index) => (
+              {product?.extraPhotos?.map((photoUrl, index) => (
                 <img
                   key={index}
-                  src={`/api/v1/product/extra-photo/${product._id}/${index}`}
-                  className={`thumb ${mainImage.includes(`/extra-photo/${product._id}/${index}`) ? "active" : ""}`}
-                  onClick={() =>
-                    setMainImage(
-                      `/api/v1/product/extra-photo/${product._id}/${index}`,
-                    )
-                  }
+                  src={photoUrl}
+                  className={`thumb ${mainImage === photoUrl ? "active" : ""}`}
+                  onClick={() => setMainImage(photoUrl)}
                   alt={`gallery-${index}`}
                 />
               ))}
@@ -122,7 +136,7 @@ const ProductDetails = () => {
             )}
             <h1 className="details-title">{product.name}</h1>
 
-            {/* ================= Highlights Fix ================= */}
+            {/* ================= Highlights ================= */}
             {(() => {
               let highlightsArray = [];
               if (product?.highlights) {
@@ -167,7 +181,7 @@ const ProductDetails = () => {
               )}
             </div>
 
-            {/* ================= Variant Box Fix ================= */}
+            {/* ================= ভেরিয়েন্ট বক্স ও ছবি চেঞ্জ লজিক ================= */}
             {product?.variants?.length > 0 && (
               <div className="variant-section mt-4">
                 <h6>Available Options (Select One):</h6>
@@ -176,9 +190,26 @@ const ProductDetails = () => {
                     <div
                       key={index}
                       className={`variant-card ${selectedVariant === v ? "active" : ""}`}
-                      onClick={() => setSelectedVariant(v)}
+                      onClick={() => {
+                        setSelectedVariant(v);
+
+                        // ম্যাজিক লজিক: Number() দিয়ে ভেরিফাই করা হচ্ছে
+                        if (
+                          v.photoIndex !== undefined &&
+                          v.photoIndex !== null &&
+                          v.photoIndex !== ""
+                        ) {
+                          const pIdx = Number(v.photoIndex);
+                          if (product?.extraPhotos?.[pIdx]) {
+                            setMainImage(product.extraPhotos[pIdx]);
+                          } else {
+                            setMainImage(product?.photo);
+                          }
+                        } else {
+                          setMainImage(product?.photo);
+                        }
+                      }}
                     >
-                      {/* যদি RAM বা Storage থাকে, তবেই দেখাবে */}
                       {(v.ram || v.storage) && (
                         <div className="var-main">
                           {v.ram ? `${v.ram}` : ""}{" "}
@@ -187,14 +218,12 @@ const ProductDetails = () => {
                         </div>
                       )}
 
-                      {/* যদি Region বা SimType থাকে, তবেই দেখাবে */}
                       {(v.region || v.simType) && (
                         <div className="var-sub">
                           {v.region} {v.simType ? `• ${v.simType}` : ""}
                         </div>
                       )}
 
-                      {/* কালার থাকলে দেখাবে */}
                       {v.color && (
                         <div className="var-color-wrapper">
                           <span
@@ -208,7 +237,6 @@ const ProductDetails = () => {
                         </div>
                       )}
 
-                      {/* যদি উপরের কিছুই না থাকে (যেমন সাবানের ক্ষেত্রে), তবে শুধু অপশনের নাম বা ডিফল্ট কিছু দেখাবে */}
                       {!v.ram && !v.storage && !v.color && (
                         <div className="var-main">Variant {index + 1}</div>
                       )}
@@ -255,7 +283,6 @@ const ProductDetails = () => {
 
         {/* ================= ন্যাভিগেশন বাটন (Tabs) ================= */}
         <div className="product-nav-tabs">
-          {/* স্পেসিফিকেশন ডাটা থাকলেই কেবল এই ট্যাব দেখাবে */}
           {groupedSpecs && Object.keys(groupedSpecs).length > 0 && (
             <button
               className={`nav-tab-btn ${activeTab === "specification" ? "active" : ""}`}
@@ -285,9 +312,8 @@ const ProductDetails = () => {
           </button>
         </div>
 
-        {/* ================= বিস্তারিত সেকশনসমূহ (স্ক্রল টার্গেট) ================= */}
+        {/* ================= বিস্তারিত সেকশনসমূহ ================= */}
         <div className="scrollable-content-area">
-          {/* স্পেসিফিকেশন সেকশন (ডাটা থাকলেই কেবল রেন্ডার হবে) */}
           {groupedSpecs && Object.keys(groupedSpecs).length > 0 && (
             <div id="specification" className="scroll-section">
               <h4 className="section-heading border-bottom pb-2">
@@ -315,7 +341,6 @@ const ProductDetails = () => {
             </div>
           )}
 
-          {/* ডেসক্রিপশন সেকশন */}
           <div id="description" className="scroll-section mt-5">
             <h4 className="section-heading border-bottom pb-2">
               Product Overview
@@ -326,7 +351,6 @@ const ProductDetails = () => {
             />
           </div>
 
-          {/* ওয়ারেন্টি সেকশন */}
           <div id="warranty" className="scroll-section mt-5">
             <h4 className="section-heading border-bottom pb-2">
               Warranty Policy
@@ -346,7 +370,6 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* রিভিউ সেকশন (আপাতত ফাঁকা) */}
           <div id="reviews" className="scroll-section mt-5 mb-5">
             <h4 className="section-heading border-bottom pb-2">
               Customer Reviews

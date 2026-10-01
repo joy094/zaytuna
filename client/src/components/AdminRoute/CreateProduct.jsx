@@ -44,7 +44,7 @@ const CreateProduct = () => {
   // ডাইনামিক ডাটা স্টেট
   const [highlights, setHighlights] = useState([""]);
 
-  // === ফ্যাশন রিলেটেড ভেরিয়েন্ট স্টেট ===
+  // === ফ্যাশন রিলেটেড ভেরিয়েন্ট স্টেট (আপডেট করা হয়েছে) ===
   const [variants, setVariants] = useState([
     {
       size: "",
@@ -53,6 +53,7 @@ const CreateProduct = () => {
       style: "",
       price: "",
       stock: "",
+      photoIndex: "", // নতুন যুক্ত করা হলো
     },
   ]);
 
@@ -135,6 +136,7 @@ const CreateProduct = () => {
         style: "",
         price: "",
         stock: "",
+        photoIndex: "", // নতুন যুক্ত করা হলো
       },
     ]);
 
@@ -308,6 +310,19 @@ const CreateProduct = () => {
                         >
                           ✕
                         </button>
+                        {/* অ্যাডমিনকে বোঝানোর জন্য ইমেজের ওপর ইনডেক্স নম্বর দেখানো হলো */}
+                        <span style={{
+                          position: "absolute",
+                          bottom: "0",
+                          left: "0",
+                          background: "rgba(0,0,0,0.6)",
+                          color: "white",
+                          fontSize: "10px",
+                          padding: "2px 4px",
+                          borderBottomLeftRadius: "6px"
+                        }}>
+                          Index: {index}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -452,7 +467,7 @@ const CreateProduct = () => {
 
             {/* === ৪. অ্যাডভান্সড ভেরিয়েন্ট (Fashion Options) === */}
             <div className="variant-box p-3 mb-4">
-              <h6>Product Variants (Size, Color, Material, Style)</h6>
+              <h6>Product Variants (Size, Color, Material, Style, Photo)</h6>
               {variants.map((v, i) => (
                 <div className="variant-grid-row mb-2" key={i}>
                   {/* Size Dropdown */}
@@ -491,7 +506,7 @@ const CreateProduct = () => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Material (e.g. Leather)"
+                    placeholder="Material"
                     value={v.material}
                     onChange={(e) =>
                       handleVariantChange(i, "material", e.target.value)
@@ -502,7 +517,7 @@ const CreateProduct = () => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Style (e.g. Tote, Aviator)"
+                    placeholder="Style"
                     value={v.style}
                     onChange={(e) =>
                       handleVariantChange(i, "style", e.target.value)
@@ -528,6 +543,18 @@ const CreateProduct = () => {
                     value={v.stock}
                     onChange={(e) =>
                       handleVariantChange(i, "stock", e.target.value)
+                    }
+                  />
+
+                  {/* Photo Index Input (নতুন যোগ করা হয়েছে) */}
+                  <input
+                    type="number"
+                    className="form-control"
+                    placeholder="Photo Idx (0,1..)"
+                    title="Enter the index number of the extra photo (0 for first, 1 for second). Leave empty for main photo."
+                    value={v.photoIndex}
+                    onChange={(e) =>
+                      handleVariantChange(i, "photoIndex", e.target.value)
                     }
                   />
 

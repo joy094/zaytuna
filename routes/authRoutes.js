@@ -1,3 +1,5 @@
+//auth routes
+
 import express from "express";
 import {
   loginController,
@@ -11,6 +13,8 @@ import {
   getAllUsersController,
 } from "../controller/authController.js";
 import { isAdmin, requireSignIn } from "../middleware/authMiddleware.js";
+
+import { deleteOrderController } from "../controller/deleteOrderController.js";
 
 const router = express.Router();
 
@@ -56,5 +60,13 @@ router.put(
 // Admin এর জন্য সব ইউজার দেখার রুট
 
 router.get("/all-users", requireSignIn, isAdmin, getAllUsersController);
+
+// ফাইলের নিচের দিকে অন্য রাউটগুলোর সাথে এটি বসিয়ে দিন
+router.delete(
+  "/delete-order/:orderId",
+  requireSignIn,
+  isAdmin,
+  deleteOrderController,
+);
 
 export default router;

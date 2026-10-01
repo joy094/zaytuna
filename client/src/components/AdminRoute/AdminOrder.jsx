@@ -1,4 +1,4 @@
-// src/components/AdminRoute/AdminOrder.jsx
+// src/components/AdminRoute/AdminOrders.jsx
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { useAuth } from "../../context/auth";
 import Layout from "../../components/pages/Layout";
 import AdminMenu from "./AdminMenu";
 import moment from "moment";
+import { toast } from "react-toastify"; // নোটিফিকেশনের জন্য
 import "./AdminOrder.css";
 
 const AdminOrders = () => {
@@ -36,13 +37,38 @@ const AdminOrders = () => {
   // অর্ডারের স্ট্যাটাস আপডেট করার ফাংশন
   const handleChange = async (orderId, value) => {
     try {
-      const { data } = await axios.put(
-        `/api/v1/auth/update-order-status/${orderId}`,
-        { status: value },
-      );
+      await axios.put(`/api/v1/auth/update-order-status/${orderId}`, {
+        status: value,
+      });
       getOrders(); // লিস্ট রিফ্রেশ করা
+      toast.success("Order status updated");
     } catch (error) {
       console.log(error);
+      toast.error("Failed to update status");
+    }
+  };
+
+  // === অর্ডার ডিলিট করার ফাংশন ===
+  const handleDelete = async (orderId) => {
+    try {
+      // ডিলিট করার আগে কনফার্মেশন অ্যালার্ট
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this order? This action cannot be undone.",
+      );
+      if (!confirmDelete) return;
+
+      const { data } = await axios.delete(
+        `/api/v1/auth/delete-order/${orderId}`,
+      );
+
+      if (data?.success) {
+        toast.success("Order deleted successfully");
+        // রিয়েল-টাইম আপডেট: পেজ রিলোড না করেই অর্ডারটি লিস্ট থেকে সরিয়ে দেওয়া
+        setOrders(orders.filter((order) => order._id !== orderId));
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error while deleting order");
     }
   };
 
@@ -69,9 +95,9 @@ const AdminOrders = () => {
                         <th>Date</th>
                         <th>Payment</th>
                         <th>Items</th>
+                        <th>Action</th> {/* নতুন কলাম */}
                       </tr>
                     </thead>
-                    {/* ... আগের কোড ... */}
                     <tbody>
                       <tr>
                         <td>{i + 1}</td>
@@ -83,15 +109,15 @@ const AdminOrders = () => {
                             }
                             defaultValue={o?.status}
                           >
-                            {status.map((s, i) => (
-                              <option key={i} value={s}>
+                            {status.map((s, idx) => (
+                              <option key={idx} value={s}>
                                 {s}
                               </option>
                             ))}
                           </select>
                         </td>
 
-                        {/* নাম দেখানোর লজিক (User অথবা Guest) */}
+                        {/* নাম দেখানোর লজিক */}
                         <td>
                           {o?.buyer?.name ? (
                             <span className="user-name">
@@ -104,7 +130,7 @@ const AdminOrders = () => {
                           )}
                         </td>
 
-                        {/* মোবাইল নম্বর দেখানোর লজিক */}
+                        {/* মোবাইল নম্বর */}
                         <td>
                           {o?.buyer?.phone ? (
                             <span>{o?.buyer?.phone}</span>
@@ -120,13 +146,22 @@ const AdminOrders = () => {
                           </span>
                         </td>
                         <td>{o?.products?.length}</td>
+
+                        {/* ডিলিট বাটন */}
+                        <td>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleDelete(o._id)}
+                            title="Delete Order"
+                          >
+                            <i className="fa-solid fa-trash"></i> Delete
+                          </button>
+                        </td>
                       </tr>
                     </tbody>
-                    {/* ... বাকি কোড ... */}
                   </table>
                 </div>
 
-                {/* অর্ডারের ভেতরে থাকা প্রোডাক্টগুলো */}
                 {/* অর্ডারের ভেতরে থাকা প্রোডাক্টগুলো */}
                 <div className="admin-product-list p-3 bg-light">
                   {o?.products?.map((p, index) => (
@@ -135,8 +170,9 @@ const AdminOrders = () => {
                       key={index}
                     >
                       <div className="product-img-box">
+                        {/* ফিক্স করা হয়েছে: সরাসরি Cloudinary লিংক */}
                         <img
-                          src={`<img src={p.photo} alt={p.name} />`}
+                          src={p.photo}
                           alt={p.name}
                           width="60px"
                           height="60px"
@@ -147,18 +183,18 @@ const AdminOrders = () => {
                       <div className="product-info-box ms-3">
                         <p className="mb-0 fw-bold">{p.name}</p>
 
-                        {/* ভেরিয়েন্ট ইনফো (যদি থাকে) */}
+                        {/* ভেরিয়েন্ট ইনফো */}
                         <div className="mt-1">
                           {p.selectedVariant ? (
                             <>
                               <span className="variant-badge">
                                 🎨 {p.selectedVariant.color}
                               </span>
-                              <span className="variant-badge">
+                              <span className="variant-badge ms-2">
                                 💾 {p.selectedVariant.ram}/
                                 {p.selectedVariant.storage}
                               </span>
-                              <span className="variant-badge">
+                              <span className="variant-badge ms-2">
                                 📍 {p.selectedVariant.region}
                               </span>
                             </>
@@ -197,7 +233,7 @@ const AdminOrders = () => {
             ))}
 
             {orders.length === 0 && (
-              <h4 className="text-center">No orders found.</h4>
+              <h4 className="text-center mt-5">No orders found.</h4>
             )}
           </div>
         </div>

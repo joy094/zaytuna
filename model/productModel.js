@@ -33,6 +33,7 @@ const productSchema = new mongoose.Schema(
         style: String, // যেমন: Aviator, Tote Bag, Crossbody
         price: Number, // এই নির্দিষ্ট ভেরিয়েন্টের দাম
         stock: Number, // এই নির্দিষ্ট ভেরিয়েন্টের স্টক
+        photoIndex: Number, // নতুন ফিল্ড: extraPhotos এর ইনডেক্স (যেমন: 0, 1, 2)
       },
     ],
 

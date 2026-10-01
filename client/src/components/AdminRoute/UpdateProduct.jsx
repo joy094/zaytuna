@@ -66,9 +66,13 @@ const UpdateProduct = () => {
   const [status, setStatus] = useState("");
   const [id, setId] = useState("");
 
-  // ইমেজ স্টেট
+  // ইমেজ স্টেট (নতুন ও পুরোনো ছবি হ্যান্ডেল করার জন্য)
   const [photo, setPhoto] = useState("");
   const [extraPhotos, setExtraPhotos] = useState([]);
+
+  // ক্লাউডিনারি থেকে আসা পুরোনো ছবিগুলো রাখার স্টেট
+  const [existingPhoto, setExistingPhoto] = useState("");
+  const [existingExtraPhotos, setExistingExtraPhotos] = useState([]);
   const [existingExtraPhotosCount, setExistingExtraPhotosCount] = useState(0);
 
   // ডাইনামিক ডাটা স্টেট
@@ -80,7 +84,7 @@ const UpdateProduct = () => {
   const getSingleProduct = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/get-product/${params.slug}`
+        `/api/v1/product/get-product/${params.slug}`,
       );
       setName(data.product.name);
       setId(data.product._id);
@@ -92,6 +96,10 @@ const UpdateProduct = () => {
       setShipping(data.product.shipping ? "1" : "0");
       setStatus(data.product.status);
       setCategory(data.product.category._id);
+
+      // Cloudinary ইমেজের ডাটা সেভ করা
+      setExistingPhoto(data.product.photo || "");
+      setExistingExtraPhotos(data.product.extraPhotos || []);
 
       // === Highlights Parse Fix ===
       let parsedHighlights = [""];
@@ -116,7 +124,7 @@ const UpdateProduct = () => {
             : [""];
         }
       }
-      
+
       setHighlights(parsedHighlights.length > 0 ? parsedHighlights : [""]);
       setVariants(data.product.variants || []);
       setSpecifications(data.product.specifications || []);
@@ -190,7 +198,7 @@ const UpdateProduct = () => {
 
       photo && productData.append("photo", photo);
 
-      if (extraPhotos) {
+      if (extraPhotos && extraPhotos.length > 0) {
         for (let i = 0; i < extraPhotos.length; i++) {
           productData.append("extraPhotos", extraPhotos[i]);
         }
@@ -254,7 +262,7 @@ const UpdateProduct = () => {
         <div className="content-area">
           <h1 className="page-title">Update Product Details</h1>
           <form className="product-form-card" onSubmit={handleUpdate}>
-            {/* --- ফটো সেকশন --- */}
+            {/* --- ফটো সেকশন (Cloudinary Fixes) --- */}
             <div className="form-row image-update-section">
               <div className="form-group photo-upload-box">
                 <label>Main Photo</label>
@@ -265,10 +273,20 @@ const UpdateProduct = () => {
                       alt="new-main"
                       className="img-thumbnail-update"
                     />
+                  ) : existingPhoto ? (
+                    <img
+                      src={
+                        existingPhoto.startsWith("http")
+                          ? existingPhoto
+                          : `/api/v1/product/product-photo/${id}`
+                      }
+                      alt="current-main"
+                      className="img-thumbnail-update"
+                    />
                   ) : id ? (
                     <img
                       src={`/api/v1/product/product-photo/${id}`}
-                      alt="current-main"
+                      alt="fallback-main"
                       className="img-thumbnail-update"
                     />
                   ) : null}
@@ -289,7 +307,11 @@ const UpdateProduct = () => {
                 <div className="extra-photos-grid">
                   {extraPhotos.length > 0
                     ? extraPhotos.map((file, index) => (
-                        <div key={index} className="preview-item">
+                        <div
+                          key={index}
+                          className="preview-item"
+                          style={{ position: "relative" }}
+                        >
                           <img src={URL.createObjectURL(file)} alt="extra" />
                           <button
                             type="button"
@@ -304,14 +326,46 @@ const UpdateProduct = () => {
                           </button>
                         </div>
                       ))
-                    : [...Array(existingExtraPhotosCount)].map((_, i) => (
-                        <div key={i} className="preview-item">
-                          <img
-                            src={`/api/v1/product/extra-photo/${id}/${i}`}
-                            alt="existing"
-                          />
-                        </div>
-                      ))}
+                    : existingExtraPhotos && existingExtraPhotos.length > 0
+                      ? existingExtraPhotos.map((url, i) => (
+                          <div
+                            key={i}
+                            className="preview-item"
+                            style={{ position: "relative" }}
+                          >
+                            <img
+                              src={
+                                url.startsWith("http")
+                                  ? url
+                                  : `/api/v1/product/extra-photo/${id}/${i}`
+                              }
+                              alt="existing"
+                            />
+                            {/* ইনডেক্স দেখানোর ব্যাজ */}
+                            <span
+                              style={{
+                                position: "absolute",
+                                bottom: "0",
+                                left: "0",
+                                background: "rgba(0,0,0,0.6)",
+                                color: "white",
+                                fontSize: "10px",
+                                padding: "2px 4px",
+                                borderBottomLeftRadius: "6px",
+                              }}
+                            >
+                              Index: {i}
+                            </span>
+                          </div>
+                        ))
+                      : [...Array(existingExtraPhotosCount)].map((_, i) => (
+                          <div key={i} className="preview-item">
+                            <img
+                              src={`/api/v1/product/extra-photo/${id}/${i}`}
+                              alt="fallback-existing"
+                            />
+                          </div>
+                        ))}
                 </div>
                 <label
                   className="custom-file-upload mt-2"
@@ -324,7 +378,7 @@ const UpdateProduct = () => {
                     onChange={handleExtraPhotoUpload}
                     hidden
                   />
-                  ➕ Add More Gallery Photos
+                  ➕ Replace Gallery Photos
                 </label>
               </div>
             </div>
@@ -335,7 +389,7 @@ const UpdateProduct = () => {
                 <label>Brand Name</label>
                 <select
                   className="form-control"
-                  value={brand}
+                  value={brand || ""}
                   onChange={(e) => setBrand(e.target.value)}
                 >
                   <option value="">Select Brand</option>
@@ -351,7 +405,7 @@ const UpdateProduct = () => {
                 <input
                   type="text"
                   className="form-control"
-                  value={name}
+                  value={name || ""}
                   onChange={(e) => setName(e.target.value)}
                   required
                 />
@@ -363,7 +417,7 @@ const UpdateProduct = () => {
                 <label>Category</label>
                 <select
                   className="form-control"
-                  value={category}
+                  value={category || ""}
                   onChange={(e) => setCategory(e.target.value)}
                   required
                 >
@@ -379,7 +433,7 @@ const UpdateProduct = () => {
                 <label>Status</label>
                 <select
                   className="form-control"
-                  value={status}
+                  value={status || ""}
                   onChange={(e) => setStatus(e.target.value)}
                 >
                   <option value="Active">Active</option>
@@ -395,7 +449,7 @@ const UpdateProduct = () => {
                 <input
                   type="number"
                   className="form-control"
-                  value={price}
+                  value={price || ""}
                   onChange={(e) => setPrice(e.target.value)}
                   required
                 />
@@ -405,7 +459,7 @@ const UpdateProduct = () => {
                 <input
                   type="number"
                   className="form-control"
-                  value={discountPrice}
+                  value={discountPrice || ""}
                   onChange={(e) => setDiscountPrice(e.target.value)}
                 />
               </div>
@@ -414,7 +468,7 @@ const UpdateProduct = () => {
                 <input
                   type="number"
                   className="form-control"
-                  value={quantity}
+                  value={quantity || ""}
                   onChange={(e) => setQuantity(e.target.value)}
                   required
                 />
@@ -430,7 +484,7 @@ const UpdateProduct = () => {
                     type="text"
                     className="form-control"
                     placeholder={`Highlight ${i + 1}`}
-                    value={h}
+                    value={h || ""}
                     onChange={(e) => handleHighlightChange(i, e.target.value)}
                   />
                   <button
@@ -451,9 +505,9 @@ const UpdateProduct = () => {
               </button>
             </div>
 
-            {/* --- ভেরিয়েন্ট এডিট (Fashion Dropdowns) --- */}
+            {/* --- ভেরিয়েন্ট এডিট (Fashion Dropdowns & Photo Index) --- */}
             <div className="variant-box p-3 mb-4">
-              <h6>Edit Variants (Size, Color, Material, Style)</h6>
+              <h6>Edit Variants (Size, Color, Material, Style, Photo Index)</h6>
               {variants.map((v, i) => (
                 <div key={i} className="variant-grid-row mb-2">
                   <select
@@ -489,7 +543,7 @@ const UpdateProduct = () => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Material (e.g. Leather)"
+                    placeholder="Material"
                     value={v.material || ""}
                     onChange={(e) =>
                       handleVariantChange(i, "material", e.target.value)
@@ -499,7 +553,7 @@ const UpdateProduct = () => {
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="Style (e.g. Tote, Aviator)"
+                    placeholder="Style"
                     value={v.style || ""}
                     onChange={(e) =>
                       handleVariantChange(i, "style", e.target.value)
@@ -526,12 +580,25 @@ const UpdateProduct = () => {
                     }
                   />
 
+                  {/* Photo Index Input (নতুন যোগ করা হয়েছে) */}
+                  <input
+                    type="number"
+                    className="form-control"
+                    placeholder="Photo Idx (0,1..)"
+                    title="Enter the index number of the extra photo (0 for first, 1 for second). Leave empty for main photo."
+                    value={v.photoIndex !== undefined ? v.photoIndex : ""}
+                    onChange={(e) =>
+                      handleVariantChange(i, "photoIndex", e.target.value)
+                    }
+                  />
+
                   <button
                     type="button"
-                    className="btn btn-danger btn-sm"
+                    className="btn btn-danger btn-sm ms-2"
                     onClick={() =>
                       setVariants(variants.filter((_, idx) => idx !== i))
                     }
+                    style={{ padding: "8px 12px", height: "fit-content" }}
                   >
                     ✕
                   </button>
@@ -550,6 +617,7 @@ const UpdateProduct = () => {
                       style: "",
                       price: "",
                       stock: "",
+                      photoIndex: "", // নতুন ভেরিয়েন্টে ফিল্ডটি যোগ করা হলো
                     },
                   ])
                 }
@@ -585,7 +653,7 @@ const UpdateProduct = () => {
                     <input
                       className="form-control"
                       placeholder="Category"
-                      value={s.category}
+                      value={s.category || ""}
                       onChange={(e) =>
                         handleSpecChange(i, "category", e.target.value)
                       }
@@ -595,7 +663,7 @@ const UpdateProduct = () => {
                     <input
                       className="form-control"
                       placeholder="Name"
-                      value={s.name}
+                      value={s.name || ""}
                       onChange={(e) =>
                         handleSpecChange(i, "name", e.target.value)
                       }
@@ -605,7 +673,7 @@ const UpdateProduct = () => {
                     <input
                       className="form-control"
                       placeholder="Value (e.g. Leather)"
-                      value={s.value}
+                      value={s.value || ""}
                       onChange={(e) =>
                         handleSpecChange(i, "value", e.target.value)
                       }
@@ -636,7 +704,7 @@ const UpdateProduct = () => {
               <label>Detailed Description</label>
               <ReactQuill
                 theme="snow"
-                value={description}
+                value={description || ""}
                 onChange={setDescription}
                 style={{ height: "250px" }}
               />
