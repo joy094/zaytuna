@@ -8,19 +8,33 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./CategorySection.css";
 
+// ১. ইন-মেমোরি ক্যাশ অবজেক্ট (অবশ্যই কম্পোনেন্টের বাইরে রাখতে হবে)
+const categoryCache = {};
+
 const CategorySection = ({ title, slug }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getProductsByCat = async () => {
+      // ২. ম্যাজিক ট্রিক: এপিআই কলের আগে চেক করা ডাটা ক্যাশে আছে কি না!
+      if (categoryCache[slug]) {
+        setProducts(categoryCache[slug]);
+        setLoading(false); // সাথে সাথে লোডিং বন্ধ করে ডাটা দেখিয়ে দেবে
+        return;
+      }
+
       try {
         setLoading(true);
         const { data } = await axios.get(
           `/api/v1/product/product-category/${slug}`,
         );
         if (data?.success) {
-          setProducts(data?.products.slice(0, 12));
+          const fetchedProducts = data?.products.slice(0, 12);
+          setProducts(fetchedProducts);
+
+          // ৩. প্রথমবার ফেচ করার পর ক্যাশে সেভ করে রাখা হচ্ছে
+          categoryCache[slug] = fetchedProducts;
         }
       } catch (err) {
         console.error("Error fetching category products:", err);
@@ -34,7 +48,7 @@ const CategorySection = ({ title, slug }) => {
     }
   }, [slug]);
 
-  // যদি কোনো প্রোডাক্ট না থাকে এবং লোডিংও শেষ হয়, তবে সেকশন দেখাবে না
+  // যদি কোনো প্রোডাক্ট না থাকে এবং লোডিংও শেষ হয়, তবে সেকশন দেখাবে না
   if (!loading && (!products || products.length === 0)) return null;
 
   return (
@@ -52,7 +66,7 @@ const CategorySection = ({ title, slug }) => {
         <Swiper
           slidesPerView={2}
           spaceBetween={15}
-          navigation={!loading} // লোডিংয়ের সময় অ্যারো হাইড থাকবে
+          navigation={!loading} // লোডিংয়ের সময় অ্যারো হাইড থাকবে
           modules={[Navigation]}
           className="productSwiper"
           breakpoints={{
