@@ -2,12 +2,22 @@
 
 import slugify from "slugify";
 import productModel from "../model/productModel.js";
-import categoryModel from "../model/categoryModel.js"; // নিশ্চিত করুন এই ইম্পোর্টটি উপরে আছে
+import categoryModel from "../model/categoryModel.js";
 import orderModel from "../model/orderModel.js";
 import fs from "fs";
 import JWT from "jsonwebtoken";
-import Fuse from "fuse.js"; // ফিউজ লাইব্রেরি ইম্পোর্ট
+import Fuse from "fuse.js";
 
+import { v2 as cloudinary } from "cloudinary";
+
+// Cloudinary কনফিগারেশন
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// --- ১. ক্রিয়েট প্রোডাক্ট ---
 export const createProductController = async (req, res) => {
   try {
     const {
@@ -35,36 +45,43 @@ export const createProductController = async (req, res) => {
       slug: slugify(name, { lower: true, strict: false }),
     });
 
-    // ২. ডাইনামিক ডাটা প্রসেসিং (JSON String থেকে Object/Array তে রূপান্তর)
+    // ২. ডাইনামিক ডাটা প্রসেসিং
     if (highlights) products.highlights = JSON.parse(highlights);
     if (variants) products.variants = JSON.parse(variants);
     if (specifications) products.specifications = JSON.parse(specifications);
 
-    // ৩. মেইন ফটো হ্যান্ডেলিং
+    // ৩. মেইন ফটো Cloudinary-তে আপলোড (FIXED)
     if (photo) {
-      products.photo.data = fs.readFileSync(photo.path);
-      products.photo.contentType = photo.type;
+      const uploadedResponse = await cloudinary.uploader.upload(photo.path, {
+        folder: "rupomiq_products",
+      });
+      products.photo = uploadedResponse.secure_url; // ডিরেক্ট URL সেভ হচ্ছে
     }
 
-    // ৪. মাল্টিপল এক্সট্রা ফটো হ্যান্ডেলিং
+    // ৪. মাল্টিপল এক্সট্রা ফটো Cloudinary-তে আপলোড (FIXED)
     if (extraPhotos) {
       const photosArray = Array.isArray(extraPhotos)
         ? extraPhotos
         : [extraPhotos];
-
       console.log("রিসিভ করা ছবির সংখ্যা:", photosArray.length);
 
-      const extraPhotosData = photosArray.map((p) => ({
-        data: fs.readFileSync(p.path),
-        contentType: p.type,
-      }));
-      products.extraPhotos = extraPhotosData;
+      const extraPhotosUrls = [];
+      for (let i = 0; i < photosArray.length; i++) {
+        const uploadedResponse = await cloudinary.uploader.upload(
+          photosArray[i].path,
+          {
+            folder: "rupomiq_products",
+          },
+        );
+        extraPhotosUrls.push(uploadedResponse.secure_url);
+      }
+      products.extraPhotos = extraPhotosUrls;
     }
 
     await products.save();
     res.status(201).send({
       success: true,
-      message: "Product Created Successfully",
+      message: "Product Created Successfully with Cloudinary",
       products,
     });
   } catch (error) {
@@ -76,13 +93,14 @@ export const createProductController = async (req, res) => {
     });
   }
 };
-// --- ২. সব প্রোডাক্ট দেখা (Get All) ---
+
+// --- ২. সব প্রোডাক্ট দেখা ---
 export const getProductController = async (req, res) => {
   try {
     const products = await productModel
       .find({})
       .populate("category")
-      .select("-photo")
+      // .select("-photo") // এখন আর photo হাইড করার দরকার নেই কারণ এটি শুধু একটি URL
       .limit(12)
       .sort({ createdAt: -1 });
 
@@ -101,12 +119,11 @@ export const getProductController = async (req, res) => {
   }
 };
 
-// --- ৩. নির্দিষ্ট প্রোডাক্ট (Single Product) ---
+// --- ৩. নির্দিষ্ট প্রোডাক্ট ---
 export const getSingleProductController = async (req, res) => {
   try {
     const product = await productModel
       .findOne({ slug: req.params.slug })
-      .select("-photo")
       .populate("category");
 
     if (!product) {
@@ -127,19 +144,20 @@ export const getSingleProductController = async (req, res) => {
   }
 };
 
-// --- ৪. প্রোডাক্ট ফটো লোড (Photo) ---
+// --- ৪. প্রোডাক্ট ফটো লোড (এখন আর তেমন দরকার নেই, ফ্রন্টএন্ড ডিরেক্ট URL লোড করবে) ---
 export const productPhotoController = async (req, res) => {
   try {
     const product = await productModel.findById(req.params.pid).select("photo");
-    if (product?.photo?.data) {
-      res.set("Content-Type", product.photo.contentType);
-      return res.status(200).send(product.photo.data);
+    if (product?.photo) {
+      // ক্লাউডিনারি ব্যবহার করলে রিডাইরেক্ট করে দেওয়া যায় অথবা ফ্রন্টএন্ডে সরাসরি ইউজ করা যায়
+      return res.redirect(product.photo);
     }
   } catch (error) {
     res.status(500).send({ success: false, message: "Error loading photo" });
   }
 };
 
+// --- ৫. আপডেট প্রোডাক্ট ---
 export const updateProductController = async (req, res) => {
   try {
     const {
@@ -161,10 +179,8 @@ export const updateProductController = async (req, res) => {
       slug = name.trim().replace(/\s+/g, "-").toLowerCase();
     }
 
-    // ডাটা আপডেট অবজেক্ট তৈরি
     const updateData = { ...req.fields, slug };
 
-    // স্ট্রিং ডাটাকে অবজেক্টে রূপান্তর
     if (variants) updateData.variants = JSON.parse(variants);
     if (specifications) updateData.specifications = JSON.parse(specifications);
 
@@ -174,12 +190,12 @@ export const updateProductController = async (req, res) => {
       { new: true },
     );
 
+    // আপডেট করার সময় Cloudinary-তে আপলোড (FIXED)
     if (photo) {
-      if (photo.size > 1000000) {
-        return res.status(400).send({ error: "Photo should be less than 1MB" });
-      }
-      product.photo.data = fs.readFileSync(photo.path);
-      product.photo.contentType = photo.type;
+      const uploadedResponse = await cloudinary.uploader.upload(photo.path, {
+        folder: "rupomiq_products",
+      });
+      product.photo = uploadedResponse.secure_url;
       await product.save();
     }
 
@@ -198,10 +214,10 @@ export const updateProductController = async (req, res) => {
   }
 };
 
-// --- ৬. প্রোডাক্ট ডিলিট (Delete - Admin Action) ---
+// --- ৬. প্রোডাক্ট ডিলিট ---
 export const deleteProductController = async (req, res) => {
   try {
-    await productModel.findByIdAndDelete(req.params.pid).select("-photo");
+    await productModel.findByIdAndDelete(req.params.pid);
     res.status(200).send({
       success: true,
       message: "Product deleted successfully",
@@ -248,10 +264,9 @@ export const createOrderController = async (req, res) => {
   }
 };
 
-// --- ৮. ক্যাটাগরি অনুযায়ী প্রোডাক্ট ফিল্টার (Product by Category) ---
+// --- ৮. ক্যাটাগরি অনুযায়ী প্রোডাক্ট ফিল্টার ---
 export const productCategoryController = async (req, res) => {
   try {
-    // ১. ইউআরএল থেকে আসা স্লাগ দিয়ে ক্যাটাগরি খুঁজে বের করা
     const category = await categoryModel.findOne({ slug: req.params.slug });
 
     if (!category) {
@@ -261,7 +276,6 @@ export const productCategoryController = async (req, res) => {
       });
     }
 
-    // ২. ওই ক্যাটাগরির আইডি ব্যবহার করে প্রোডাক্টগুলো খুঁজে বের করা
     const products = await productModel
       .find({ category: category._id })
       .populate("category");
@@ -281,38 +295,7 @@ export const productCategoryController = async (req, res) => {
   }
 };
 
-// --- ৯. প্রোডাক্ট সার্চ কন্ট্রোলার (Search) ---
-// Product Search Controller
-// export const searchProductController = async (req, res) => {
-//   try {
-//     const { keyword } = req.params;
-//     const results = await productModel
-//       .find({
-//         $or: [
-//           { name: { $regex: keyword, $options: "i" } },
-//           { description: { $regex: keyword, $options: "i" } },
-//         ],
-//       })
-//       .select("-photo");
-
-//     // ফ্রন্টএন্ডে সহজে ধরার জন্য এই ফরম্যাটে পাঠান
-//     res.status(200).send({
-//       success: true,
-//       products: results,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     res.status(400).send({
-//       success: false,
-//       message: "Error In Search Product API",
-//       error,
-//     });
-//   }
-// };
-
-//feuze ব্যবহার করে উন্নত সার্চ কন্ট্রোলার
-
-// বাংলার বানান বৈচিত্র্য হ্যান্ডেল করার জন্য (Normalize)
+// --- ৯. প্রোডাক্ট সার্চ কন্ট্রোলার ---
 const normalizeText = (text) => {
   if (!text) return "";
   return text
@@ -320,30 +303,25 @@ const normalizeText = (text) => {
     .replace(/[শষ]/g, "স")
     .replace(/[ঈী]/g, "ি")
     .replace(/[ঊূ]/g, "ু")
-    .replace(/[ড়ঢ়]/g, "র")
+    .replace(/[ড়ঢ়]/g, "র")
     .trim();
 };
 
 export const searchProductController = async (req, res) => {
   try {
     const { keyword } = req.params;
-
-    // ১. ডাটাবেজ থেকে পণ্য নিয়ে আসা
     const products = await productModel.find({}).populate("category");
 
-    // ২. সার্চের জন্য ডাটা প্রস্তুত করা (অরিজিনাল ডাটার সাথে নরমাল টেক্সট ম্যাপ করা)
     const processedData = products.map((p) => ({
       ...p._doc,
-      // ডাটাবেজের নামকেও নরমাল করে সার্চের জন্য আলাদা ফিল্ডে রাখা
       searchName: normalizeText(p.name),
       searchCategory: normalizeText(p.category?.name || ""),
     }));
 
-    // ৩. Fuse.js কনফিগারেশন
     const fuseOptions = {
       keys: [
-        { name: "name", weight: 0.7 }, // আসল নাম (বেশি গুরুত্ব)
-        { name: "searchName", weight: 0.5 }, // নরমাল করা নাম (বানান ভুলের জন্য)
+        { name: "name", weight: 0.7 },
+        { name: "searchName", weight: 0.5 },
         { name: "category.name", weight: 0.3 },
         { name: "searchCategory", weight: 0.2 },
         "description",
@@ -355,11 +333,7 @@ export const searchProductController = async (req, res) => {
     };
 
     const fuse = new Fuse(processedData, fuseOptions);
-
-    // ৪. কি-ওয়ার্ডকেও নরমাল করে সার্চ করা
     const results = fuse.search(normalizeText(keyword));
-
-    // ৫. রেজাল্ট ফিল্টার করা
     const finalProducts = results.map((result) => result.item);
 
     res.status(200).send({
@@ -376,20 +350,17 @@ export const searchProductController = async (req, res) => {
   }
 };
 
-// ব্যাকএন্ড কন্ট্রোলার উদাহরণ
-// এক্সট্রা ফটো কন্ট্রোলার
+// --- এক্সট্রা ফটো কন্ট্রোলার (Redirect to Cloudinary) ---
 export const extraPhotoController = async (req, res) => {
   try {
     const product = await productModel
       .findById(req.params.pid)
       .select("extraPhotos");
 
-    // ইউআরএল থেকে আসা ইন্ডেক্সটিকে নাম্বারে রূপান্তর করা হলো
     const index = parseInt(req.params.index, 10);
 
-    if (product?.extraPhotos && product.extraPhotos[index]?.data) {
-      res.set("Content-Type", product.extraPhotos[index].contentType);
-      return res.status(200).send(product.extraPhotos[index].data);
+    if (product?.extraPhotos && product.extraPhotos[index]) {
+      return res.redirect(product.extraPhotos[index]);
     } else {
       return res
         .status(404)

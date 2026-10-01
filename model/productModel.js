@@ -20,8 +20,9 @@ const productSchema = new mongoose.Schema(
     discountPrice: { type: Number, default: 0 }, // ডিসকাউন্ট থাকলে দেখাবে
     quantity: { type: Number, required: true },
 
-    photo: { data: Buffer, contentType: String },
-    extraPhotos: [{ data: Buffer, contentType: String }],
+ // আগের Buffer সিস্টেম বাদ দিয়ে শুধু String (URL) রাখা হলো
+    photo: { type: String }, 
+    extraPhotos: [{ type: String }],
 
     // === ১. ডাইনামিক ভেরিয়েন্ট (Fashion & Accessories) ===
     variants: [

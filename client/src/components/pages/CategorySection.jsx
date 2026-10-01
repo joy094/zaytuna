@@ -93,10 +93,7 @@ const CategorySection = ({ title, slug }) => {
                 <div className="product-card">
                   {/* ক্লাসের নাম Home.css এর সাথে মেলানো হলো */}
                   <div className="product-img-wrapper">
-                    <img
-                      src={`/api/v1/product/product-photo/${p._id}`}
-                      alt={p.name}
-                    />
+                    <img src={p.photo} alt={p.name} />
                   </div>
                   <div className="product-info">
                     <h5 className="product-name">

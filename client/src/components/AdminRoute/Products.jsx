@@ -1,3 +1,5 @@
+// client/src/components/AdminRoute/Products.jsx
+
 import React, { useState, useEffect } from "react";
 import AdminMenu from "./AdminMenu";
 import Layout from "../../components/pages/Layout";
@@ -56,7 +58,7 @@ const Products = () => {
 
                   <div className="img-wrapper">
                     <img
-                      src={`/api/v1/product/product-photo/${p._id}`}
+                      src={p.photo}
                       alt={p.name}
                     />
                   </div>

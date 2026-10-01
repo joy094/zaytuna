@@ -52,7 +52,7 @@ const CategoryProduct = () => {
                   style={{ cursor: "pointer" }}
                 >
                   <img
-                    src={`/api/v1/product/product-photo/${p._id}`}
+                    src={`<img src={p.photo} alt={p.name} />`}
                     alt={p.name}
                   />
                 </div>

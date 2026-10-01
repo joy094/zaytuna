@@ -136,7 +136,7 @@ const AdminOrders = () => {
                     >
                       <div className="product-img-box">
                         <img
-                          src={`/api/v1/product/product-photo/${p._id}`}
+                          src={`<img src={p.photo} alt={p.name} />`}
                           alt={p.name}
                           width="60px"
                           height="60px"
