@@ -51,10 +51,7 @@ const CategoryProduct = () => {
                   onClick={() => navigate(`/product/${p.slug}`)}
                   style={{ cursor: "pointer" }}
                 >
-                  <img
-                    src={`<img src={p.photo} alt={p.name} />`}
-                    alt={p.name}
-                  />
+                  <img src={p.photo} alt={p.name} />
                 </div>
                 <div className="product-info">
                   <h5 className="product-name">
