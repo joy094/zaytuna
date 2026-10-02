@@ -1,24 +1,25 @@
-// ProductDetails.jsx
+// src/components/pages/ProductDetails.jsx
 
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from "../../context/cart";
 import { toast } from "react-toastify";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [cart, setCart] = useCart();
 
-  // ডাইনামিক স্টেট
   const [mainImage, setMainImage] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
-
-  // বাই-ডিফল্ট Description ট্যাব অ্যাক্টিভ থাকবে
   const [activeTab, setActiveTab] = useState("description");
+
+  const [quantity, setQuantity] = useState(1);
+  const contactNumber = "+8801817141213";
 
   const getProduct = async () => {
     try {
@@ -26,15 +27,12 @@ const ProductDetails = () => {
         `/api/v1/product/get-product/${params.slug}`,
       );
       setProduct(data?.product);
-
-      // মেইন ছবি সেট করা
       setMainImage(data?.product?.photo);
 
       if (data?.product?.variants?.length > 0) {
         const defaultVariant = data.product.variants[0];
         setSelectedVariant(defaultVariant);
 
-        // ফিক্স: photoIndex স্ট্রিং হিসেবে আসলে সেটাকে Number এ কনভার্ট করা
         if (
           defaultVariant.photoIndex !== undefined &&
           defaultVariant.photoIndex !== null &&
@@ -94,11 +92,48 @@ const ProductDetails = () => {
     }
   };
 
+  const handleAddToCart = () => {
+    const finalProduct = selectedVariant
+      ? { ...product, price: selectedVariant.price, selectedVariant, quantity }
+      : { ...product, quantity };
+
+    setCart([...cart, finalProduct]);
+    localStorage.setItem("cart", JSON.stringify([...cart, finalProduct]));
+    toast.success("Added to cart successfully!");
+  };
+
+  const handleBuyNow = () => {
+    handleAddToCart();
+    navigate("/cart");
+  };
+
+  const handleWhatsAppOrder = () => {
+    const price = selectedVariant ? selectedVariant.price : product?.price;
+    const variantText = selectedVariant
+      ? `\nVariant: ${selectedVariant.color || ""} ${selectedVariant.size || ""} ${selectedVariant.ram || ""}`
+      : "";
+    const text = `Hello, I want to order:\n\n*${product.name}*${variantText}\nQuantity: ${quantity}\nTotal Price: ৳${price * quantity}\n\nLink: ${window.location.href}`;
+    window.open(
+      `https://wa.me/${contactNumber.replace("+", "")}?text=${encodeURIComponent(text)}`,
+      "_blank",
+    );
+  };
+
+  const handleCallOrder = () => {
+    window.location.href = `tel:${contactNumber}`;
+  };
+
+  // ================= কারেন্ট প্রাইস ক্যালকুলেশন =================
+  const currentUnitPrice = selectedVariant
+    ? selectedVariant.price
+    : product?.price || 0;
+  const currentDiscountPrice = product?.discountPrice || 0;
+
   return (
     <Layout>
       <div className="container product-details-page">
-        {/* ================= টপ সেকশন: ছবি ও ইনফো ================= */}
         <div className="details-grid">
+          {/* ================= ছবি গ্যালারি সেকশন ================= */}
           <div className="details-img-container">
             <div className="main-img-box">
               {mainImage ? (
@@ -107,8 +142,6 @@ const ProductDetails = () => {
                 <div className="text-center p-5">Loading Image...</div>
               )}
             </div>
-
-            {/* ================= ফিক্স: Cloudinary গ্যালারি থাম্বনেইল ================= */}
             <div className="thumbnail-gallery">
               {product?.photo && (
                 <img
@@ -130,60 +163,37 @@ const ProductDetails = () => {
             </div>
           </div>
 
+          {/* ================= প্রোডাক্ট ইনফো সেকশন ================= */}
           <div className="details-info">
             {product?.brand && (
               <span className="brand-badge">{product.brand}</span>
             )}
             <h1 className="details-title">{product.name}</h1>
 
-            {/* ================= Highlights ================= */}
-            {(() => {
-              let highlightsArray = [];
-              if (product?.highlights) {
-                try {
-                  if (typeof product.highlights === "string") {
-                    highlightsArray = JSON.parse(product.highlights);
-                  } else if (Array.isArray(product.highlights)) {
-                    if (
-                      product.highlights.length > 0 &&
-                      typeof product.highlights[0] === "string" &&
-                      product.highlights[0].startsWith("[")
-                    ) {
-                      highlightsArray = JSON.parse(product.highlights[0]);
-                    } else {
-                      highlightsArray = product.highlights;
-                    }
-                  }
-                } catch (e) {
-                  highlightsArray = Array.isArray(product.highlights)
-                    ? product.highlights
-                    : [];
-                }
-              }
-
-              return highlightsArray.length > 0 ? (
-                <ul className="product-highlights">
-                  {highlightsArray.map((h, i) => (
-                    <li key={i}>✓ {h}</li>
-                  ))}
-                </ul>
-              ) : null;
-            })()}
-
-            <div className="price-section">
-              <span className="details-price">
-                ৳ {selectedVariant ? selectedVariant.price : product?.price}
-              </span>
-              {product?.discountPrice > 0 && (
-                <span className="discount-price">
-                  ৳ {product.discountPrice}
+            {/* ================= লাইভ প্রাইস আপডেট সেকশন ================= */}
+            <div className="price-section d-flex flex-column align-items-start mb-4">
+              <div>
+                <span className="details-price">
+                  ৳ {currentUnitPrice * quantity}
                 </span>
+                {currentDiscountPrice > 0 && (
+                  <span className="discount-price ms-3">
+                    ৳ {currentDiscountPrice * quantity}
+                  </span>
+                )}
+              </div>
+
+              {/* ইউজার ১-এর বেশি সিলেক্ট করলে প্রতি পিসের দাম ছোট করে দেখাবে */}
+              {quantity > 1 && (
+                <small className="text-muted mt-1 fw-bold">
+                  (৳ {currentUnitPrice} / per item)
+                </small>
               )}
             </div>
 
-            {/* ================= ভেরিয়েন্ট বক্স ও ছবি চেঞ্জ লজিক ================= */}
+            {/* ভেরিয়েন্ট সিলেকশন */}
             {product?.variants?.length > 0 && (
-              <div className="variant-section mt-4">
+              <div className="variant-section mt-3">
                 <h6>Available Options (Select One):</h6>
                 <div className="variant-grid">
                   {product.variants.map((v, index) => (
@@ -192,8 +202,6 @@ const ProductDetails = () => {
                       className={`variant-card ${selectedVariant === v ? "active" : ""}`}
                       onClick={() => {
                         setSelectedVariant(v);
-
-                        // ম্যাজিক লজিক: Number() দিয়ে ভেরিফাই করা হচ্ছে
                         if (
                           v.photoIndex !== undefined &&
                           v.photoIndex !== null &&
@@ -217,13 +225,11 @@ const ProductDetails = () => {
                           {v.storage ? `${v.storage}` : ""}
                         </div>
                       )}
-
                       {(v.region || v.simType) && (
                         <div className="var-sub">
                           {v.region} {v.simType ? `• ${v.simType}` : ""}
                         </div>
                       )}
-
                       {v.color && (
                         <div className="var-color-wrapper">
                           <span
@@ -236,7 +242,6 @@ const ProductDetails = () => {
                           </span>
                         </div>
                       )}
-
                       {!v.ram && !v.storage && !v.color && (
                         <div className="var-main">Variant {index + 1}</div>
                       )}
@@ -246,43 +251,86 @@ const ProductDetails = () => {
               </div>
             )}
 
-            <div className="stock-info mt-3">
+            <div className="stock-info mt-3 mb-3">
               Status:{" "}
               <b
                 className={
-                  selectedVariant?.stock > 0 ? "text-success" : "text-danger"
+                  selectedVariant?.stock > 0 || product?.stock > 0
+                    ? "text-success"
+                    : "text-danger"
                 }
               >
-                {selectedVariant?.stock > 0 ? `In Stock` : "Out of Stock"}
+                {selectedVariant?.stock > 0 || product?.stock > 0
+                  ? `In Stock`
+                  : "Out of Stock"}
               </b>
             </div>
 
-            <button
-              className="btn-cart-large mt-4"
-              disabled={selectedVariant?.stock <= 0}
-              onClick={() => {
-                const finalProduct = selectedVariant
-                  ? {
-                      ...product,
-                      price: selectedVariant.price,
-                      selectedVariant,
-                    }
-                  : product;
-                setCart([...cart, finalProduct]);
-                localStorage.setItem(
-                  "cart",
-                  JSON.stringify([...cart, finalProduct]),
-                );
-                toast.success("Added to cart successfully!");
-              }}
-            >
-              {selectedVariant?.stock > 0 ? "ADD TO CART" : "OUT OF STOCK"}
-            </button>
+            {/* ================= প্রফেশনাল অ্যাকশন বাটন প্যানেল ================= */}
+            <div className="action-buttons-wrapper">
+              <div className="quantity-box-area">
+                <span className="qty-label">Quantity:</span>
+                <div className="custom-qty-counter">
+                  <button
+                    type="button"
+                    onClick={() => quantity > 1 && setQuantity(quantity - 1)}
+                  >
+                    -
+                  </button>
+                  <input type="text" value={quantity} readOnly />
+                  <button
+                    type="button"
+                    onClick={() => setQuantity(quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div className="main-action-btns">
+                <button
+                  className="btn-custom btn-cart"
+                  disabled={
+                    (selectedVariant && selectedVariant.stock <= 0) ||
+                    (!selectedVariant && product.stock <= 0)
+                  }
+                  onClick={handleAddToCart}
+                >
+                  <i className="fa-solid fa-cart-plus me-2"></i> Add To Cart
+                </button>
+                <button
+                  className="btn-custom btn-buy"
+                  disabled={
+                    (selectedVariant && selectedVariant.stock <= 0) ||
+                    (!selectedVariant && product.stock <= 0)
+                  }
+                  onClick={handleBuyNow}
+                >
+                  <i className="fa-solid fa-bolt me-2"></i> Order Now
+                </button>
+              </div>
+
+              <div className="support-action-btns">
+                <button
+                  className="btn-custom btn-whatsapp"
+                  onClick={handleWhatsAppOrder}
+                >
+                  <i className="fa-brands fa-whatsapp me-2 fs-5"></i> WhatsApp
+                  Order
+                </button>
+                <button
+                  className="btn-custom btn-call"
+                  onClick={handleCallOrder}
+                >
+                  <i className="fa-solid fa-phone me-2"></i> Call For Order
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* ================= ন্যাভিগেশন বাটন (Tabs) ================= */}
-        <div className="product-nav-tabs">
+        <div className="product-nav-tabs mt-5">
           {groupedSpecs && Object.keys(groupedSpecs).length > 0 && (
             <button
               className={`nav-tab-btn ${activeTab === "specification" ? "active" : ""}`}
@@ -291,7 +339,6 @@ const ProductDetails = () => {
               Specifications
             </button>
           )}
-
           <button
             className={`nav-tab-btn ${activeTab === "description" ? "active" : ""}`}
             onClick={() => scrollToSection("description")}

@@ -62,12 +62,12 @@ const CategoryProduct = () => {
                   <p className="price-tag">৳ {p.price}</p>
 
                   <div className="card-buttons">
-                    <button
+                    {/* <button
                       className="btn-details"
                       onClick={() => navigate(`/product/${p.slug}`)}
                     >
                       More Details
-                    </button>
+                    </button> */}
 
                     {/* === ভেরিয়েন্ট লজিক যুক্ত করা হলো === */}
                     {p?.variants && p.variants.length > 0 ? (
