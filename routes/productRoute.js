@@ -15,6 +15,7 @@ import {
   productCategoryController,
   searchProductController,
   extraPhotoController,
+  relatedProductController,
   // নতুন কন্ট্রোলার ইমপোর্ট
 } from "../controller/productController.js";
 
@@ -68,5 +69,8 @@ router.get("/product-category/:slug", productCategoryController);
 router.get("/search/:keyword", searchProductController); // সার্চ রাউট
 // Get Extra Photos
 router.get("/extra-photo/:pid/:index", extraPhotoController);
+
+// 🔴 রিলেটেড প্রোডাক্টের নতুন রাউট (NEW)
+router.get("/related-product/:pid/:cid", relatedProductController);
 
 export default router;

@@ -14,12 +14,16 @@ const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [cart, setCart] = useCart();
 
+  // রিলেটেড প্রোডাক্ট স্টেট
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+  // ডাইনামিক স্টেট
   const [mainImage, setMainImage] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [activeTab, setActiveTab] = useState("description");
 
   const [quantity, setQuantity] = useState(1);
-  const contactNumber = "+8801817141213";
+  const contactNumber = "+8801728355302";
 
   const getProduct = async () => {
     try {
@@ -28,6 +32,11 @@ const ProductDetails = () => {
       );
       setProduct(data?.product);
       setMainImage(data?.product?.photo);
+
+      // রিলেটেড প্রোডাক্টের API কল করা (একই ক্যাটাগরির অন্য প্রোডাক্টগুলো আনতে)
+      if (data?.product?._id && data?.product?.category?._id) {
+        getSimilarProduct(data?.product._id, data?.product.category._id);
+      }
 
       if (data?.product?.variants?.length > 0) {
         const defaultVariant = data.product.variants[0];
@@ -47,6 +56,18 @@ const ProductDetails = () => {
     } catch (error) {
       console.log(error);
       toast.error("Error loading product details");
+    }
+  };
+
+  // রিলেটেড প্রোডাক্ট আনার ফাংশন
+  const getSimilarProduct = async (pid, cid) => {
+    try {
+      const { data } = await axios.get(
+        `/api/v1/product/related-product/${pid}/${cid}`,
+      );
+      setRelatedProducts(data?.products);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -92,14 +113,24 @@ const ProductDetails = () => {
     }
   };
 
+  // ================= কার্ট ও অর্ডার লজিক =================
   const handleAddToCart = () => {
-    const finalProduct = selectedVariant
-      ? { ...product, price: selectedVariant.price, selectedVariant, quantity }
-      : { ...product, quantity };
+    // কাস্টমার যত কোয়ান্টিটি সিলেক্ট করবে, লুপ চালিয়ে ততবার কার্টে প্রোডাক্টটি যুক্ত করা হবে
+    const itemsToAdd = [];
 
-    setCart([...cart, finalProduct]);
-    localStorage.setItem("cart", JSON.stringify([...cart, finalProduct]));
-    toast.success("Added to cart successfully!");
+    for (let i = 0; i < quantity; i++) {
+      const finalProduct = selectedVariant
+        ? { ...product, price: selectedVariant.price, selectedVariant }
+        : { ...product };
+
+      itemsToAdd.push(finalProduct);
+    }
+
+    setCart([...cart, ...itemsToAdd]);
+    localStorage.setItem("cart", JSON.stringify([...cart, ...itemsToAdd]));
+
+    // টোস্ট মেসেজে দেখাবে কয়টি আইটেম যুক্ত হয়েছে
+    toast.success(`${quantity} item(s) added to cart successfully!`);
   };
 
   const handleBuyNow = () => {
@@ -123,7 +154,6 @@ const ProductDetails = () => {
     window.location.href = `tel:${contactNumber}`;
   };
 
-  // ================= কারেন্ট প্রাইস ক্যালকুলেশন =================
   const currentUnitPrice = selectedVariant
     ? selectedVariant.price
     : product?.price || 0;
@@ -133,7 +163,6 @@ const ProductDetails = () => {
     <Layout>
       <div className="container product-details-page">
         <div className="details-grid">
-          {/* ================= ছবি গ্যালারি সেকশন ================= */}
           <div className="details-img-container">
             <div className="main-img-box">
               {mainImage ? (
@@ -163,14 +192,12 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          {/* ================= প্রোডাক্ট ইনফো সেকশন ================= */}
           <div className="details-info">
             {product?.brand && (
               <span className="brand-badge">{product.brand}</span>
             )}
             <h1 className="details-title">{product.name}</h1>
 
-            {/* ================= লাইভ প্রাইস আপডেট সেকশন ================= */}
             <div className="price-section d-flex flex-column align-items-start mb-4">
               <div>
                 <span className="details-price">
@@ -182,8 +209,6 @@ const ProductDetails = () => {
                   </span>
                 )}
               </div>
-
-              {/* ইউজার ১-এর বেশি সিলেক্ট করলে প্রতি পিসের দাম ছোট করে দেখাবে */}
               {quantity > 1 && (
                 <small className="text-muted mt-1 fw-bold">
                   (৳ {currentUnitPrice} / per item)
@@ -191,7 +216,6 @@ const ProductDetails = () => {
               )}
             </div>
 
-            {/* ভেরিয়েন্ট সিলেকশন */}
             {product?.variants?.length > 0 && (
               <div className="variant-section mt-3">
                 <h6>Available Options (Select One):</h6>
@@ -266,7 +290,6 @@ const ProductDetails = () => {
               </b>
             </div>
 
-            {/* ================= প্রফেশনাল অ্যাকশন বাটন প্যানেল ================= */}
             <div className="action-buttons-wrapper">
               <div className="quantity-box-area">
                 <span className="qty-label">Quantity:</span>
@@ -329,7 +352,6 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* ================= ন্যাভিগেশন বাটন (Tabs) ================= */}
         <div className="product-nav-tabs mt-5">
           {groupedSpecs && Object.keys(groupedSpecs).length > 0 && (
             <button
@@ -359,7 +381,6 @@ const ProductDetails = () => {
           </button>
         </div>
 
-        {/* ================= বিস্তারিত সেকশনসমূহ ================= */}
         <div className="scrollable-content-area">
           {groupedSpecs && Object.keys(groupedSpecs).length > 0 && (
             <div id="specification" className="scroll-section">
@@ -429,6 +450,78 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
+
+        {/* ================= রিলেটেড প্রোডাক্ট সেকশন (Premium UI) ================= */}
+        {relatedProducts?.length > 0 && (
+          <div className="related-products-section mt-5 pt-5 border-top">
+            <h3
+              className="mb-4 fw-bold text-center"
+              style={{ color: "#1e293b" }}
+            >
+              Similar Products You May Like
+            </h3>
+            <div className="row">
+              {relatedProducts.map((p) => (
+                <div className="col-6 col-md-3 mb-4" key={p._id}>
+                  <div className="card h-100 related-card">
+                    {/* প্রোডাক্টের ছবি ও ডিটেইলস (ক্লিক করলে ডিটেইলস পেজে যাবে) */}
+                    <div
+                      onClick={() => navigate(`/product/${p.slug}`)}
+                      style={{ cursor: "pointer" }}
+                      className="related-card-content"
+                    >
+                      <img
+                        src={p.photo}
+                        className="card-img-top p-3"
+                        alt={p.name}
+                        style={{ height: "180px", objectFit: "contain" }}
+                      />
+                      <div className="card-body text-center">
+                        <h6
+                          className="card-title text-truncate"
+                          style={{
+                            fontSize: "14px",
+                            fontWeight: "700",
+                            color: "#334155",
+                          }}
+                        >
+                          {p.name}
+                        </h6>
+                        <p
+                          className="card-text text-danger fw-bold m-0"
+                          style={{ fontSize: "16px" }}
+                        >
+                          ৳ {p.price}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* অ্যাড টু কার্ট বাটন (সরাসরি কার্টে অ্যাড হবে) */}
+                    <div className="card-footer bg-transparent border-0 pt-0 pb-3 px-3 text-center">
+                      <button
+                        className="btn w-100 fw-bold btn-related-cart"
+                        onClick={(e) => {
+                          e.stopPropagation(); // বাটনে ক্লিক করলে যেন ডিটেইলস পেজে না যায়, শুধু কার্টে অ্যাড হয়
+                          const cartProduct = { ...p, quantity: 1 };
+                          setCart([...cart, cartProduct]);
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify([...cart, cartProduct]),
+                          );
+                          toast.success("Added to cart successfully!");
+                        }}
+                      >
+                        <i className="fa-solid fa-cart-plus me-1"></i> Add to
+                        Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        {/* ================================================================ */}
       </div>
     </Layout>
   );

@@ -373,3 +373,32 @@ export const extraPhotoController = async (req, res) => {
       .send({ success: false, message: "Error in loading extra photo" });
   }
 };
+
+// ==========================================
+// Get Related / Similar Products
+// ==========================================
+export const relatedProductController = async (req, res) => {
+  try {
+    const { pid, cid } = req.params;
+
+    const products = await productModel
+      .find({
+        category: cid, // একই ক্যাটাগরির প্রোডাক্ট খুঁজবে
+        _id: { $ne: pid }, // কিন্তু বর্তমানে যে প্রোডাক্টটি দেখছি, সেটিকে বাদ দিবে ($ne = not equal)
+      })
+      .limit(4) // শুধুমাত্র ৪টি রিলেটেড প্রোডাক্ট দেখাবে (যাতে পেজ সুন্দর লাগে)
+      .populate("category"); // ক্যাটাগরির বিস্তারিত তথ্য সাথে পাঠাবে
+
+    res.status(200).send({
+      success: true,
+      products,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).send({
+      success: false,
+      message: "Error while getting related products",
+      error,
+    });
+  }
+};

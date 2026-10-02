@@ -467,3 +467,51 @@
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
   }
 }
+
+/* =========================================
+   Related Products Premium CSS
+   ========================================= */
+.related-products-section {
+  background: #ffffff;
+  padding-bottom: 40px;
+}
+
+/* সফট শ্যাডো ও স্মুথ এনিমেশন */
+.related-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #f1f5f9 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* হোভার করলে কার্ড উপরের দিকে ভেসে উঠবে এবং শ্যাডো গাঢ় হবে */
+.related-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+  border-color: #e2e8f0 !important;
+}
+
+.related-card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* রিলেটেড কার্ডের বাটন ডিজাইন */
+.btn-related-cart {
+  background-color: #ffffff;
+  border: 2px solid #1e293b;
+  color: #1e293b;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.btn-related-cart:hover {
+  background-color: #1e293b;
+  color: #ffffff;
+  transform: scale(1.02);
+}
