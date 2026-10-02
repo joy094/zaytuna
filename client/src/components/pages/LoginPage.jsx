@@ -1,3 +1,5 @@
+// client/src/components/pages/LoginPage.jsx
+
 import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
 import axios from "axios";
@@ -56,6 +58,7 @@ const Login = () => {
           <button type="submit" className="btn-primary">
             Login
           </button>
+
           <button
             type="button"
             className="btn-link"
@@ -63,6 +66,25 @@ const Login = () => {
           >
             Forgot Password?
           </button>
+
+          {/* === নতুন যুক্ত করা রেজিস্ট্রেশন লিংক === */}
+          <div style={{ marginTop: "15px", textAlign: "center" }}>
+            <p style={{ fontSize: "14px", color: "#666", marginBottom: "0" }}>
+              Don't have an account?{" "}
+              <span
+                onClick={() => navigate("/register")}
+                style={{
+                  color: "#007bff", // সুন্দর নীল রঙ
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                }}
+              >
+                Register Here
+              </span>
+            </p>
+          </div>
+          {/* ================================== */}
         </form>
       </div>
     </Layout>

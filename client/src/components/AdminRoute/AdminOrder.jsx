@@ -6,7 +6,7 @@ import { useAuth } from "../../context/auth";
 import Layout from "../../components/pages/Layout";
 import AdminMenu from "./AdminMenu";
 import moment from "moment";
-import { toast } from "react-toastify"; // নোটিফিকেশনের জন্য
+import { toast } from "react-toastify";
 import "./AdminOrder.css";
 
 const AdminOrders = () => {
@@ -20,7 +20,6 @@ const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [auth] = useAuth();
 
-  // সব অর্ডার ডাটাবেস থেকে নিয়ে আসা
   const getOrders = async () => {
     try {
       const { data } = await axios.get("/api/v1/auth/all-orders");
@@ -34,13 +33,12 @@ const AdminOrders = () => {
     if (auth?.token) getOrders();
   }, [auth?.token]);
 
-  // অর্ডারের স্ট্যাটাস আপডেট করার ফাংশন
   const handleChange = async (orderId, value) => {
     try {
       await axios.put(`/api/v1/auth/update-order-status/${orderId}`, {
         status: value,
       });
-      getOrders(); // লিস্ট রিফ্রেশ করা
+      getOrders();
       toast.success("Order status updated");
     } catch (error) {
       console.log(error);
@@ -48,10 +46,8 @@ const AdminOrders = () => {
     }
   };
 
-  // === অর্ডার ডিলিট করার ফাংশন ===
   const handleDelete = async (orderId) => {
     try {
-      // ডিলিট করার আগে কনফার্মেশন অ্যালার্ট
       const confirmDelete = window.confirm(
         "Are you sure you want to delete this order? This action cannot be undone.",
       );
@@ -63,7 +59,6 @@ const AdminOrders = () => {
 
       if (data?.success) {
         toast.success("Order deleted successfully");
-        // রিয়েল-টাইম আপডেট: পেজ রিলোড না করেই অর্ডারটি লিস্ট থেকে সরিয়ে দেওয়া
         setOrders(orders.filter((order) => order._id !== orderId));
       }
     } catch (error) {
@@ -88,14 +83,38 @@ const AdminOrders = () => {
                   <table className="custom-table table">
                     <thead>
                       <tr>
-                        <th>#</th>
-                        <th>Status</th>
-                        <th>Buyer/Guest</th>
-                        <th>Contact</th>
-                        <th>Date</th>
-                        <th>Payment</th>
-                        <th>Items</th>
-                        <th>Action</th> {/* নতুন কলাম */}
+                        <th>
+                          <i className="fa-solid fa-hashtag text-muted me-1"></i>{" "}
+                          ID
+                        </th>
+                        <th>
+                          <i className="fa-solid fa-spinner text-muted me-1"></i>{" "}
+                          Status
+                        </th>
+                        <th>
+                          <i className="fa-solid fa-user text-muted me-1"></i>{" "}
+                          Buyer/Guest
+                        </th>
+                        <th>
+                          <i className="fa-solid fa-phone text-muted me-1"></i>{" "}
+                          Contact
+                        </th>
+                        <th>
+                          <i className="fa-regular fa-calendar text-muted me-1"></i>{" "}
+                          Date
+                        </th>
+                        <th>
+                          <i className="fa-solid fa-credit-card text-muted me-1"></i>{" "}
+                          Payment
+                        </th>
+                        <th>
+                          <i className="fa-solid fa-box-open text-muted me-1"></i>{" "}
+                          Items
+                        </th>
+                        <th>
+                          <i className="fa-solid fa-bolt text-muted me-1"></i>{" "}
+                          Action
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -117,7 +136,6 @@ const AdminOrders = () => {
                           </select>
                         </td>
 
-                        {/* নাম দেখানোর লজিক */}
                         <td>
                           {o?.buyer?.name ? (
                             <span className="user-name">
@@ -130,7 +148,6 @@ const AdminOrders = () => {
                           )}
                         </td>
 
-                        {/* মোবাইল নম্বর */}
                         <td>
                           {o?.buyer?.phone ? (
                             <span>{o?.buyer?.phone}</span>
@@ -147,7 +164,6 @@ const AdminOrders = () => {
                         </td>
                         <td>{o?.products?.length}</td>
 
-                        {/* ডিলিট বাটন */}
                         <td>
                           <button
                             className="btn btn-danger btn-sm"
@@ -162,7 +178,6 @@ const AdminOrders = () => {
                   </table>
                 </div>
 
-                {/* অর্ডারের ভেতরে থাকা প্রোডাক্টগুলো */}
                 <div className="admin-product-list p-3 bg-light">
                   {o?.products?.map((p, index) => (
                     <div
@@ -170,33 +185,52 @@ const AdminOrders = () => {
                       key={index}
                     >
                       <div className="product-img-box">
-                        {/* ফিক্স করা হয়েছে: সরাসরি Cloudinary লিংক */}
+                        {/* ফিক্স: ছবি না থাকলে ডিফল্ট প্লেসহোল্ডার ইমেজ দেখাবে */}
                         <img
-                          src={p.photo}
+                          src={
+                            p.photo ||
+                            "https://via.placeholder.com/60?text=No+Image"
+                          }
                           alt={p.name}
                           width="60px"
                           height="60px"
                           className="rounded shadow-sm"
                           style={{ objectFit: "cover" }}
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src =
+                              "https://via.placeholder.com/60?text=No+Image";
+                          }}
                         />
                       </div>
                       <div className="product-info-box ms-3">
                         <p className="mb-0 fw-bold">{p.name}</p>
 
-                        {/* ভেরিয়েন্ট ইনফো */}
+                        {/* ফিক্স: সঠিক ভেরিয়েন্ট ফিল্ডগুলো (color, size) রেন্ডার করা হলো */}
                         <div className="mt-1">
-                          {p.selectedVariant ? (
+                          {p.selectedVariant &&
+                          Object.keys(p.selectedVariant).length > 0 ? (
                             <>
-                              <span className="variant-badge">
-                                🎨 {p.selectedVariant.color}
-                              </span>
-                              <span className="variant-badge ms-2">
-                                💾 {p.selectedVariant.ram}/
-                                {p.selectedVariant.storage}
-                              </span>
-                              <span className="variant-badge ms-2">
-                                📍 {p.selectedVariant.region}
-                              </span>
+                              {p.selectedVariant.color && (
+                                <span className="variant-badge">
+                                  🎨 Color: {p.selectedVariant.color}
+                                </span>
+                              )}
+                              {p.selectedVariant.size && (
+                                <span className="variant-badge ms-2">
+                                  📏 Size: {p.selectedVariant.size}
+                                </span>
+                              )}
+                              {p.selectedVariant.material && (
+                                <span className="variant-badge ms-2">
+                                  🧵 Material: {p.selectedVariant.material}
+                                </span>
+                              )}
+                              {p.selectedVariant.style && (
+                                <span className="variant-badge ms-2">
+                                  ✨ Style: {p.selectedVariant.style}
+                                </span>
+                              )}
                             </>
                           ) : (
                             <span className="text-muted small">
@@ -213,7 +247,6 @@ const AdminOrders = () => {
                     </div>
                   ))}
 
-                  {/* ডেলিভারি অ্যাড্রেস সেকশন */}
                   <div className="order-footer mt-3">
                     <p className="small mb-0">
                       <i className="fa fa-map-marker-alt text-danger me-2"></i>

@@ -22,7 +22,7 @@ const CategoryProduct = () => {
   const getPrductsByCat = async () => {
     try {
       const { data } = await axios.get(
-        `/api/v1/product/product-category/${params.slug}`,
+        `/api/v1/product/product-category/${params.slug}`
       );
       setProducts(data?.products);
       setCategory(data?.category);
@@ -59,8 +59,6 @@ const CategoryProduct = () => {
                     {p.name.length > 35 ? "..." : ""}
                   </h5>
 
-                  {/* HTML ট্যাগ জনিত সমস্যা এড়াতে ডেসক্রিপশন অংশটি বাদ দেওয়া হলো */}
-
                   <p className="price-tag">৳ {p.price}</p>
 
                   <div className="card-buttons">
@@ -70,27 +68,40 @@ const CategoryProduct = () => {
                     >
                       More Details
                     </button>
-                    <button
-                      className="btn-add-cart"
-                      onClick={() => {
-                        const cartItem = {
-                          _id: p._id,
-                          name: p.name,
-                          slug: p.slug,
-                          price: p.price,
-                          selectedVariant: null,
-                        };
-                        const updatedCart = [...cart, cartItem];
-                        setCart(updatedCart);
-                        localStorage.setItem(
-                          "cart",
-                          JSON.stringify(updatedCart),
-                        );
-                        toast.success("পণ্যটি কার্টে যোগ করা হয়েছে");
-                      }}
-                    >
-                      Add To Cart
-                    </button>
+
+                    {/* === ভেরিয়েন্ট লজিক যুক্ত করা হলো === */}
+                    {p?.variants && p.variants.length > 0 ? (
+                      <button
+                        className="btn-add-cart"
+                        style={{ backgroundColor: "#495057", borderColor: "#495057", color: "#fff" }} // আলাদা বোঝানোর জন্য ডার্ক কালার দেওয়া হলো
+                        onClick={() => navigate(`/product/${p.slug}`)}
+                      >
+                        Select Options
+                      </button>
+                    ) : (
+                      <button
+                        className="btn-add-cart"
+                        onClick={() => {
+                          const cartItem = {
+                            _id: p._id,
+                            name: p.name,
+                            slug: p.slug,
+                            price: p.price,
+                            photo: p.photo, // কার্টে ছবি দেখানোর জন্য photo অ্যাড করা হলো
+                            selectedVariant: null,
+                          };
+                          const updatedCart = [...cart, cartItem];
+                          setCart(updatedCart);
+                          localStorage.setItem(
+                            "cart",
+                            JSON.stringify(updatedCart)
+                          );
+                          toast.success("পণ্যটি কার্টে যোগ করা হয়েছে");
+                        }}
+                      >
+                        Add To Cart
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

@@ -1,116 +1,243 @@
-/* Admin Order Main Wrapper */
+/* =========================================
+   Admin Order Main Wrapper
+   ========================================= */
 .admin-orders-main {
   padding-top: 20px;
 }
 
 .order-wrapper {
-  background: #fff;
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 16px; /* স্মুথ রাউন্ডেড কর্নার */
   overflow: hidden;
   margin-bottom: 40px;
-  border: 1px solid #eee !important;
+  border: 1px solid #f1f5f9 !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04); /* মডার্ন সফট শ্যাডো */
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* Table Styling */
+.order-wrapper:hover {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px); /* হোভার করলে হালকা ভাসবে */
+}
+
+/* =========================================
+   Table Styling & Horizontal Scroll (Responsive)
+   ========================================= */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* মোবাইলে স্মুথ স্ক্রোলিং */
+}
+
 .custom-table {
   margin-bottom: 0;
+  white-space: nowrap; /* কন্টেন্ট যেন ভেঙে না যায় */
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .custom-table thead {
-  background: #f8f9fa;
+  background: #f8fafc; /* হালকা নীলচে-সাদা ব্যাকগ্রাউন্ড */
 }
 
 .custom-table th {
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
-  color: #666;
-  padding: 15px;
-  border-bottom: 2px solid #eee;
+  color: #64748b;
+  padding: 16px 20px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e2e8f0;
+  border-top: none;
 }
 
 .custom-table td {
-  padding: 15px;
+  padding: 20px;
   vertical-align: middle;
   font-size: 14px;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-/* Status Dropdown Styling */
+.custom-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #fbfdfa;
+}
+
+/* =========================================
+   Pill-Shaped Modern Status Dropdown
+   ========================================= */
 .status-select-dropdown {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+  padding: 6px 16px;
+  border-radius: 50px; /* পিল শেপ বাটন */
+  border: 1px solid #cbd5e1;
   font-weight: 600;
+  font-size: 13px;
   cursor: pointer;
   outline: none;
   background-color: #fff;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  min-width: 140px;
+  appearance: none; /* ডিফল্ট অ্যারো লুকানো */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px top 50%;
+  background-size: 10px auto;
+}
+
+.status-select-dropdown:focus {
+  border-color: #94a3b8;
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.2);
 }
 
 /* Color coding for Status */
 .status-select-dropdown:has(option[value="Processing"]:checked) {
-  border-color: #ffc107;
-  color: #856404;
+  border-color: #fef08a;
+  color: #854d0e;
+  background-color: #fefce8;
 }
 .status-select-dropdown:has(option[value="Shipped"]:checked) {
-  border-color: #17a2b8;
-  color: #0c5460;
+  border-color: #bae6fd;
+  color: #0369a1;
+  background-color: #f0f9ff;
 }
 .status-select-dropdown:has(option[value="Delivered"]:checked) {
-  border-color: #28a745;
-  color: #155724;
+  border-color: #bbf7d0;
+  color: #166534;
+  background-color: #f0fdf4;
 }
 .status-select-dropdown:has(option[value="Cancel"]:checked) {
-  border-color: #dc3545;
-  color: #721c24;
+  border-color: #fecaca;
+  color: #991b1b;
+  background-color: #fef2f2;
 }
 
-/* Buyer & Guest Badges */
+/* =========================================
+   Badges & Action Buttons
+   ========================================= */
 .user-name,
 .guest-name {
   font-weight: 700;
   display: block;
 }
-
 .user-name small {
-  color: #007bff;
+  color: #3b82f6;
+  font-weight: 500;
 }
 .guest-name small {
-  color: #fd7e14;
+  color: #f97316;
+  font-weight: 500;
 }
 
-/* Product Row in Order */
+.custom-table .btn-danger {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  border: none;
+  background-color: #fee2e2;
+  color: #dc2626;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.custom-table .btn-danger:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* =========================================
+   Inner Product List (Order details)
+   ========================================= */
 .admin-product-list {
-  border-top: 1px dashed #ddd;
+  border-top: 1px solid #f1f5f9;
+  background: #f8fafc;
+  padding: 20px;
 }
-
 .product-row {
   transition: 0.3s;
+  border-radius: 8px;
+  padding: 10px;
 }
-
 .product-row:hover {
-  background: #f1f3f5;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 }
-
 .product-img-box img {
-  border: 1px solid #ddd;
+  border: 1px solid #e2e8f0;
   padding: 2px;
   background: #fff;
+  border-radius: 6px;
 }
-
 .variant-badge {
-  background: #e9ecef;
-  color: #495057;
-  padding: 2px 8px;
-  border-radius: 4px;
+  background: #e2e8f0;
+  color: #334155;
+  padding: 4px 8px;
+  border-radius: 6px;
   font-size: 11px;
   margin-right: 5px;
+  margin-bottom: 5px;
   font-weight: 600;
+  display: inline-block;
 }
 
-/* Address Box */
+/* =========================================
+   Address Box
+   ========================================= */
 .order-footer {
-  background: #fff9db;
-  padding: 10px 15px;
+  background: #fffbeb;
+  padding: 12px 15px;
   border-radius: 8px;
-  border-left: 4px solid #fcc419;
+  border-left: 4px solid #fcd34d;
+}
+
+/* =========================================
+   Mobile Responsive Design (Media Queries)
+   ========================================= */
+@media (max-width: 768px) {
+  .admin-orders-main {
+    padding-top: 10px;
+  }
+  .order-wrapper {
+    margin-bottom: 25px;
+  }
+
+  .custom-table th,
+  .custom-table td {
+    padding: 12px 10px;
+    font-size: 13px;
+  }
+  .status-select-dropdown {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: 110px;
+  }
+
+  /* প্রোডাক্ট লিস্ট মোবাইলে সুন্দরভাবে সাজানো */
+  .product-row {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+  .product-img-box {
+    margin-bottom: 12px;
+  }
+  .product-img-box img {
+    width: 70px;
+    height: 70px;
+  }
+  .product-info-box {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .order-footer {
+    padding: 10px;
+    font-size: 13px;
+  }
 }
