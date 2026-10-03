@@ -51,6 +51,7 @@ import UpdateProduct from "./components/AdminRoute/UpdateProduct";
 import Products from "./components/AdminRoute/Products";
 
 import ScrollToTop from "./components/ScrollToTop"; // ScrollToTop Component ইমপোর্ট
+import ManageSlider from "./components/AdminRoute/ManageSlider"; // পাথ ঠিক করে ইম্পোর্ট করুন
 
 // ================= PAGES =================
 
@@ -99,6 +100,7 @@ const App = () => (
       <Route path="admin/create-product" element={<CreateProduct />} />
       <Route path="admin/users" element={<Users />} />
       <Route path="admin/orders" element={<AdminOrders />} />
+      <Route path="admin/manage-slider" element={<ManageSlider />} />
     </Route>
 
     <Route path="*" element={<NotfoundPage />} />

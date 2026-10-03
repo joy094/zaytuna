@@ -1,151 +1,126 @@
-/* --- HeroSlider.css --- */
-
-:root {
-  --primary-color: #ff6347; /* আপনার থিম কালার */
-  --text-dark: #333;
-  --text-light: #fefefe;
-  --overlay-bg: rgba(0, 0, 0, 0.4);
-}
+/* src/components/HeroSlider.css */
 
 .hero-slider-container {
   width: 100%;
-  margin-bottom: 30px; /* নিচের সেকশন থেকে দূরত্ব */
-}
-
-.mySwiper {
-  width: 100%;
-  height: 400px; /* ডেক্সটপ হাইট */
-  border-radius: 12px;
+  max-width: 1440px; /* খুব বড় স্ক্রিনে যেন অতিরিক্ত ছড়িয়ে না যায় */
+  margin: 15px auto;
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 
-.banner-slide {
+.banner-slide-wrapper {
+  position: relative;
   width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  background-color: #f1f5f9;
 }
 
-.banner-slide::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
+/* সবচেয়ে গুরুত্বপূর্ণ প্রপার্টি: এটি ইমেজের আসল অনুপাত বজায় রেখে যেকোনো স্ক্রিনে অটোমেটিক রেস্পন্সিভ করবে */
+.responsive-banner-img {
   width: 100%;
-  height: 100%;
-  background: var(--overlay-bg); /* টেক্সট যাতে ভালোভাবে দেখা যায় */
+  height: auto;
+  max-height: 480px; /* ডেস্কটপে সর্বোচ্চ উচ্চতা */
+  object-fit: contain; /* ছবি সম্পূর্ণ দেখাবে, একটুও কাটবে না */
+  display: block;
 }
 
+/* টেক্সট ওভারলে (যদি ব্যানার ছবির ওপর লেখা রাখতে চান) */
 .banner-content {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  color: var(--text-light);
-  padding: 0 20px;
-  max-width: 800px;
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
+  z-index: 2;
+  color: #ffffff;
+  max-width: 500px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
 }
 
 .banner-content h1 {
-  font-size: 3rem;
+  font-size: 32px;
+  font-weight: 800;
   margin-bottom: 10px;
-  font-weight: 700;
-  line-height: 1.2;
 }
 
 .banner-content p {
-  font-size: 1.2rem;
-  margin-bottom: 25px;
-  opacity: 0.9;
+  font-size: 16px;
+  margin-bottom: 15px;
 }
 
 .banner-button {
   display: inline-block;
-  background-color: var(--primary-color);
-  color: var(--text-light);
-  padding: 12px 30px;
-  border-radius: 50px;
+  background-color: #ffffff;
+  color: #1e293b;
+  padding: 10px 25px;
+  font-weight: 700;
+  border-radius: 30px;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(255, 99, 71, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .banner-button:hover {
-  background-color: #e55338;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 99, 71, 0.6);
+  background-color: #0f172a;
+  color: #ffffff;
 }
 
-/* Swiper Navigation (Arrow) styles */
+/* Swiper নেভিগেশন ও প্যাজিনেশন ডিজাইন */
 .swiper-button-next,
 .swiper-button-prev {
-  color: var(--text-light) !important;
-  background-color: var(--overlay-bg);
-  width: 45px !important;
-  height: 45px !important;
+  color: #334155 !important;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px 15px;
   border-radius: 50%;
+  transform: scale(0.7);
   transition: all 0.3s ease;
 }
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: #ffffff;
+  color: #000000 !important;
 }
 
-.swiper-button-next::after,
-.swiper-button-prev::after {
-  font-size: 1.2rem !important;
-}
-
-/* Swiper Pagination (Dots) styles */
 .swiper-pagination-bullet {
-  background-color: var(--text-light) !important;
-  opacity: 0.6;
+  background: #ffffff !important;
+  opacity: 0.8;
 }
 
 .swiper-pagination-bullet-active {
-  background-color: var(--primary-color) !important;
-  opacity: 1;
+  background: #3b82f6 !important;
 }
 
-/* --- Responsive Design for HeroSlider --- */
+/* ================= Mobile Responsive ================= */
 @media (max-width: 768px) {
-  .mySwiper {
-    height: 250px; /* মোবাইলে কম হাইট */
-    border-radius: 0; /* মোবাইলে কর্নার রেডিয়াস বাদ দিতে পারেন */
+  .hero-slider-container {
+    border-radius: 0; /* মোবাইলে ফুল উইডথ দেখাবে */
+    margin: 5px 0;
+  }
+
+  .responsive-banner-img {
+    max-height: 220px; /* মোবাইলে উচ্চতা স্বয়ংক্রিয়ভাবে ছোট হবে */
+  }
+
+  .banner-content {
+    left: 20px;
+    bottom: 15px;
+    max-width: 80%;
   }
 
   .banner-content h1 {
-    font-size: 1.8rem;
+    font-size: 18px;
+    margin-bottom: 5px;
   }
 
   .banner-content p {
-    font-size: 0.9rem;
+    font-size: 12px;
+    margin-bottom: 8px;
   }
 
   .banner-button {
-    padding: 10px 20px;
-    font-size: 0.9rem;
+    padding: 6px 16px;
+    font-size: 11px;
   }
-
-  /* মোবাইলে নেভিগেশন অ্যারো হাইড করতে পারেন */
-  .swiper-button-next,
-  .swiper-button-prev {
-    display: none !important;
-  }
-}
-
-@media (max-width: 480px) {
-    .banner-content h1 {
-        font-size: 1.5rem;
-    }
-    .banner-content p {
-        font-size: 0.8rem;
-    }
 }

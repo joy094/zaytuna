@@ -1,45 +1,55 @@
-import React from "react";
-// Swiper React components
+// src/components/HeroSlider.jsx
+
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
-// Swiper modules
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 
-// Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
-import "./HeroSlider.css"; // এই কম্পোনেন্টের জন্য CSS
+import "./HeroSlider.css";
 
 const HeroSlider = () => {
-  const banners = [
-    {
-      id: 1,
-      image: "https://swiperjs.com/demos/images/nature-1.jpg", // আপনার ব্যানার ইমেজ দিন
-      title: "বিশেষ অফার! সব পণ্যে ২৫% ছাড়",
-      subtitle: "সীমিত সময়ের জন্য",
-      link: "/shop/offer",
-    },
-    {
-      id: 2,
-      image: "https://swiperjs.com/demos/images/nature-2.jpg",
-      title: "নতুন সংগ্রহ",
-      subtitle: "আপনার পছন্দের সব পণ্য এখন এক জায়গায়",
-      link: "/shop/new-arrivals",
-    },
-    {
-      id: 3,
-      image: "https://swiperjs.com/demos/images/nature-3.jpg",
-      title: "ফ্রি হোম ডেলিভারি",
-      subtitle: "৫০0 টাকার উপরে অর্ডারে",
-      link: "/shop/delivery-info",
-    },
-  ];
+  const [banners, setBanners] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const getBanners = async () => {
+    try {
+      const { data } = await axios.get("/api/v1/banner/get-banners");
+      if (data?.success) {
+        setBanners(data.banners);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.log("Error loading banners:", error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getBanners();
+  }, []);
+
+  if (loading) {
+    return (
+      <div
+        className="hero-slider-container d-flex justify-content-center align-items-center"
+        style={{ height: "300px" }}
+      >
+        <h4>Loading Slider...</h4>
+      </div>
+    );
+  }
+
+  if (banners.length === 0) {
+    return null;
+  }
 
   return (
     <div className="hero-slider-container">
       <Swiper
-        spaceBetween={30}
+        spaceBetween={0}
         centeredSlides={true}
         autoplay={{
           delay: 4000,
@@ -53,17 +63,23 @@ const HeroSlider = () => {
         className="mySwiper"
       >
         {banners.map((banner) => (
-          <SwiperSlide key={banner.id}>
-            <div
-              className="banner-slide"
-              style={{ backgroundImage: `url(${banner.image})` }}
-            >
+          <SwiperSlide key={banner._id}>
+            <div className="banner-slide-wrapper">
+              {/* সরাসরি ইমেজ ট্যাগ ব্যবহার করা হলো যা কখনো কাটবে না */}
+              <img
+                src={banner.photo}
+                alt={banner.title || "Banner"}
+                className="responsive-banner-img"
+              />
+
               <div className="banner-content">
-                <h1>{banner.title}</h1>
-                <p>{banner.subtitle}</p>
-                <a href={banner.link} className="banner-button">
-                  Shop Now
-                </a>
+                {banner.title && <h1>{banner.title}</h1>}
+                {banner.subtitle && <p>{banner.subtitle}</p>}
+                {banner.link && (
+                  <a href={banner.link} className="banner-button">
+                    Shop Now
+                  </a>
+                )}
               </div>
             </div>
           </SwiperSlide>

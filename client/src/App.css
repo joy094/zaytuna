@@ -403,3 +403,34 @@ body {
   max-width: 100%;
   box-sizing: border-box !important;
 }
+
+/* ================= Discount Badge Styles ================= */
+/* ইমেজের কন্টেইনারকে অবশ্যই relative করতে হবে, যাতে ব্যাজটি ছবির ভেতরে থাকে */
+.product-img-wrapper {
+  position: relative;
+}
+
+/* ডিসকাউন্ট ব্যাজ ডিজাইন */
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px; /* ডানপাশে দেখাতে চাইলে right, বামে চাইলে left: 10px দিন */
+  background-color: #ef4444; /* প্রফেশনাল লাল রঙ */
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px; /* গোলগাল শেপ */
+  z-index: 2;
+  box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+  letter-spacing: 0.5px;
+}
+
+/* আগের দামটি (যেটা কেটে দেওয়া হয়) তার ডিজাইন */
+.original-price-strike {
+  text-decoration: line-through;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-left: 8px;
+}

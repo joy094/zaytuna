@@ -1,0 +1,133 @@
+/* src/pages/Admin/ManageSlider.css */
+
+.slider-dashboard {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+/* ================= Upload Section ================= */
+.upload-card {
+  border: none;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  padding: 30px;
+}
+
+.upload-card h5 {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.upload-label-area {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 40px 20px;
+  text-align: center;
+  background-color: #f8fafc;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  display: block;
+  width: 100%;
+}
+
+.upload-label-area:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+  color: #334155;
+}
+
+.preview-img {
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+  max-height: 250px;
+  object-fit: cover;
+  width: 100%;
+}
+
+/* ================= Input Fields ================= */
+.custom-input {
+  border-radius: 8px;
+  padding: 12px 15px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  background-color: #f8fafc;
+}
+
+.custom-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  outline: none;
+  background-color: #ffffff;
+}
+
+.btn-upload {
+  background-color: #1e293b;
+  color: white;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.btn-upload:hover {
+  background-color: #0f172a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ================= Banner Display Cards ================= */
+.active-banners-title {
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.banner-card {
+  border: none;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: #ffffff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.banner-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+.banner-card-img {
+  height: 180px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.banner-card-body {
+  padding: 20px;
+}
+
+.btn-delete-banner {
+  background-color: #fee2e2;
+  color: #dc2626;
+  border: none;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 10px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-delete-banner:hover {
+  background-color: #ef4444;
+  color: #ffffff;
+}

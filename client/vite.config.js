@@ -6,6 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": "http://localhost:3001", // আপনার backend server
+      "/uploads": "http://localhost:3001", // 🔴 এই লাইনটি অবশ্যই যুক্ত করতে হবে
     },
   },
 });

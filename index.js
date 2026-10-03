@@ -10,13 +10,14 @@ import categoryRoutes from "./routes/categoryRoute.js";
 import productRoutes from "./routes/productRoute.js";
 import { requireSignIn } from "./middleware/authMiddleware.js";
 import cors from "cors";
-
+import bannerRoutes from "./routes/bannerRoute.js";
 const app = express();
 const port = process.env.PORT || 8080;
 
 //middelwares
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
@@ -27,6 +28,7 @@ connectDB();
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
+app.use("/api/v1/banner", bannerRoutes);
 
 //get route
 app.get("/", (req, res) => {

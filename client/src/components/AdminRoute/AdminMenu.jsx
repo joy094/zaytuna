@@ -1,3 +1,5 @@
+// src/components/Admin/AdminMenu.jsx
+
 import { NavLink } from "react-router-dom";
 import "./AdminMenu.css";
 
@@ -25,7 +27,7 @@ function AdminMenu() {
           Create Product
         </NavLink>
 
-        {/* --- এটি অবশ্যই যুক্ত করতে হবে (প্রোডাক্ট এডিট/ডিলিট করার গেটওয়ে) --- */}
+        {/* --- এটি অবশ্যই যুক্ত করতে হবে (প্রোডাক্ট এডিট/ডিলিট করার গেটওয়ে) --- */}
         <NavLink
           to="/dashboard/admin/products"
           className={({ isActive }) =>
@@ -33,6 +35,16 @@ function AdminMenu() {
           }
         >
           All Products
+        </NavLink>
+
+        {/* ================= নতুন যুক্ত করা হলো: স্লাইডার ম্যানেজমেন্ট ================= */}
+        <NavLink
+          to="/dashboard/admin/manage-slider"
+          className={({ isActive }) =>
+            isActive ? "menu-item active" : "menu-item"
+          }
+        >
+          Manage Slider
         </NavLink>
 
         <NavLink
