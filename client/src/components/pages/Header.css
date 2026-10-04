@@ -343,3 +343,27 @@
     background-color: var(--nav-bg);
   }
 }
+
+/* ========================================================
+   Header Font Fix (Force Hind Siliguri + Inter)
+======================================================== */
+.navbar-area,
+.nav-item,
+.dropdown-link,
+.brand-logo a,
+.brand-logo span,
+.login-btn,
+.user-name-badge,
+.logout-btn,
+.mobile-sidebar a,
+.mobile-sidebar button,
+.sidebar-cat-link span,
+.sidebar-label,
+.sidebar-header h3 {
+  font-family: "Inter", "Hind Siliguri", sans-serif !important;
+}
+
+/* শুধুমাত্র ব্র্যান্ড লোগোর জন্য Poppins (হেডিং ফন্ট) */
+.brand-logo a {
+  font-family: "Poppins", "Hind Siliguri", sans-serif !important;
+}

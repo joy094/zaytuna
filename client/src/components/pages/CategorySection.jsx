@@ -65,13 +65,10 @@ const CategorySection = ({ title, slug }) => {
 
       <div className="product-slider-wrapper">
         <Swiper
-          slidesPerView={
-            2
-          } /* কার্ড আরেকটু চওড়া করতে চাইলে এটি 1.8 করে দেখতে পারেন */
-          spaceBetween={
-            10
-          } /* মোবাইলে কার্ডের মাঝখানের গ্যাপ কমানো হলো যাতে কার্ড বড় হওয়ার জায়গা পায় */
-          navigation={!loading}
+          slidesPerView={2}
+          spaceBetween={10}
+          navigation={!loading} /* অ্যারো চিহ্ন এনাবল করা হলো */
+          slidesPerGroup={1} /* 🔴 ম্যাজিক: ক্লিকে ১টা করে স্লাইড হবে */
           modules={[Navigation]}
           className="productSwiper"
           breakpoints={{
@@ -146,8 +143,7 @@ const CategorySection = ({ title, slug }) => {
                             // Select Options এ ক্লিক করলে সরাসরি প্রোডাক্ট পেজে যাবে।
                             // (যেহেতু পুরো কার্ডটি Link করা, তাই এখানে preventDefault দিইনি)
                           >
-                            <i className="fa-solid fa-list-ul"></i> Select
-                            Options
+                            Select Options
                           </button>
                         ) : (
                           <button

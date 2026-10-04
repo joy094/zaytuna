@@ -1,9 +1,9 @@
 /* =========================================
    Global Reset & Fonts
 ========================================= */
-@import url("https://fonts.googleapis.com/css2?family=Tiro+Bangla&display=swap");
 /* Google Fonts থেকে ফন্টগুলো ইমপোর্ট করা হলো */
-@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Tiro+Bangla&display=swap");
 
 :root {
   --primary: #ff6347; /* Tomato Red */
@@ -18,46 +18,42 @@
   --radius: 12px;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Inter", "Hind Siliguri", Tahoma, Geneva, Verdana, sans-serif;
+}
+html {
+  scroll-behavior: smooth;
 }
 
-/* হেডিংয়ের জন্য Poppins + Hind Siliguri */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.section-title,
-.product-name {
-  font-family: "Poppins", "Hind Siliguri", sans-serif;
-}
-
-/* ওয়েবসাইটের সাধারণ লেখার জন্য Inter + Hind Siliguri */
+/* ওয়েবসাইটের সাধারণ লেখার জন্য Inter + Hind Siliguri */
 body,
 p,
 span,
-a,
-button,
 .price-tag,
 .discount-badge {
   font-family: "Inter", "Hind Siliguri", sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+/* 🔴 হেডার মেনু এবং সব ধরনের লিংকের ফন্ট জোরপূর্বক ঠিক করতে */
+a,
+.nav-link,
+.nav-item,
+.header-menu a,
+.bottom-nav .nav-item {
+  font-family: "Inter", "Hind Siliguri", sans-serif !important;
 }
 
-body {
-  background-color: var(--light);
-  color: var(--dark);
-  line-height: 1.6;
+/* 🔴 ফর্ম, বাটন এবং ইনপুটে ফন্ট অটোমেটিক পাওয়ার জন্য */
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
 }
-
 .container {
   max-width: 1250px;
   margin: 0 auto;
