@@ -2,6 +2,8 @@
    Global Reset & Fonts
 ========================================= */
 @import url("https://fonts.googleapis.com/css2?family=Tiro+Bangla&display=swap");
+/* Google Fonts থেকে ফন্টগুলো ইমপোর্ট করা হলো */
+@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap");
 
 :root {
   --primary: #ff6347; /* Tomato Red */
@@ -21,6 +23,29 @@
   margin: 0;
   padding: 0;
   font-family: "Segoe UI", "Tiro Bangla", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* হেডিংয়ের জন্য Poppins + Hind Siliguri */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.section-title,
+.product-name {
+  font-family: "Poppins", "Hind Siliguri", sans-serif;
+}
+
+/* ওয়েবসাইটের সাধারণ লেখার জন্য Inter + Hind Siliguri */
+body,
+p,
+span,
+a,
+button,
+.price-tag,
+.discount-badge {
+  font-family: "Inter", "Hind Siliguri", sans-serif;
 }
 
 html {
