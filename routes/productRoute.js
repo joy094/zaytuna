@@ -16,6 +16,7 @@ import {
   searchProductController,
   extraPhotoController,
   relatedProductController,
+  createProductReviewController,
   // নতুন কন্ট্রোলার ইমপোর্ট
 } from "../controller/productController.js";
 
@@ -72,5 +73,12 @@ router.get("/extra-photo/:pid/:index", extraPhotoController);
 
 // 🔴 রিলেটেড প্রোডাক্টের নতুন রাউট (NEW)
 router.get("/related-product/:pid/:cid", relatedProductController);
+
+// 🔴 রাউটটি যুক্ত করুন:
+router.post(
+  "/product-review/:pid",
+  requireSignIn, // শুধুমাত্র লগইন করা ইউজাররা রিভিউ দিতে পারবে
+  createProductReviewController,
+);
 
 export default router;

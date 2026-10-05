@@ -402,3 +402,62 @@ export const relatedProductController = async (req, res) => {
     });
   }
 };
+
+// controllers/productController.js এ নিচের ফাংশনটি যুক্ত করুন:
+
+// ==========================================
+// 🔴 Create Product Review (FIXED)
+// ==========================================
+export const createProductReviewController = async (req, res) => {
+  try {
+    // 🔴 req.body থেকে name রিসিভ করা হলো (ফ্রন্টএন্ড থেকে পাঠানো নাম)
+    const { rating, comment, name } = req.body;
+    const product = await productModel.findById(req.params.pid);
+
+    if (product) {
+      // চেক করা যে ইউজার আগে রিভিউ দিয়েছে কিনা
+      const alreadyReviewed = product.reviews.find(
+        (r) => r.user.toString() === req.user._id.toString(),
+      );
+
+      if (alreadyReviewed) {
+        return res.status(400).send({
+          success: false,
+          message: "আপনি ইতিমধ্যে এই প্রোডাক্টের রিভিউ দিয়েছেন",
+        });
+      }
+
+      // নতুন রিভিউ তৈরি
+      const review = {
+        name: name || req.user.name || "Customer", // 🔴 এখন আর undefined হবে না
+        rating: Number(rating),
+        comment,
+        user: req.user._id,
+      };
+
+      // রিভিউটি প্রোডাক্টের অ্যারেতে পুশ করা
+      product.reviews.push(review);
+      product.numReviews = product.reviews.length;
+
+      // গড় রেটিং (Average Rating) হিসাব করা
+      product.rating =
+        product.reviews.reduce((acc, item) => item.rating + acc, 0) /
+        product.reviews.length;
+
+      await product.save();
+      res.status(201).send({
+        success: true,
+        message: "রিভিউ সফলভাবে যুক্ত হয়েছে!",
+      });
+    } else {
+      res.status(404).send({ success: false, message: "Product not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in creating review",
+      error,
+    });
+  }
+};

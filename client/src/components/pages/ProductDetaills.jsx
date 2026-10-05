@@ -3,26 +3,29 @@
 import React, { useState, useEffect } from "react";
 import Layout from "./Layout";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom"; // 🔴 Link যুক্ত করা হয়েছে
 import { useCart } from "../../context/cart";
+import { useAuth } from "../../context/auth"; // 🔴 useAuth ইমপোর্ট করা হয়েছে
 import { toast } from "react-toastify";
+import SimilarProducts from "./SimilarProducts";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {
   const params = useParams();
   const navigate = useNavigate();
+
+  // 🔴 সমস্ত স্টেট কম্পোনেন্টের ভেতরে রাখা হয়েছে
+  const [auth] = useAuth();
   const [product, setProduct] = useState({});
   const [cart, setCart] = useCart();
-
-  // রিলেটেড প্রোডাক্ট স্টেট
   const [relatedProducts, setRelatedProducts] = useState([]);
-
-  // ডাইনামিক স্টেট
   const [mainImage, setMainImage] = useState("");
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [activeTab, setActiveTab] = useState("description");
-
   const [quantity, setQuantity] = useState(1);
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState("");
+
   const contactNumber = "+8801728355302";
 
   const getProduct = async () => {
@@ -33,7 +36,6 @@ const ProductDetails = () => {
       setProduct(data?.product);
       setMainImage(data?.product?.photo);
 
-      // রিলেটেড প্রোডাক্টের API কল করা (একই ক্যাটাগরির অন্য প্রোডাক্টগুলো আনতে)
       if (data?.product?._id && data?.product?.category?._id) {
         getSimilarProduct(data?.product._id, data?.product.category._id);
       }
@@ -59,7 +61,6 @@ const ProductDetails = () => {
     }
   };
 
-  // রিলেটেড প্রোডাক্ট আনার ফাংশন
   const getSimilarProduct = async (pid, cid) => {
     try {
       const { data } = await axios.get(
@@ -73,6 +74,7 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (params?.slug) getProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params?.slug]);
 
   const groupedSpecs = product?.specifications?.reduce((acc, curr) => {
@@ -113,23 +115,16 @@ const ProductDetails = () => {
     }
   };
 
-  // ================= কার্ট ও অর্ডার লজিক =================
   const handleAddToCart = () => {
-    // কাস্টমার যত কোয়ান্টিটি সিলেক্ট করবে, লুপ চালিয়ে ততবার কার্টে প্রোডাক্টটি যুক্ত করা হবে
     const itemsToAdd = [];
-
     for (let i = 0; i < quantity; i++) {
       const finalProduct = selectedVariant
         ? { ...product, price: selectedVariant.price, selectedVariant }
         : { ...product };
-
       itemsToAdd.push(finalProduct);
     }
-
     setCart([...cart, ...itemsToAdd]);
     localStorage.setItem("cart", JSON.stringify([...cart, ...itemsToAdd]));
-
-    // টোস্ট মেসেজে দেখাবে কয়টি আইটেম যুক্ত হয়েছে
     toast.success(`${quantity} item(s) added to cart successfully!`);
   };
 
@@ -138,12 +133,49 @@ const ProductDetails = () => {
     navigate("/cart");
   };
 
+  const handleReviewSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (!auth?.user) {
+        toast.error("Please login to write a review");
+        navigate("/login");
+        return;
+      }
+      
+      const { data } = await axios.post(
+        `/api/v1/product/product-review/${product._id}`,
+        { 
+          rating, 
+          comment,
+          name: auth?.user?.name // 🔴 ইউজারের নাম এখান থেকে পাঠানো হচ্ছে
+        }
+      );
+      
+      if (data?.success) {
+        toast.success("Review submitted successfully!");
+        setRating(5);
+        setComment("");
+        getProduct(); 
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Failed to submit review");
+    }
+  };
+
+  const currentUnitPrice = selectedVariant
+    ? selectedVariant.price
+    : product?.price || 0;
+  const currentDiscountPrice = product?.discountPrice || 0;
+
   const handleWhatsAppOrder = () => {
-    const price = selectedVariant ? selectedVariant.price : product?.price;
     const variantText = selectedVariant
       ? `\nVariant: ${selectedVariant.color || ""} ${selectedVariant.size || ""} ${selectedVariant.ram || ""}`
       : "";
-    const text = `Hello, I want to order:\n\n*${product.name}*${variantText}\nQuantity: ${quantity}\nTotal Price: ৳${price * quantity}\n\nLink: ${window.location.href}`;
+
+    // 🔴 WhatsApp লিংকের বাগটি ফিক্স করা হয়েছে
+    const text = `Hello, I want to order:\n\n*${product.name}*${variantText}\nQuantity: ${quantity}\nTotal Price: ৳${currentUnitPrice * quantity}\n\nLink: ${window.location.href}`;
+
     window.open(
       `https://wa.me/${contactNumber.replace("+", "")}?text=${encodeURIComponent(text)}`,
       "_blank",
@@ -153,11 +185,6 @@ const ProductDetails = () => {
   const handleCallOrder = () => {
     window.location.href = `tel:${contactNumber}`;
   };
-
-  const currentUnitPrice = selectedVariant
-    ? selectedVariant.price
-    : product?.price || 0;
-  const currentDiscountPrice = product?.discountPrice || 0;
 
   return (
     <Layout>
@@ -197,6 +224,17 @@ const ProductDetails = () => {
               <span className="brand-badge">{product.brand}</span>
             )}
             <h1 className="details-title">{product.name}</h1>
+
+            {/* 🔴 নামের নিচে স্টার রেটিং দেখানো হলো */}
+            {product?.rating > 0 && (
+              <div className="mb-2 text-warning" style={{ fontSize: "14px" }}>
+                {"★".repeat(Math.round(product.rating))}
+                {"☆".repeat(5 - Math.round(product.rating))}
+                <span className="text-muted ms-2">
+                  ({product.numReviews} Reviews)
+                </span>
+              </div>
+            )}
 
             <div className="price-section d-flex flex-column align-items-start mb-4">
               <div>
@@ -368,16 +406,10 @@ const ProductDetails = () => {
             Description
           </button>
           <button
-            className={`nav-tab-btn ${activeTab === "warranty" ? "active" : ""}`}
-            onClick={() => scrollToSection("warranty")}
-          >
-            Warranty Policy
-          </button>
-          <button
             className={`nav-tab-btn ${activeTab === "reviews" ? "active" : ""}`}
             onClick={() => scrollToSection("reviews")}
           >
-            Customer Reviews (0)
+            Customer Reviews ({product?.numReviews || 0})
           </button>
         </div>
 
@@ -419,109 +451,109 @@ const ProductDetails = () => {
             />
           </div>
 
-          <div id="warranty" className="scroll-section mt-5">
-            <h4 className="section-heading border-bottom pb-2">
-              Warranty Policy
-            </h4>
-            <div className="mt-3">
-              <p>✔ 10 Days Replacement Warranty</p>
-              <p>
-                ✔ 1 Year Service Warranty (Depends on official/unofficial
-                variant)
-              </p>
-              <p>
-                <i>
-                  Note: Physical damage or liquid damage is not covered under
-                  warranty.
-                </i>
-              </p>
-            </div>
-          </div>
-
           <div id="reviews" className="scroll-section mt-5 mb-5">
             <h4 className="section-heading border-bottom pb-2">
-              Customer Reviews
+              Customer Reviews ({product?.numReviews || 0})
             </h4>
-            <div className="text-muted mt-3">
-              <p>
-                No reviews have been submitted yet. Be the first to review this
-                product!
-              </p>
+
+            {/* ১. রিভিউগুলোর লিস্ট দেখানো */}
+            <div className="reviews-list mt-4">
+              {product?.reviews && product.reviews.length > 0 ? (
+                product.reviews.map((r, i) => (
+                  <div
+                    key={i}
+                    className="review-card mb-3 p-3 border rounded shadow-sm bg-white"
+                  >
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                      <h6 className="fw-bold mb-0 text-dark">
+                        <i className="fa-solid fa-user-circle me-2 text-secondary"></i>
+                        {r.name}
+                      </h6>
+                      <span className="text-muted" style={{ fontSize: "12px" }}>
+                        {new Date(r.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    {/* স্টার রেটিং */}
+                    <div
+                      className="text-warning mb-2"
+                      style={{ fontSize: "14px" }}
+                    >
+                      {"★".repeat(r.rating)}
+                      {"☆".repeat(5 - r.rating)}
+                    </div>
+                    <p
+                      className="mb-0 text-secondary"
+                      style={{ fontSize: "14px" }}
+                    >
+                      {r.comment}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <div className="text-muted mt-3">
+                  <p>
+                    No reviews have been submitted yet. Be the first to review
+                    this product!
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* ২. রিভিউ লেখার ফর্ম */}
+            <div
+              className="write-review-section mt-5 p-4 rounded"
+              style={{ backgroundColor: "#f8f9fa", border: "1px solid #eee" }}
+            >
+              <h5 className="mb-3 fw-bold">Write a Review</h5>
+              {auth?.user ? (
+                <form onSubmit={handleReviewSubmit}>
+                  <div className="mb-3">
+                    <label className="form-label fw-bold">Rating</label>
+                    <select
+                      className="form-select"
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
+                      required
+                    >
+                      <option value="5">5 - Excellent (⭐⭐⭐⭐⭐)</option>
+                      <option value="4">4 - Very Good (⭐⭐⭐⭐)</option>
+                      <option value="3">3 - Good (⭐⭐⭐)</option>
+                      <option value="2">2 - Fair (⭐⭐)</option>
+                      <option value="1">1 - Poor (⭐)</option>
+                    </select>
+                  </div>
+                  <div className="mb-3">
+                    <label className="form-label fw-bold">Comment</label>
+                    <textarea
+                      className="form-control"
+                      rows="3"
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      required
+                      placeholder="Share your experience with this product..."
+                    ></textarea>
+                  </div>
+                  <button
+                    type="submit"
+                    className="btn btn-primary px-4 fw-bold"
+                  >
+                    Submit Review
+                  </button>
+                </form>
+              ) : (
+                <div className="alert alert-warning m-0">
+                  You must be{" "}
+                  <Link to="/login" className="fw-bold text-decoration-none">
+                    Logged In
+                  </Link>{" "}
+                  to write a review.
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        {/* ================= রিলেটেড প্রোডাক্ট সেকশন (Premium UI) ================= */}
-        {relatedProducts?.length > 0 && (
-          <div className="related-products-section mt-5 pt-5 border-top">
-            <h3
-              className="mb-4 fw-bold text-center"
-              style={{ color: "#1e293b" }}
-            >
-              Similar Products You May Like
-            </h3>
-            <div className="row">
-              {relatedProducts.map((p) => (
-                <div className="col-6 col-md-3 mb-4" key={p._id}>
-                  <div className="card h-100 related-card">
-                    {/* প্রোডাক্টের ছবি ও ডিটেইলস (ক্লিক করলে ডিটেইলস পেজে যাবে) */}
-                    <div
-                      onClick={() => navigate(`/product/${p.slug}`)}
-                      style={{ cursor: "pointer" }}
-                      className="related-card-content"
-                    >
-                      <img
-                        src={p.photo}
-                        className="card-img-top p-3"
-                        alt={p.name}
-                        style={{ height: "180px", objectFit: "contain" }}
-                      />
-                      <div className="card-body text-center">
-                        <h6
-                          className="card-title text-truncate"
-                          style={{
-                            fontSize: "14px",
-                            fontWeight: "700",
-                            color: "#334155",
-                          }}
-                        >
-                          {p.name}
-                        </h6>
-                        <p
-                          className="card-text text-danger fw-bold m-0"
-                          style={{ fontSize: "16px" }}
-                        >
-                          ৳ {p.price}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* অ্যাড টু কার্ট বাটন (সরাসরি কার্টে অ্যাড হবে) */}
-                    <div className="card-footer bg-transparent border-0 pt-0 pb-3 px-3 text-center">
-                      <button
-                        className="btn w-100 fw-bold btn-related-cart"
-                        onClick={(e) => {
-                          e.stopPropagation(); // বাটনে ক্লিক করলে যেন ডিটেইলস পেজে না যায়, শুধু কার্টে অ্যাড হয়
-                          const cartProduct = { ...p, quantity: 1 };
-                          setCart([...cart, cartProduct]);
-                          localStorage.setItem(
-                            "cart",
-                            JSON.stringify([...cart, cartProduct]),
-                          );
-                          toast.success("Added to cart successfully!");
-                        }}
-                      >
-                        <i className="fa-solid fa-cart-plus me-1"></i> Add to
-                        Cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        {/* ================================================================ */}
+        <SimilarProducts products={relatedProducts} title="Similar Products" />
       </div>
     </Layout>
   );

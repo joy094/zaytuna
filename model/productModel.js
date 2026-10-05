@@ -1,6 +1,21 @@
-//productModel.js
+// productModel.js
 
 import mongoose from "mongoose";
+
+// === ১. রিভিউর জন্য সাব-স্কিমা (নতুন যুক্ত করা হলো) ===
+const reviewSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users", // আপনার ইউজার মডেলের নাম যদি ভিন্ন হয় (যেমন: "User"), তাহলে সেটি এখানে দেবেন
+      required: true,
+    },
+    name: { type: String, required: true },
+    rating: { type: Number, required: true },
+    comment: { type: String, required: true },
+  },
+  { timestamps: true },
+);
 
 const productSchema = new mongoose.Schema(
   {
@@ -20,8 +35,8 @@ const productSchema = new mongoose.Schema(
     discountPrice: { type: Number, default: 0 }, // ডিসকাউন্ট থাকলে দেখাবে
     quantity: { type: Number, required: true },
 
- // আগের Buffer সিস্টেম বাদ দিয়ে শুধু String (URL) রাখা হলো
-    photo: { type: String }, 
+    // আগের Buffer সিস্টেম বাদ দিয়ে শুধু String (URL) রাখা হলো
+    photo: { type: String },
     extraPhotos: [{ type: String }],
 
     // === ১. ডাইনামিক ভেরিয়েন্ট (Fashion & Accessories) ===
@@ -45,6 +60,17 @@ const productSchema = new mongoose.Schema(
         value: String, // যেমন: "100% Cotton", "500g"
       },
     ],
+
+    // === ৩. কাস্টমার রিভিউ ফিল্ড (নতুন যুক্ত করা হলো) ===
+    reviews: [reviewSchema], // রিভিউগুলো এই অ্যারেতে জমা হবে
+    rating: {
+      type: Number,
+      default: 0, // গড় রেটিং (যেমন: 4.5)
+    },
+    numReviews: {
+      type: Number,
+      default: 0, // মোট কয়টি রিভিউ পড়েছে
+    },
 
     shipping: { type: Boolean, default: true },
     status: {
