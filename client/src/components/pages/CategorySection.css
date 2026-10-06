@@ -28,8 +28,8 @@
 }
 
 .section-title {
-font-size: 1rem !important; /* 🔴 ব্রাউজারের h3 ডিফল্ট স্টাইল ওভাররাইড করার জন্য */
-  font-weight: 500 !important;   /* 🔴 ফন্ট আরও হালকা করতে চাইলে 500 বা 400 দিতে পারেন */
+  font-size: 1rem !important; /* 🔴 ব্রাউজারের h3 ডিফল্ট স্টাইল ওভাররাইড করার জন্য */
+  font-weight: 500 !important; /* 🔴 ফন্ট আরও হালকা করতে চাইলে 500 বা 400 দিতে পারেন */
   color: #111827 !important;
   margin: 0 !important;
   text-transform: capitalize;
@@ -129,13 +129,13 @@ font-size: 1rem !important; /* 🔴 ব্রাউজারের h3 ডিফ�
 .product-img-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 165px; /* 🔴 aspect-ratio বাদ দিয়ে এখানে আপনার পছন্দমতো উচ্চতা (যেমন: 160px থেকে 180px) দিন */
   background: #f9f9f9;
   display: flex;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid var(--border-light);
-  padding: 15px;
+  padding: 10px; /* প্যাডিং একটু কমালে ছবির ভেতরের জায়গা বাড়ে, ফলে ছবি বড় দেখায় */
   overflow: hidden;
 }
 
@@ -143,10 +143,7 @@ font-size: 1rem !important; /* 🔴 ব্রাউজারের h3 ডিফ�
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  mix-blend-mode: multiply;
-  transition: transform 0.3s ease;
 }
-
 .product-card:hover .product-img-wrapper img {
   transform: scale(1.03);
 }
@@ -183,23 +180,24 @@ font-size: 1rem !important; /* 🔴 ব্রাউজারের h3 ডিফ�
    Product Info & Price (Vertical Stack)
 ========================================= */
 .product-info {
-  padding: 12px;
+  padding: 8px !important; /* প্যাডিং কমানো হলো */
   text-align: left;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  padding: 5px; /* প্যাডিং প্রয়োজনমতো কমাতে পারেন */
 }
 
 .product-name {
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-dark);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   line-height: 1.4;
-  margin-bottom: 8px;
+  margin-bottom: 3px;
   min-height: 2.8em;
 }
 
@@ -209,7 +207,7 @@ font-size: 1rem !important; /* 🔴 ব্রাউজারের h3 ডিফ�
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 3px;
   margin-top: auto;
 }
 
@@ -358,7 +356,7 @@ font-size: 1rem !important; /* 🔴 ব্রাউজারের h3 ডিফ�
   }
 
   .add-to-cart-btn {
-    padding: 6px 4px;
+    padding: 8px 6px;
     font-size: 0.75rem;
     gap: 3px;
   }

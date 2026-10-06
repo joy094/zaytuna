@@ -1,21 +1,23 @@
 /* --- Header Variables (Premium Theme) --- */
+/* --- Header Variables (Light/White Theme) --- */
 :root {
-  --nav-bg: #0b1a2a; /* Dark Navy Blue */
+  --nav-bg: #ffffff; /* একদম সাদা ব্যাকগ্রাউন্ড */
   --nav-primary: #ff6347; /* Tomato Red */
-  --nav-text: #ffffff;
-  --nav-text-muted: #a8b8c8;
+  --nav-text: #111827; /* সাদা ব্যাকগ্রাউন্ডের জন্য ডার্ক/কালো টেক্সট */
+  --nav-text-muted: #4b5563; /* হালকা ধূসর টেক্সট */
 }
-
-/* --- Main Navbar Area --- */
+/* --- Main Navbar Area (3D Elevated Look) --- */
 .navbar-area {
   background-color: var(--nav-bg);
   position: sticky;
   top: 0;
   z-index: 999;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-  border-bottom: 2px solid rgba(255, 99, 71, 0.2);
+  /* 🔴 চমৎকার 3D শ্যাডো যুক্ত করা হলো */
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.04) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03) !important;
 }
-
 .nav-container {
   display: flex;
   align-items: center;
@@ -23,9 +25,15 @@
   max-width: 1250px;
   margin: 0 auto;
   padding: 12px 20px;
-  gap: 20px;
+  gap: 15px; /* গ্যাপ একটু কমানো হলো */
 }
 
+/* 🔴 নতুন লোগো ইমেজের স্টাইল */
+.header-logo-img {
+  height: 35px; /* লোগোর সাইজ */
+  max-width: 150px;
+  object-fit: contain;
+}
 /* --- Brand Logo --- */
 .brand-logo a {
   font-size: 1.8rem;
@@ -201,7 +209,9 @@
   visibility: visible;
 }
 
-/* Sidebar Box */
+/* =========================================
+   Sidebar Box (Missing Code Fix)
+========================================= */
 .mobile-sidebar {
   position: fixed;
   top: 0;
@@ -220,29 +230,43 @@
   left: 0;
 }
 
+/* =========================================
+   Sidebar Header & Logo Fix
+========================================= */
 .sidebar-header {
-  background: var(--nav-bg);
-  color: white;
-  padding: 20px;
+  background: var(--nav-bg); /* সাদা ব্যাকগ্রাউন্ড */
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #f1f5f9; /* হেডারের নিচে হালকা বর্ডার */
 }
 
-.sidebar-header h3 {
-  margin: 0;
-  font-size: 1.2rem;
+/* সাইডবারের লোগোর সাইজ */
+.sidebar-logo-img {
+  height: 28px; /* সাইডবারের লোগো একটু ছোট রাখলে সুন্দর দেখাবে */
+  object-fit: contain;
 }
 
+/* 🔴 ক্লোজ বাটন দৃশ্যমান করা হলো (হালকা ব্যাকগ্রাউন্ড ও ডার্ক আইকন) */
 .close-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: #f1f5f9; /* হালকা গ্রে ব্যাকগ্রাউন্ড */
   border: none;
-  color: white;
+  color: var(--nav-text); /* আইকনের কালার কালো/ডার্ক */
   width: 32px;
   height: 32px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.close-btn:hover {
+  background: #e2e8f0;
+  color: #ef4444; /* হোভার করলে লাল হবে */
 }
 
 .sidebar-content {
@@ -313,37 +337,60 @@
   color: #ccc;
 }
 
-/* --- Media Queries (Mobile Fixes) --- */
 @media (max-width: 992px) {
   .desktop-only {
     display: none !important;
   }
-  .hamburger-btn {
-    display: block;
-    order: 3;
-  }
-  .brand-logo {
-    order: 1;
+
+  .nav-container {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .cart-btn {
+  /* ১. ন্যাভ বাটন (বাম পাশ) */
+  .header-left {
+    flex: 1; /* তিন ভাগের এক ভাগ জায়গা */
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .hamburger-btn {
     display: block;
-    order: 2;
-    margin-right: 15px;
+    margin: 0;
+  }
+
+  /* ২. লোগো (মাঝখান) */
+  .header-center {
+    flex: 2; /* মাঝখানের জন্য বেশি জায়গা */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .header-logo-img {
+    height: 28px !important; /* 🔴 লোগো সামান্য ছোট করলে মেনু ও কার্ট আইকনের সাথে দারুণ ব্যালেন্স হবে */
+    object-fit: contain;
+  }
+
+  /* ৩. কার্ট (ডান পাশ) */
+  .header-right {
+    flex: 1; /* তিন ভাগের এক ভাগ জায়গা */
+    display: flex;
+    justify-content: flex-end;
   }
 
   .desktop-search {
     display: none;
   }
 
-  /* মোবাইলের সার্চবার হেডারের নিচে ফুল-উইডথ হয়ে আসবে */
   .mobile-search-bar {
     display: block;
-    padding: 10px 20px 15px;
+    padding: 5px 15px 15px;
     background-color: var(--nav-bg);
   }
 }
-
 /* ========================================================
    Header Font Fix (Force Hind Siliguri + Inter)
 ======================================================== */

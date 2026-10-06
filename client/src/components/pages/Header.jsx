@@ -1,4 +1,4 @@
-//Header.jsx
+// Header.jsx
 
 import React, { useState, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
@@ -50,25 +50,34 @@ const Header = () => {
       {/* ২. মূল হেডার */}
       <header className="navbar-area">
         <div className="nav-container">
-          {/* হ্যামবার্গার আইকন (মোবাইলের জন্য) */}
-          <button className="hamburger-btn" onClick={() => setIsOpen(true)}>
-            <i className="fa-solid fa-bars"></i>
-          </button>
-
-          {/* ব্র্যান্ড লোগো */}
-          <div className="brand-logo">
-            <Link to="/">
-              Rupomiq<span>Bd</span>
-            </Link>
+          {/* ============ ১. বাম পাশ: ন্যাভ বাটন ============ */}
+          <div className="header-left">
+            <button className="hamburger-btn" onClick={() => setIsOpen(true)}>
+              <i className="fa-solid fa-bars"></i>
+            </button>
           </div>
 
-          {/* ডেক্সটপ সার্চ বার */}
-          <div className="search-wrapper desktop-search">
-            <Search />
+          {/* ============ ২. মাঝখান: লোগো এবং সার্চ বার ============ */}
+          <div className="header-center">
+            <div className="brand-logo">
+              <Link to="/">
+                {/* 🔴 এখানে লোগোর ইমেজ বসানো হয়েছে। আপনার লোগোটি public ফোল্ডারে রেখে নাম মিলিয়ে দিন */}
+                <img
+                  src="/img/RupomiqLogo.png"
+                  alt="RupomiqBd Logo"
+                  className="header-logo-img"
+                />
+              </Link>
+            </div>
+
+            {/* ডেক্সটপ সার্চ বার */}
+            <div className="search-wrapper desktop-search">
+              <Search />
+            </div>
           </div>
 
-          {/* ডানপাশের একশন লিংকস */}
-          <div className="nav-actions">
+          {/* ============ ৩. ডান পাশ: একশন লিংকস ও কার্ট ============ */}
+          <div className="header-right nav-actions">
             {/* ডেক্সটপ ক্যাটাগরি ড্রপডাউন (Hover Effect) */}
             <div className="dropdown-wrapper desktop-only">
               <span className="nav-item has-dropdown">
@@ -140,9 +149,16 @@ const Header = () => {
       {/* ৩. মোবাইল সাইডবার (Drawer) */}
       <div className={`mobile-sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          <h3>
-            <i className="fa-regular fa-compass me-2"></i> Menu
-          </h3>
+        {/* 🔴 "Menu" লেখার বদলে এখানে লোগো বসানো হলো */}
+          <Link to="/" onClick={() => setIsOpen(false)}>
+            <img 
+              src="img/RupomiqLogo.png" 
+              alt="RupomiqBd Logo" 
+              className="sidebar-logo-img" 
+            />
+          </Link>
+          
+          {/* ক্লোজ বাটন */}
           <button className="close-btn" onClick={() => setIsOpen(false)}>
             <i className="fa-solid fa-xmark"></i>
           </button>
