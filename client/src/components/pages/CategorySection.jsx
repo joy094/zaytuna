@@ -55,7 +55,7 @@ const CategorySection = ({ title, slug }) => {
   return (
     <div className="category-section">
       <div className="section-header">
-        <h3 className="section-title">{title}</h3>
+        <h4 className="section-title">{title}</h4>
         {!loading && (
           <Link to={`/category/${slug}`} className="see-all-button">
             See All <i className="fa-solid fa-chevron-right"></i>
@@ -67,8 +67,8 @@ const CategorySection = ({ title, slug }) => {
         <Swiper
           slidesPerView={2}
           spaceBetween={10}
-          navigation={!loading} /* অ্যারো চিহ্ন এনাবল করা হলো */
-          slidesPerGroup={1} /* 🔴 ম্যাজিক: ক্লিকে ১টা করে স্লাইড হবে */
+          navigation={!loading} /* অ্যারো চিহ্ন এনাবল করা আছে */
+          slidesPerGroup={1} /* ক্লিকে ১টা করে স্লাইড হবে */
           modules={[Navigation]}
           className="productSwiper"
           breakpoints={{
@@ -100,15 +100,18 @@ const CategorySection = ({ title, slug }) => {
                   >
                     <div className="product-card">
                       <div className="product-img-wrapper">
-                        {/* ============ ১. ডিসকাউন্ট ব্যাজ (পার্সেন্টেজ) ============ */}
-                        {p.offerPrice && p.offerPrice < p.price && (
-                          <span className="discount-badge">
-                            -
-                            {Math.round(
-                              ((p.price - p.offerPrice) / p.price) * 100,
-                            )}
-                            %
-                          </span>
+                        {/* ============ ১. Arogga স্টাইল ডিসকাউন্ট রিবন ============ */}
+                        {/* 🔴 offerPrice এর বদলে discountPrice ব্যবহার করা হলো */}
+                        {p.discountPrice > 0 && p.discountPrice < p.price && (
+                          <div className="arogga-discount-badge">
+                            <span className="percent">
+                              {Math.round(
+                                ((p.price - p.discountPrice) / p.price) * 100,
+                              )}
+                              %
+                            </span>
+                            <span className="off-text">OFF</span>
+                          </div>
                         )}
 
                         <img src={p.photo} alt={p.name} />
@@ -120,14 +123,15 @@ const CategorySection = ({ title, slug }) => {
                           {p.name.length > 40 ? "..." : ""}
                         </h5>
 
+                        {/* ============ ২. প্রাইস সেকশন (কাটা দাম উপরে) ============ */}
                         <div className="price-container">
-                          {p.offerPrice ? (
+                          {p.discountPrice > 0 && p.discountPrice < p.price ? (
                             <>
-                              <span className="price-tag">
-                                ৳ {p.offerPrice}
-                              </span>
                               <span className="original-price-strike">
                                 ৳ {p.price}
+                              </span>
+                              <span className="price-tag">
+                                ৳ {p.discountPrice}
                               </span>
                             </>
                           ) : (
@@ -135,25 +139,17 @@ const CategorySection = ({ title, slug }) => {
                           )}
                         </div>
 
-                        {/* ============ ২. ডাইনামিক বাটন লজিক ============ */}
-                        {/* শর্ত: ডাটাবেজে যদি variants/sizes/colors এর অ্যারে থাকে এবং সেটি ১টার বেশি হয় */}
+                        {/* ============ ৩. ডাইনামিক বাটন লজিক ============ */}
                         {p.variants && p.variants.length > 0 ? (
-                          <button
-                            className="add-to-cart-btn"
-                            // Select Options এ ক্লিক করলে সরাসরি প্রোডাক্ট পেজে যাবে।
-                            // (যেহেতু পুরো কার্ডটি Link করা, তাই এখানে preventDefault দিইনি)
-                          >
+                          <button className="add-to-cart-btn">
                             Select Options
                           </button>
                         ) : (
                           <button
                             className="add-to-cart-btn"
                             onClick={(e) => {
-                              // Add to Cart এ ক্লিক করলে লিংকে যাওয়া বন্ধ করে সরাসরি কার্টে যুক্ত করবে
                               e.preventDefault();
                               e.stopPropagation();
-
-                              // আপনার Cart ফাংশন এখানে বসাবেন
                               console.log("Added to cart directly:", p.name);
                             }}
                           >

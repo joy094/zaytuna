@@ -2,6 +2,7 @@
 
 :root {
   --primary-color: #ff6347; /* আপনার থিমের রঙ */
+  --arogga-blue: #1f74db; /* 🔴 অ্যারোগ্গা ডিজাইনের নীল রঙ */
   --text-dark: #222;
   --text-light-grey: #666;
   --card-bg: #ffffff;
@@ -15,20 +16,61 @@
   padding: 0 15px;
 }
 
+/* =========================================
+   Arogga Style Section Header & Title
+========================================= */
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  padding: 0 5px;
 }
 
 .section-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin: 0;
+font-size: 1rem !important; /* 🔴 ব্রাউজারের h3 ডিফল্ট স্টাইল ওভাররাইড করার জন্য */
+  font-weight: 500 !important;   /* 🔴 ফন্ট আরও হালকা করতে চাইলে 500 বা 400 দিতে পারেন */
+  color: #111827 !important;
+  margin: 0 !important;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
+/* 🔴 আরোগ্গার মতো হেডিংয়ের বাম পাশে একটি ছোট আকর্ষণীয় কালার বার (Accent Bar) যুক্ত করতে চাইলে এটি এনাবল করতে পারেন */
+.section-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background-color: #1f74db; /* থিমের নীল রঙ বা আপনার প্রাইমারি কালার */
+  border-radius: 2px;
+}
+
+/* ডানপাশের "See All" বাটন ডিজাইন আরও গোছানো করার জন্য */
+.see-all-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #1f74db; /* নীল রঙ */
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: none;
+  border: none;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.see-all-button:hover {
+  opacity: 0.8;
+  color: #1f74db;
+}
+
+.see-all-button i {
+  font-size: 0.75rem;
+}
 .see-all-button {
   display: flex;
   align-items: center;
@@ -66,11 +108,11 @@
 
 .product-card {
   background-color: var(--card-bg);
-  border-radius: 8px; /* একটু কম রাউন্ডেড, প্রফেশনাল লুকের জন্য */
+  border-radius: 8px;
   overflow: hidden;
   box-shadow: var(--shadow-light);
   transition: all 0.3s ease;
-  height: 100%; /* ফিক্সড হাইট সরিয়ে দেয়া হলো */
+  height: 100%;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--border-light);
@@ -82,13 +124,13 @@
 }
 
 /* =========================================
-   Image Wrapper & Discount Badge
+   Image Wrapper & Arogga Discount Badge
 ========================================= */
 .product-img-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1; /* ইমেজ সবসময় স্কয়ার থাকবে, কোনো ফিক্সড হাইট নেই */
-  background: #f9f9f9; /* হালকা ব্যাকগ্রাউন্ড */
+  aspect-ratio: 1 / 1;
+  background: #f9f9f9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,7 +143,7 @@
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  mix-blend-mode: multiply; /* ব্যাকগ্রাউন্ডের সাথে মিশে যাওয়ার জন্য */
+  mix-blend-mode: multiply;
   transition: transform 0.3s ease;
 }
 
@@ -109,22 +151,36 @@
   transform: scale(1.03);
 }
 
-/* ডিসকাউন্ট ব্যাজ ডিজাইন (Barakah Mart স্টাইল) */
-.discount-badge {
+/* =========================================
+   Arogga Style Ribbon Badge (Compact & Small)
+========================================= */
+.arogga-discount-badge {
   position: absolute;
-  top: 10px;
-  left: 10px; /* 🔴 বাম দিকে আনা হলো */
-  background-color: #0b9347; /* 🔴 সবুজ রঙ */
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 20px;
+  top: 0;
+  left: 12px;
+  background-color: #1f74db;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 6px 10px; /* প্যাডিং কমিয়ে ছোট করা হলো */
   z-index: 2;
+  line-height: 1;
+  clip-path: polygon(100% 0, 100% 100%, 50% 75%, 0 100%, 0 0);
 }
 
+.arogga-discount-badge .percent {
+  font-size: 11px; /* ফন্ট সাইজ ছোট করা হলো */
+  font-weight: 700;
+}
+
+.arogga-discount-badge .off-text {
+  font-size: 9px; /* 'OFF' লেখাটি ছোট ও সুন্দর দেখাবে */
+  font-weight: 600;
+  margin-top: 2px;
+}
 /* =========================================
-   Product Info & Buttons
+   Product Info & Price (Vertical Stack)
 ========================================= */
 .product-info {
   padding: 12px;
@@ -144,125 +200,86 @@
   overflow: hidden;
   line-height: 1.4;
   margin-bottom: 8px;
-  min-height: 2.8em; /* ২ লাইনের জায়গা ধরে রাখবে */
+  min-height: 2.8em;
 }
 
-/* প্রাইস ট্যাগ কন্টেইনার */
+/* 🔴 প্রাইস কন্টেইনার (দামগুলো উপর-নিচ করে সাজানো) */
 .price-container {
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   margin-bottom: 12px;
-  margin-top: auto; /* প্রাইস এবং বাটনকে নিচে ঠেলে দেবে */
+  margin-top: auto;
+}
+
+.original-price-strike {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .price-tag {
   font-size: 1.1rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: #0f172a;
   margin: 0;
 }
 
-.original-price-strike {
-  text-decoration: line-through;
-  color: #999;
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-/* বাটন ডিজাইন (সলিড ব্যাকগ্রাউন্ড, ফুল উইডথ) */
+/* মূল বাটনের ডিজাইন */
 .add-to-cart-btn {
   width: 100%;
-  background-color: var(--primary-color); /* সলিড ব্যাকগ্রাউন্ড */
+  background-color: var(--primary-color);
   color: #fff;
   border: none;
-  padding: 8px 12px;
+  padding: 8px 10px;
   font-size: 0.9rem;
   font-weight: 600;
-  border-radius: 4px; /* হালকা রাউন্ডেড */
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .add-to-cart-btn:hover {
-  background-color: #e0533c; /* হোভার কালার */
+  background-color: #e0533c;
 }
 
 /* =========================================
-   Swiper Navigation (Arrow) styles
+   Swiper Navigation Arrows (Desktop & Mobile)
 ========================================= */
+/* 🔴 অ্যারো বাটনগুলো যেন সব ডিভাইসেই ভিজিবল থাকে */
 .product-slider-wrapper .swiper-button-next,
 .product-slider-wrapper .swiper-button-prev {
-  color: var(--text-dark) !important;
-  background-color: #fff;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: #ffffff !important;
   width: 35px !important;
   height: 35px !important;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  top: 40%;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  top: 40% !important;
+  --swiper-navigation-color: var(--arogga-blue) !important;
+  --swiper-navigation-size: 14px !important;
 }
 
 .product-slider-wrapper .swiper-button-next::after,
 .product-slider-wrapper .swiper-button-prev::after {
-  font-size: 0.9rem !important;
-  font-weight: bold;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  color: var(--arogga-blue) !important;
 }
 
 /* =========================================
-   Responsive Adjustments (Mobile Optimized)
+   Skeleton Loader
 ========================================= */
-@media (max-width: 768px) {
-  .product-slider-wrapper .swiper-button-next,
-  .product-slider-wrapper .swiper-button-prev {
-    display: none !important; /* মোবাইলে অ্যারো হাইড */
-  }
-
-  .category-section {
-    margin: 20px auto;
-    padding: 0 10px;
-  }
-
-  .section-title {
-    font-size: 1.25rem;
-  }
-
-  /* 🔴 মোবাইলের জন্য স্পেশাল এডজাস্টমেন্ট */
-  .product-info {
-    padding: 10px;
-  }
-
-  .product-name {
-    font-size: 0.85rem;
-    min-height: 2.8em;
-  }
-
-  .price-tag {
-    font-size: 1rem;
-  }
-
-  .original-price-strike {
-    font-size: 0.8rem;
-  }
-
-  .add-to-cart-btn {
-    padding: 6px 8px;
-    font-size: 0.8rem;
-    gap: 4px;
-  }
-
-  .discount-badge {
-    font-size: 10px;
-    padding: 3px 6px;
-    top: 8px;
-    left: 8px;
-  }
-}
-
-/* --- Skeleton Loader --- */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -310,47 +327,101 @@
   margin-top: 15px;
 }
 
-.skeleton-btn {
-  width: 100%;
-  height: 32px;
-  border-radius: 4px;
-  margin-top: 10px;
-}
-
-/* মূল বাটনের ডিজাইন */
-.add-to-cart-btn {
-  width: 100%;
-  background-color: var(--primary-color);
-  color: #fff;
-  border: none;
-  padding: 8px 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 5px;
-  white-space: nowrap; /* 🔴 লেখা এক লাইনে রাখার মূল ম্যাজিক */
-  overflow: hidden;
-}
-
-.add-to-cart-btn:hover {
-  background-color: #e0533c;
-}
-
 /* =========================================
    Responsive Adjustments (Mobile Optimized)
 ========================================= */
 @media (max-width: 768px) {
-  /* ... আপনার আগের মিডিয়া কোয়েরির অন্যান্য কোড ঠিক থাকবে ... */
+  .category-section {
+    margin: 20px auto;
+    padding: 0 10px;
+  }
 
-  /* মোবাইলের জন্য স্পেশাল বাটন ডিজাইন */
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .product-info {
+    padding: 10px;
+  }
+
+  .product-name {
+    font-size: 0.85rem;
+    min-height: 2.8em;
+  }
+
+  .price-tag {
+    font-size: 1rem;
+  }
+
+  .original-price-strike {
+    font-size: 0.8rem;
+  }
+
   .add-to-cart-btn {
-    padding: 6px 4px; /* ডানে-বামে প্যাডিং কমানো হলো যেন আইকন ও লেখা সুন্দরভাবে ধরে */
-    font-size: 0.75rem; /* ফন্ট সাইজ একটু ছোট করা হলো */
-    gap: 3px; /* আইকন ও লেখার মাঝের গ্যাপ কমানো হলো */
+    padding: 6px 4px;
+    font-size: 0.75rem;
+    gap: 3px;
+  }
+
+  /* =========================================
+   Custom Swiper Navigation Arrows (Bulletproof Fix)
+========================================= */
+
+  .product-slider-wrapper .swiper-button-next,
+  .product-slider-wrapper .swiper-button-prev {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 50% !important;
+    top: 42% !important;
+    transition: all 0.2s ease;
+  }
+
+  .product-slider-wrapper .swiper-button-next:hover,
+  .product-slider-wrapper .swiper-button-prev:hover {
+    background-color: #1f74db !important; /* হোভার করলে নীল ব্যাকগ্রাউন্ড হবে */
+  }
+
+  /* Swiper এর ডিফল্ট অদৃশ্য বা মুছে যাওয়া অ্যারো পুরোপুরি হাইড করা হলো */
+  .product-slider-wrapper .swiper-button-next::after,
+  .product-slider-wrapper .swiper-button-prev::after {
+    content: "" !important;
+  }
+
+  /* নিজস্ব স্পষ্ট তীর চিহ্ন তৈরি করা হলো */
+  .product-slider-wrapper .swiper-button-prev::before {
+    content: "‹" !important;
+    font-size: 26px !important;
+    font-weight: bold !important;
+    color: #1f74db !important; /* স্পষ্ট নীল রঙ */
+    line-height: 1;
+    margin-top: -3px;
+  }
+
+  .product-slider-wrapper .swiper-button-next::before {
+    content: "›" !important;
+    font-size: 26px !important;
+    font-weight: bold !important;
+    color: #1f74db !important; /* স্পষ্ট নীল রঙ */
+    line-height: 1;
+    margin-top: -3px;
+  }
+
+  /* হোভার করার সময় তীর চিহ্ন সাদা হয়ে যাবে */
+  .product-slider-wrapper .swiper-button-next:hover::before,
+  .product-slider-wrapper .swiper-button-prev:hover::before {
+    color: #ffffff !important;
+  }
+
+  /* অ্যারো পজিশন */
+  .product-slider-wrapper .swiper-button-prev {
+    left: -10px !important;
+  }
+  .product-slider-wrapper .swiper-button-next {
+    right: -10px !important;
   }
 }
