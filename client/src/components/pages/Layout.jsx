@@ -47,33 +47,27 @@ export const Layout = ({ children, title = "Barakahmart" }) => {
         {children}
       </main>
 
-      {/* Bottom Navigation for Mobile */}
+      {/* Bottom Navigation for Mobile (Madrasa Version) */}
       <div className="bottom-nav">
+        {/* ১. Home */}
         <Link to="/" className="nav-item">
           <i className="fa-solid fa-house"></i>
           <span>Home</span>
         </Link>
 
-        {/* Orders Button (Conditional Logic) */}
-        <Link
-          to={`/dashboard/${auth?.user?.role === 1 ? "admin/orders" : "user/orders"}`}
-          className="nav-item"
-        >
-          <i className="fa-solid fa-bag-shopping"></i>
-          <span>{auth?.user?.role === 1 ? "Manage" : "Orders"}</span>
+        {/* ২. Academic */}
+        <Link to="/academic" className="nav-item">
+          <i className="fa-solid fa-book-open-reader"></i>
+          <span>Academic</span>
         </Link>
 
-        {/* <Link to="/dashboard/user/orders" className="nav-item">
-          <i className="fa-solid fa-bag-shopping"></i>
-          <span>Orders</span>
-        </Link> */}
-        <Link to="/cart" className="nav-item">
-          <div className="cart-icon-container">
-            <i className="fa-solid fa-cart-shopping"></i>
-            <span className="cart-badge">{cart?.length}</span>
-          </div>
-          <span>Cart</span>
+        {/* ৩. Admissions */}
+        <Link to="/admissions" className="nav-item">
+          <i className="fa-solid fa-graduation-cap"></i>
+          <span>Admission</span>
         </Link>
+
+        {/* ৪. Account / Portal (আপনার আগের Conditional Logic) */}
         <Link
           to={
             auth?.user

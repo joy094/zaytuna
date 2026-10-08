@@ -1,35 +1,22 @@
-// Header.jsx
-
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+// Authentication context যদি মাদ্রাসার পোর্টাল বা অ্যাডমিন প্যানেলের জন্য ব্যবহার করেন, তবে এটি রাখুন
 import { useAuth } from "../../context/auth";
-import { useCart } from "../../context/cart";
 import { toast } from "react-toastify";
-import axios from "axios";
 import Search from "./Search";
 import "./Header.css";
 
 const Header = () => {
   const [auth, setAuth] = useAuth();
-  const [cart] = useCart();
   const [isOpen, setIsOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
-  const getAllCategory = async () => {
-    try {
-      const { data } = await axios.get("/api/v1/category/get-category");
-      if (data?.success) {
-        setCategories(data?.category);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getAllCategory();
-  }, []);
+  // পোর্টালের ড্রপডাউন মেনু অপশন
+  const portalOptions = [
+    { name: "Parent Portal", path: "/parent-portal" },
+    { name: "Student Portal", path: "/student-portal" },
+    { name: "Staff Portal", path: "/staff-portal" },
+  ];
 
   const handleLogout = () => {
     setAuth({ ...auth, user: null, token: "" });
@@ -50,7 +37,7 @@ const Header = () => {
       {/* ২. মূল হেডার */}
       <header className="navbar-area">
         <div className="nav-container">
-          {/* ============ ১. বাম পাশ: ন্যাভ বাটন ============ */}
+          {/* ============ ১. বাম পাশ: ন্যাভ বাটন (For Mobile) ============ */}
           <div className="header-left">
             <button className="hamburger-btn" onClick={() => setIsOpen(true)}>
               <i className="fa-solid fa-bars"></i>
@@ -61,11 +48,11 @@ const Header = () => {
           <div className="header-center">
             <div className="brand-logo">
               <Link to="/">
-                {/* 🔴 এখানে লোগোর ইমেজ বসানো হয়েছে। আপনার লোগোটি public ফোল্ডারে রেখে নাম মিলিয়ে দিন */}
+                {/* আপনার PNG লোগো এখানে বসান */}
                 <img
-                  src="/img/RupomiqLogo.png"
-                  alt="RupomiqBd Logo"
-                  className="header-logo-img"
+                  src="/img/madrasatuz-zaytuna-logo.svg"
+                  alt="Madrasatuz Zaytuna Logo"
+                  style={{ height: "50px", width: "auto" }}
                 />
               </Link>
             </div>
@@ -76,48 +63,81 @@ const Header = () => {
             </div>
           </div>
 
-          {/* ============ ৩. ডান পাশ: একশন লিংকস ও কার্ট ============ */}
+          {/* ============ ৩. ডান পাশ: একশন লিংকস ও মেনু ============ */}
           <div className="header-right nav-actions">
-            {/* ডেক্সটপ ক্যাটাগরি ড্রপডাউন (Hover Effect) */}
+            {/* ডেক্সটপ মেনু লিংকস */}
+            <div className="desktop-menu-links desktop-only flex gap-4 mr-4 items-center font-semibold text-gray-700">
+              <NavLink
+                to="/"
+                className="nav-item hover:text-emerald-600 transition-colors"
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/about"
+                className="nav-item hover:text-emerald-600 transition-colors"
+              >
+                About
+              </NavLink>
+              <NavLink
+                to="/academic"
+                className="nav-item hover:text-emerald-600 transition-colors"
+              >
+                Academic
+              </NavLink>
+              <NavLink
+                to="/tahfiz"
+                className="nav-item hover:text-emerald-600 transition-colors"
+              >
+                Tahfiz
+              </NavLink>
+              <NavLink
+                to="/tarbiyah"
+                className="nav-item hover:text-emerald-600 transition-colors"
+              >
+                Tarbiyah
+              </NavLink>
+              <NavLink
+                to="/admissions"
+                className="nav-item hover:text-emerald-600 transition-colors"
+              >
+                Admissions
+              </NavLink>
+              <NavLink
+                to="/contact"
+                className="nav-item hover:text-emerald-600 transition-colors"
+              >
+                Contact
+              </NavLink>
+            </div>
+
+            {/* পোর্টাল ড্রপডাউন (Hover Effect) */}
             <div className="dropdown-wrapper desktop-only">
-              <span className="nav-item has-dropdown">
-                Categories <i className="fa-solid fa-angle-down ms-1"></i>
+              <span className="nav-item has-dropdown bg-emerald-100 text-emerald-800 px-3 py-1 rounded-md">
+                Portal <i className="fa-solid fa-angle-down ms-1"></i>
               </span>
               <div className="dropdown-menu">
-                {categories?.map((c) => (
-                  <NavLink
-                    key={c._id}
-                    to={`/category/${c.slug}`}
-                    className="dropdown-link"
-                  >
-                    {c.name}
+                {portalOptions.map((opt, index) => (
+                  <NavLink key={index} to={opt.path} className="dropdown-link">
+                    {opt.name}
                   </NavLink>
                 ))}
               </div>
             </div>
 
-            <NavLink to="/" className="nav-item desktop-only">
-              Home
-            </NavLink>
-
-            {/* কার্ট আইকন */}
-            <NavLink to="/cart" className="nav-item cart-btn">
-              <i className="fa-solid fa-cart-shopping"></i>
-              {cart?.length > 0 && (
-                <span className="cart-badge">{cart.length}</span>
-              )}
-            </NavLink>
-
-            {/* ইউজার অথেন্টিকেশন / ড্রপডাউন */}
+            {/* ইউজার অথেন্টিকেশন / ড্রপডাউন (Login if required for admin) */}
             {!auth.user ? (
-              <div className="auth-links desktop-only">
-                <NavLink to="/login" className="login-btn">
+              <div className="auth-links desktop-only ml-2">
+                <NavLink
+                  to="/login"
+                  className="login-btn bg-emerald-600 text-white px-4 py-2 rounded-md hover:bg-emerald-700"
+                >
                   Login
                 </NavLink>
               </div>
             ) : (
-              <div className="dropdown-wrapper desktop-only">
-                <span className="nav-item has-dropdown user-name-badge">
+              <div className="dropdown-wrapper desktop-only ml-2">
+                <span className="nav-item has-dropdown user-name-badge bg-emerald-600 text-white px-3 py-1 rounded-md">
                   <i className="fa-regular fa-circle-user me-1"></i>
                   {auth?.user?.name.split(" ")[0]}
                 </span>
@@ -149,15 +169,15 @@ const Header = () => {
       {/* ৩. মোবাইল সাইডবার (Drawer) */}
       <div className={`mobile-sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-        {/* 🔴 "Menu" লেখার বদলে এখানে লোগো বসানো হলো */}
+          {/* 🔴 মোবাইলের মেনুর উপরের লোগো এখানে বসবে */}
           <Link to="/" onClick={() => setIsOpen(false)}>
-            <img 
-              src="img/RupomiqLogo.png" 
-              alt="RupomiqBd Logo" 
-              className="sidebar-logo-img" 
+            <img
+              src="/img/madrasatuz-zaytuna-logo.svg"
+              alt="Madrasatuz Zaytuna Logo"
+              style={{ height: "45px", width: "auto" }}
             />
           </Link>
-          
+
           {/* ক্লোজ বাটন */}
           <button className="close-btn" onClick={() => setIsOpen(false)}>
             <i className="fa-solid fa-xmark"></i>
@@ -166,10 +186,10 @@ const Header = () => {
 
         <div className="sidebar-content">
           <button
-            className="call-order-btn"
+            className="call-order-btn bg-emerald-100 text-emerald-800"
             onClick={() => (window.location.href = "tel:+8801817141213")}
           >
-            <i className="fa-solid fa-phone-volume"></i> Call for Order
+            <i className="fa-solid fa-phone-volume"></i> Call Admission Office
           </button>
 
           <div className="mobile-auth-section">
@@ -177,9 +197,6 @@ const Header = () => {
               <>
                 <NavLink to="/login" onClick={() => setIsOpen(false)}>
                   <i className="fa-solid fa-arrow-right-to-bracket"></i> Login
-                </NavLink>
-                <NavLink to="/register" onClick={() => setIsOpen(false)}>
-                  <i className="fa-solid fa-user-plus"></i> Register
                 </NavLink>
               </>
             ) : (
@@ -202,16 +219,25 @@ const Header = () => {
             )}
           </div>
 
-          <p className="sidebar-label">Shop by Categories</p>
+          <p className="sidebar-label">Navigation Menu</p>
           <div className="sidebar-category-list">
-            {categories?.map((c) => (
+            {[
+              { name: "Home", path: "/" },
+              { name: "About Us", path: "/about" },
+              { name: "Academic", path: "/academic" },
+              { name: "Tahfiz", path: "/tahfiz" },
+              { name: "Tarbiyah", path: "/tarbiyah" },
+              { name: "Admissions", path: "/admissions" },
+              { name: "Parent Portal", path: "/parent-portal" },
+              { name: "Contact Us", path: "/contact" },
+            ].map((menuItem, index) => (
               <NavLink
-                key={c._id}
-                to={`/category/${c.slug}`}
+                key={index}
+                to={menuItem.path}
                 className="sidebar-cat-link"
                 onClick={() => setIsOpen(false)}
               >
-                <span>{c.name}</span>
+                <span>{menuItem.name}</span>
                 <i className="fa-solid fa-chevron-right arrow-icon"></i>
               </NavLink>
             ))}

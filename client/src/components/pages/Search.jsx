@@ -56,7 +56,7 @@ const LiveSearch = () => {
         <i className="fa-solid fa-magnifying-glass search-icon"></i>
         <input
           type="text"
-          placeholder="পণ্য খুঁজুন..."
+          placeholder="Search..."
           value={keyword}
           onChange={(e) => setKeyword(e.target.value)}
           onFocus={() =>

@@ -12,28 +12,28 @@ const Footer = () => {
           {/* ১. কন্টাক্ট এবং ব্র্যান্ড সেকশন */}
           <div className="footer-widget contact-widget">
             <h2 className="footer-logo">
-              Rupomiq <span>Bd</span>
+              Madrasatuz <span>Zaytuna</span>
             </h2>
             <p className="footer-desc">
-              Your ultimate destination for premium gadgets, smartphones,
-              laptops, and authentic accessories in Bangladesh.
+              Nurturing future leaders with the perfect blend of Islamic morals
+              and modern academic excellence in Bangladesh.
             </p>
             <ul className="contact-info">
               <li>
                 <i className="fa-solid fa-location-dot"></i>
-              Uttora sector-4 road-2D House-2, Dhaka, Bangladesh, 1230
-              </li>
+                
+              </li>West Dhanmondi Housing, Bosila, Mohammadpur, Dhaka
               <li>
                 <i className="fa-solid fa-phone"></i>
                 +8801817141213
               </li>
               <li>
                 <i className="fa-brands fa-whatsapp"></i>
-               +8801817141213
+                +8801817141213
               </li>
               <li>
                 <i className="fa-solid fa-envelope"></i>
-                support@rupomiqbd.com
+                info@madrasatuzzaytuna.com
               </li>
             </ul>
           </div>
@@ -46,48 +46,48 @@ const Footer = () => {
                 <Link to="/">Home</Link>
               </li>
               <li>
-                <Link to="/shop">Shop Now</Link>
+                <Link to="/about">About Us</Link>
               </li>
               <li>
-                <Link to="/about">About Us</Link>
+                <Link to="/academic-pathways">Academic Pathways</Link>
+              </li>
+              <li>
+                <Link to="/admissions">Admissions</Link>
               </li>
               <li>
                 <Link to="/contact">Contact Us</Link>
               </li>
-              <li>
-                <Link to="/blog">Gadget Blog</Link>
-              </li>
             </ul>
           </div>
 
-          {/* ৩. কাস্টমার সাপোর্ট */}
+          {/* ৩. গুরুত্বপূর্ণ পোর্টাল ও পলিসি */}
           <div className="footer-widget">
-            <h3 className="widget-title">Customer Support</h3>
+            <h3 className="widget-title">Important Links</h3>
             <ul className="footer-links">
               <li>
-                <Link to="/track-order">Track Your Order</Link>
+                <Link to="/student-portal">Student Portal</Link>
               </li>
               <li>
-                <Link to="/return-policy">Return & Refund Policy</Link>
+                <Link to="/parent-portal">Parent Portal</Link>
               </li>
               <li>
-                <Link to="/warranty">Warranty Policy</Link>
+                <Link to="/staff-portal">Staff Portal</Link>
               </li>
               <li>
-                <Link to="/terms">Terms & Conditions</Link>
+                <Link to="/careers">Careers (Job Application)</Link>
               </li>
               <li>
-                <Link to="/privacy">Privacy Policy</Link>
+                <Link to="/privacy-policy">Privacy Policy</Link>
               </li>
             </ul>
           </div>
 
-          {/* ৪. নিউজলেটার এবং সোশ্যাল মিডিয়া */}
+          {/* ৪. নিউজলেটার এবং সোশ্যাল মিডিয়া */}
           <div className="footer-widget">
-            <h3 className="widget-title">Newsletter</h3>
+            <h3 className="widget-title">Stay Updated</h3>
             <p className="newsletter-text">
-              Subscribe to get special offers, free giveaways, and amazing deals
-              directly in your inbox.
+              Subscribe to our newsletter to receive updates on admissions,
+              events, and school announcements.
             </p>
             <form
               className="newsletter-form"
@@ -104,7 +104,11 @@ const Footer = () => {
             </form>
 
             <div className="social-icons">
-              <a href="https://www.facebook.com/profile.php?id=61594049798811" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <i className="fa-brands fa-facebook-f"></i>
               </a>
               <a href="#" target="_blank" rel="noopener noreferrer">
@@ -121,19 +125,18 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* ফুটারের নিচের অংশ (কপিরাইট এবং পেমেন্ট মেথড) */}
+      {/* ফুটারের নিচের অংশ (কপিরাইট) */}
       <div className="footer-bottom">
         <div className="container bottom-container">
           <p className="copyright-text">
-            &copy; {currentYear} <strong>Rupomiq Bd</strong>. All Rights
+            &copy; {currentYear}{" "}
+            <strong>Madrasatuz Zaytuna International</strong>. All Rights
             Reserved.
           </p>
           <div className="payment-methods">
-            <span>We Accept: </span>
-            <i className="fa-brands fa-cc-visa"></i>
-            <i className="fa-brands fa-cc-mastercard"></i>
-            <i className="fa-brands fa-paypal"></i>
-            <i className="fa-solid fa-money-bill-wave"></i> {/* COD Icon */}
+            {/* মাদ্রাসার জন্য পেমেন্ট আইকনের বদলে অন্য কোনো তথ্য বা সোশ্যাল আইকনও রাখতে পারেন। আপাতত আপনার আগের ডিজাইনের মতই রাখা হলো। */}
+            <span>Powered by: </span>
+            <strong>MD Jakaria</strong>
           </div>
         </div>
       </div>

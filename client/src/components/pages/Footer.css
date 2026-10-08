@@ -1,67 +1,58 @@
-/* --- Footer Variables --- */
-:root {
-  --footer-bg: #0b1a2a; /* অত্যন্ত প্রিমিয়াম ডার্ক নেভি ব্লু */
-  --footer-text: #a8b8c8;
-  --footer-heading: #ffffff;
-  --footer-accent: #ff6347; /* টমেটো রেড হাইলাইট */
-}
-
-/* --- Main Footer Area --- */
+/* =========================================
+   Footer Area Base Styles
+========================================= */
 .footer-area {
-  background-color: var(--footer-bg);
-  color: var(--footer-text);
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 60px;
+  background-color: #064e3b; /* Emerald 900 (হোমপেজের থিমের সাথে মিল রেখে) */
+  color: #d1fae5; /* Emerald 100 */
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  padding-top: 75px;
+  border-top: 5px solid #059669; /* Emerald 600 */
 }
 
-.footer-top {
-  padding: 70px 0 40px;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-/* --- Footer Grid Layout --- */
+/* =========================================
+   Footer Grid Layout
+========================================= */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 40px;
+  margin-bottom: 50px;
 }
 
-/* --- Widget Titles --- */
-.widget-title {
-  color: var(--footer-heading);
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 25px;
-  position: relative;
-  padding-bottom: 10px;
+.footer-widget {
+  display: flex;
+  flex-direction: column;
 }
 
-.widget-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 40px;
-  height: 3px;
-  background-color: var(--footer-accent);
-  border-radius: 5px;
-}
-
-/* --- Widget 1: Contact Info --- */
+/* =========================================
+   Brand & Contact Widget
+========================================= */
 .footer-logo {
-  color: var(--footer-heading);
-  font-size: 2rem;
-  font-weight: 800;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffffff;
   margin-bottom: 15px;
+  font-family: "Hind Siliguri", sans-serif;
 }
 
 .footer-logo span {
-  color: var(--footer-accent);
+  color: #34d399; /* Emerald 400 */
 }
 
 .footer-desc {
-  line-height: 1.6;
-  margin-bottom: 20px;
   font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  color: #a7f3d0;
 }
 
 .contact-info {
@@ -72,20 +63,42 @@
 
 .contact-info li {
   display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
   font-size: 0.95rem;
+  line-height: 1.5;
 }
 
-.contact-info li i {
-  color: var(--footer-accent);
+.contact-info i {
+  color: #34d399;
   font-size: 1.1rem;
-  margin-right: 15px;
-  width: 20px;
-  text-align: center;
+  margin-top: 3px;
 }
 
-/* --- Widget 2 & 3: Links --- */
+/* =========================================
+   Widget Titles & Links
+========================================= */
+.widget-title {
+  font-size: 1.3rem;
+  color: #ffffff;
+  margin-bottom: 25px;
+  position: relative;
+  padding-bottom: 10px;
+  font-weight: 600;
+}
+
+.widget-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50px;
+  height: 3px;
+  background-color: #34d399;
+  border-radius: 2px;
+}
+
 .footer-links {
   list-style: none;
   padding: 0;
@@ -97,7 +110,7 @@
 }
 
 .footer-links a {
-  color: var(--footer-text);
+  color: #d1fae5;
   text-decoration: none;
   font-size: 0.95rem;
   transition: all 0.3s ease;
@@ -105,11 +118,13 @@
 }
 
 .footer-links a:hover {
-  color: var(--footer-accent);
-  transform: translateX(5px); /* হোভার করলে লিংক হালকা ডানে সরবে */
+  color: #34d399;
+  transform: translateX(6px); /* হোভার করলে হালকা ডানে সরবে */
 }
 
-/* --- Widget 4: Newsletter --- */
+/* =========================================
+   Newsletter & Social Icons
+========================================= */
 .newsletter-text {
   font-size: 0.95rem;
   line-height: 1.6;
@@ -119,60 +134,64 @@
 .newsletter-form {
   display: flex;
   margin-bottom: 25px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .newsletter-form input {
   flex: 1;
-  padding: 12px 15px;
+  padding: 14px 15px;
   border: none;
-  border-radius: 5px 0 0 5px;
   outline: none;
   font-size: 0.95rem;
+  color: #1f2937;
 }
 
 .newsletter-form button {
-  background-color: var(--footer-accent);
-  color: #fff;
+  padding: 14px 22px;
+  background-color: #059669; /* Emerald 600 */
+  color: white;
   border: none;
-  padding: 0 20px;
-  border-radius: 0 5px 5px 0;
   cursor: pointer;
-  font-size: 1.1rem;
-  transition: 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .newsletter-form button:hover {
-  background-color: #e5533d;
+  background-color: #047857; /* Emerald 700 */
 }
 
-/* --- Social Icons --- */
 .social-icons {
   display: flex;
-  gap: 15px;
+  gap: 12px;
 }
 
 .social-icons a {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  background-color: rgba(255, 255, 255, 0.05);
-  color: var(--footer-heading);
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
   border-radius: 50%;
   text-decoration: none;
+  font-size: 1.1rem;
   transition: all 0.3s ease;
 }
 
 .social-icons a:hover {
-  background-color: var(--footer-accent);
-  transform: translateY(-3px);
+  background-color: #34d399;
+  color: #064e3b;
+  transform: translateY(-4px);
 }
 
-/* --- Footer Bottom (Copyright & Payments) --- */
+/* =========================================
+   Footer Bottom (Copyright Area)
+========================================= */
 .footer-bottom {
-  background-color: #07121d; /* আরও ডার্ক টোন */
-  padding: 20px 0;
+  background-color: #022c22; /* Emerald 950 - আরও গাঢ় রঙ */
+  padding: 22px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -180,41 +199,44 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .copyright-text {
+  font-size: 0.95rem;
+  color: #a7f3d0;
   margin: 0;
-  font-size: 0.9rem;
 }
 
 .payment-methods {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 1.5rem;
-  color: #d1d1d1;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #a7f3d0;
 }
 
-.payment-methods span {
-  font-size: 0.9rem;
-  color: var(--footer-text);
-  margin-right: 5px;
+.payment-methods strong {
+  color: #34d399;
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 /* =========================================
-   Responsive Design for Footer
+   Responsive Design
 ========================================= */
-
-/* Tablets */
 @media (max-width: 992px) {
   .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 40px 30px;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Mobiles */
 @media (max-width: 768px) {
+  .footer-area {
+    padding-top: 55px;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 35px;
@@ -223,14 +245,23 @@
   .bottom-container {
     flex-direction: column;
     text-align: center;
-    gap: 15px;
-  }
-
-  .payment-methods {
     justify-content: center;
   }
-  /* --- নতুন যোগ করা অংশ --- */
-  .footer-bottom {
-    padding-bottom: 80px; /* বটম নেভিগেশন বারের জন্য জায়গা ছেড়ে দেওয়া হলো */
+
+  .widget-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .footer-widget {
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-info li {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
   }
 }
