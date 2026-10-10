@@ -1,0 +1,375 @@
+/* =========================================
+   About Zaytuna - Correct Info & Modern UI
+========================================= */
+
+.zaytuna-modern-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 20px 80px 20px;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  color: #1f2937;
+  background-color: #f9fafb;
+}
+
+/* Header Section */
+.zaytuna-page-header {
+  margin-bottom: 60px;
+  max-width: 900px;
+}
+
+.breadcrumb-text {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.main-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #064e3b; /* Emerald 900 */
+  margin-bottom: 20px;
+}
+
+.main-subtitle {
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+/* Common Headings */
+h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 15px;
+}
+
+/* Top Grid (Vision, Mission) */
+.top-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  margin-bottom: 60px;
+}
+
+.info-block {
+  margin-bottom: 40px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border: 1px solid #f3f4f6;
+  transition: transform 0.3s ease;
+}
+
+.info-block:hover {
+  transform: translateY(-5px);
+  border-color: #d1fae5;
+}
+
+.info-block p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #374151;
+}
+
+/* Draft Badge */
+.draft-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #d97706; /* Amber */
+  border: 1px dashed #d97706;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-left: 10px;
+  vertical-align: middle;
+  background-color: #fffbeb;
+}
+
+/* Core Values */
+.values-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.value-item {
+  background-color: #ecfdf5; /* Light Emerald */
+  color: #047857;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: 1px solid #a7f3d0;
+  transition: all 0.2s ease;
+}
+
+.value-item:hover {
+  background-color: #059669;
+  color: #ffffff;
+}
+
+/* Message Box */
+.message-box {
+  background-color: #f8fafc;
+  padding: 40px;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  height: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+}
+
+.message-eyebrow {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #b45309; /* Golden Brown */
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 15px;
+}
+
+.message-author {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #064e3b;
+  margin-bottom: 25px;
+}
+
+.message-quote {
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: #475569;
+  font-style: italic;
+}
+
+/* Bottom Grid (Governance & Campus) */
+.bottom-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.feature-card {
+  background-color: #ffffff;
+  padding: 35px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f3f4f6;
+}
+
+.card-sub-text {
+  font-size: 1rem;
+  color: #6b7280;
+  margin-bottom: 35px;
+  margin-top: -10px;
+}
+
+/* Governance Chart */
+.org-structure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.org-box {
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: center;
+  z-index: 2;
+}
+
+.org-box.outline {
+  border: 2px solid #e5e7eb;
+  color: #374151;
+  background-color: #ffffff;
+}
+
+.org-box.filled {
+  background-color: #059669; /* Emerald 600 */
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.2);
+}
+
+.org-line {
+  width: 2px;
+  height: 25px;
+  background-color: #e5e7eb;
+}
+
+.org-branches {
+  display: flex;
+  gap: 30px;
+  position: relative;
+}
+
+.org-branches::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background-color: #e5e7eb;
+}
+
+.org-box.split {
+  position: relative;
+  margin-top: 20px;
+}
+
+.org-box.split::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background-color: #e5e7eb;
+}
+
+/* Campus Interactive Box */
+.campus-interactive-box {
+  display: flex;
+  gap: 20px;
+}
+
+.floor-buttons {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.floor-buttons::-webkit-scrollbar {
+  width: 5px;
+}
+.floor-buttons::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+}
+
+.floor-btn-modern {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 15px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.floor-btn-modern:hover {
+  background-color: #f1f5f9;
+}
+
+.floor-btn-modern.active {
+  background-color: #ecfdf5;
+  border-color: #34d399;
+}
+
+.f-num {
+  font-weight: 700;
+  color: #059669;
+  background: #d1fae5;
+  min-width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.f-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.floor-info-display {
+  flex: 1;
+  background-color: #f8fafc;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.f-detail {
+  display: none;
+}
+.f-detail.show {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.f-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #059669;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.f-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 10px;
+}
+
+.f-desc {
+  font-size: 1rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .top-info-grid,
+  .bottom-feature-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-title {
+    font-size: 2.2rem;
+  }
+  .campus-interactive-box {
+    flex-direction: column;
+  }
+  .org-branches {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .org-branches::before,
+  .org-box.split::before {
+    display: none;
+  }
+  .org-box.split {
+    margin-top: 0;
+  }
+}

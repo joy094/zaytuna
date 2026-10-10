@@ -452,3 +452,68 @@
   align-items: center !important;
   gap: 5px !important;
 }
+
+/* =========================================
+   Mobile View Fix for Header Navigation
+========================================= */
+@media (max-width: 992px) {
+  .header-right .desktop-menu-links,
+  .header-right .dropdown-wrapper,
+  .header-right .auth-links {
+    display: none !important;
+  }
+}
+
+/* =========================================
+   Expandable Search Box Styles
+========================================= */
+.search-action-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.expandable-search-box {
+  position: absolute;
+  right: 0;
+  top: 150%;
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  min-width: 280px;
+
+  /* Animation properties */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+}
+
+.expandable-search-box.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Mobile specific adjustments */
+@media (max-width: 768px) {
+  .header-right {
+    display: flex !important;
+    justify-content: flex-end;
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  /* মোবাইলে সার্চ বক্সটি পুরো স্ক্রিনের প্রস্থ অনুযায়ী হবে */
+  .expandable-search-box {
+    position: fixed;
+    top: 75px; /* আপনার হেডারের উচ্চতার ওপর ভিত্তি করে একটু কম/বেশি করতে পারেন */
+    left: 15px;
+    right: 15px;
+    width: calc(100% - 30px);
+    min-width: unset;
+  }
+}

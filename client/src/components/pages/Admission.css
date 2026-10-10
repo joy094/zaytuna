@@ -1,0 +1,313 @@
+/* =========================================
+   Variables & Base Settings
+========================================= */
+:root {
+  --primary-color: #1f2937;
+  --gold: #d97706;
+  --gold-hover: #b45309;
+  --ghost-bg: #f3f4f6;
+  --ghost-hover: #e5e7eb;
+  --muted: #6b7280;
+  --olive: #4d7c0f;
+  --border: #d1d5db;
+  --bg-color: #f9fafb;
+  --card-bg: #ffffff;
+  --text-main: #111827;
+  --radius: 8px;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================
+   Layout & Typography
+========================================= */
+.page {
+  padding: 40px 20px;
+}
+
+.wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.wrap.narrow {
+  max-width: 700px;
+}
+
+.page-head {
+  margin-bottom: 30px;
+}
+
+.page-head h2 {
+  font-size: 2rem;
+  margin: 10px 0;
+  color: var(--primary-color);
+}
+
+.crumb {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.crumb a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.muted {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.bn {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: -5px;
+  margin-bottom: 15px;
+}
+
+/* Spacing Utilities */
+.mt {
+  margin-top: 40px;
+}
+.mt-s {
+  margin-top: 20px;
+}
+.row {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* =========================================
+   Buttons
+========================================= */
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn.gold {
+  background-color: var(--gold);
+  color: #fff;
+}
+
+.btn.gold:hover {
+  background-color: var(--gold-hover);
+}
+
+.btn.ghost {
+  background-color: var(--ghost-bg);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+}
+
+.btn.ghost:hover {
+  background-color: var(--ghost-hover);
+}
+
+.btn.sm {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+}
+
+/* =========================================
+   Journey Section (Main Page)
+========================================= */
+.section-title .eyebrow {
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  color: var(--gold);
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.journey {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.journey div {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.journey h4 {
+  margin: 0 0 10px 0;
+  color: var(--primary-color);
+}
+
+.journey p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
+/* =========================================
+   Forms & Inputs
+========================================= */
+form {
+  margin-top: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+fieldset {
+  border: none;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+legend {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  padding: 0;
+}
+
+.legend-bn {
+  color: var(--olive);
+  font-weight: 600;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+.fgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-main);
+  gap: 8px;
+}
+
+input,
+select {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #fff;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.2);
+}
+
+.check {
+  flex-direction: row;
+  align-items: center;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.check input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.q .qt {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.form-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: 1px solid var(--border);
+}
+
+/* =========================================
+   Step Progress Bar (Pre-admission)
+========================================= */
+.steps {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+
+.steps span {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 5px 10px;
+  border-radius: 20px;
+  background: var(--ghost-bg);
+}
+
+.steps span.on {
+  background: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+}
+
+.steps span.done {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 600px) {
+  .form-nav {
+    flex-direction: column-reverse;
+    gap: 15px;
+  }
+  .form-nav .row,
+  .form-nav .btn {
+    width: 100%;
+  }
+  .steps {
+    font-size: 0.8rem;
+  }
+}

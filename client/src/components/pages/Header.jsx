@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-// Authentication context যদি মাদ্রাসার পোর্টাল বা অ্যাডমিন প্যানেলের জন্য ব্যবহার করেন, তবে এটি রাখুন
 import { useAuth } from "../../context/auth";
 import { toast } from "react-toastify";
 import Search from "./Search";
@@ -9,9 +8,9 @@ import "./Header.css";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false); // সার্চ বারের জন্য নতুন স্টেট
   const navigate = useNavigate();
 
-  // পোর্টালের ড্রপডাউন মেনু অপশন
   const portalOptions = [
     { name: "Parent Portal", path: "/parent-portal" },
     { name: "Student Portal", path: "/student-portal" },
@@ -28,7 +27,7 @@ const Header = () => {
 
   return (
     <>
-      {/* ১. মোবাইল সাইডবার ওভারলে (Backdrop) */}
+      {/* ১. মোবাইল সাইডবার ওভারলে */}
       <div
         className={`sidebar-overlay ${isOpen ? "active" : ""}`}
         onClick={() => setIsOpen(false)}
@@ -44,11 +43,10 @@ const Header = () => {
             </button>
           </div>
 
-          {/* ============ ২. মাঝখান: লোগো এবং সার্চ বার ============ */}
+          {/* ============ ২. মাঝখান: লোগো ============ */}
           <div className="header-center">
             <div className="brand-logo">
               <Link to="/">
-                {/* আপনার PNG লোগো এখানে বসান */}
                 <img
                   src="/img/madrasatuz-zaytuna-logo.svg"
                   alt="Madrasatuz Zaytuna Logo"
@@ -56,15 +54,10 @@ const Header = () => {
                 />
               </Link>
             </div>
-
-            {/* ডেক্সটপ সার্চ বার */}
-            <div className="search-wrapper desktop-search">
-              <Search />
-            </div>
           </div>
 
-          {/* ============ ৩. ডান পাশ: একশন লিংকস ও মেনু ============ */}
-          <div className="header-right nav-actions">
+          {/* ============ ৩. ডান পাশ: একশন লিংকস ও সার্চ ============ */}
+          <div className="header-right nav-actions flex items-center">
             {/* ডেক্সটপ মেনু লিংকস */}
             <div className="desktop-menu-links desktop-only flex gap-4 mr-4 items-center font-semibold text-gray-700">
               <NavLink
@@ -111,7 +104,7 @@ const Header = () => {
               </NavLink>
             </div>
 
-            {/* পোর্টাল ড্রপডাউন (Hover Effect) */}
+            {/* পোর্টাল ড্রপডাউন */}
             <div className="dropdown-wrapper desktop-only">
               <span className="nav-item has-dropdown bg-emerald-100 text-emerald-800 px-3 py-1 rounded-md">
                 Portal <i className="fa-solid fa-angle-down ms-1"></i>
@@ -125,7 +118,7 @@ const Header = () => {
               </div>
             </div>
 
-            {/* ইউজার অথেন্টিকেশন / ড্রপডাউন (Login if required for admin) */}
+            {/* ইউজার অথেন্টিকেশন */}
             {!auth.user ? (
               <div className="auth-links desktop-only ml-2">
                 <NavLink
@@ -157,19 +150,39 @@ const Header = () => {
                 </div>
               </div>
             )}
-          </div>
-        </div>
 
-        {/* মোবাইলের জন্য আলাদা সার্চ বার (হেডারের নিচে বসবে) */}
-        <div className="mobile-search-bar">
-          <Search />
+            {/* 🔴 নতুন: Expandable Search Icon (মোবাইল ও ডেক্সটপ উভয়ের জন্য) */}
+            <div className="search-action-wrapper ml-4 relative">
+              <button
+                className="search-toggle-btn text-gray-700 hover:text-emerald-600 transition-colors"
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                style={{
+                  fontSize: "1.25rem",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "5px",
+                }}
+              >
+                <i
+                  className={`fa-solid ${isSearchOpen ? "fa-xmark" : "fa-magnifying-glass"}`}
+                ></i>
+              </button>
+
+              {/* সার্চ বক্স যা ক্লিকে ওপেন হবে */}
+              <div
+                className={`expandable-search-box ${isSearchOpen ? "open" : ""}`}
+              >
+                <Search />
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
-      {/* ৩. মোবাইল সাইডবার (Drawer) */}
+      {/* ৩. মোবাইল সাইডবার (Drawer) - অপরিবর্তিত আছে */}
       <div className={`mobile-sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-header">
-          {/* 🔴 মোবাইলের মেনুর উপরের লোগো এখানে বসবে */}
           <Link to="/" onClick={() => setIsOpen(false)}>
             <img
               src="/img/madrasatuz-zaytuna-logo.svg"
@@ -177,8 +190,6 @@ const Header = () => {
               style={{ height: "45px", width: "auto" }}
             />
           </Link>
-
-          {/* ক্লোজ বাটন */}
           <button className="close-btn" onClick={() => setIsOpen(false)}>
             <i className="fa-solid fa-xmark"></i>
           </button>
@@ -194,11 +205,9 @@ const Header = () => {
 
           <div className="mobile-auth-section">
             {!auth.user ? (
-              <>
-                <NavLink to="/login" onClick={() => setIsOpen(false)}>
-                  <i className="fa-solid fa-arrow-right-to-bracket"></i> Login
-                </NavLink>
-              </>
+              <NavLink to="/login" onClick={() => setIsOpen(false)}>
+                <i className="fa-solid fa-arrow-right-to-bracket"></i> Login
+              </NavLink>
             ) : (
               <>
                 <div className="mobile-user-info">

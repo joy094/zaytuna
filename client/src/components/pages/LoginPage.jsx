@@ -68,7 +68,7 @@ const Login = () => {
           </button>
 
           {/* === নতুন যুক্ত করা রেজিস্ট্রেশন লিংক === */}
-          <div style={{ marginTop: "15px", textAlign: "center" }}>
+          {/* <div style={{ marginTop: "15px", textAlign: "center" }}>
             <p style={{ fontSize: "14px", color: "#666", marginBottom: "0" }}>
               Don't have an account?{" "}
               <span
@@ -83,7 +83,7 @@ const Login = () => {
                 Register Here
               </span>
             </p>
-          </div>
+          </div> */}
           {/* ================================== */}
         </form>
       </div>

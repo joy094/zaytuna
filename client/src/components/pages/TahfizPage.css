@@ -1,0 +1,282 @@
+/* =========================================
+   Tahfiz Wing - Modern Styles
+========================================= */
+
+.tahfiz-modern-wrapper {
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  background-color: #fcfdfc;
+  color: #1f2937;
+  padding-bottom: 80px;
+}
+
+.container-box {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+/* =========================================
+   1. Header Section
+========================================= */
+.tahfiz-header-section {
+  padding: 60px 0 40px 0;
+  border-bottom: 1px solid #f3f4f6;
+  background-color: #ffffff;
+}
+
+.breadcrumb-text {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 25px;
+}
+
+.main-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #2c3e2d; /* Dark Olive */
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.main-subtitle {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: #4b5563;
+  max-width: 850px;
+}
+
+/* =========================================
+   2. Main Grid Layout
+========================================= */
+.tahfiz-content-section {
+  padding: 60px 0;
+}
+
+.tahfiz-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* =========================================
+   3. Left Column (Requirements & After Hifz)
+========================================= */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 20px;
+}
+
+.mt-10 {
+  margin-top: 50px;
+}
+
+.requirements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.requirements-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 1.05rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.list-icon {
+  color: #059669; /* Emerald */
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* Highlight Box (After Hifz) */
+.highlight-box {
+  background-color: #f1f8ed; /* Very light green */
+  border-left: 4px solid #059669;
+  padding: 25px;
+  border-radius: 0 12px 12px 0;
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.highlight-icon {
+  color: #059669;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.highlight-box p {
+  font-size: 1.05rem;
+  color: #2c3e2d;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* =========================================
+   4. Right Column (Schedule Card)
+========================================= */
+.schedule-card {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+}
+
+.schedule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px 30px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.schedule-header h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.time-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #fef3c7; /* Pale orange/yellow */
+  color: #92400e;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 50px;
+}
+
+/* Schedule Rows */
+.schedule-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.schedule-row {
+  display: flex;
+  align-items: flex-start;
+  padding: 18px 30px;
+  border-bottom: 1px solid #f9fafb;
+  transition: background-color 0.2s;
+}
+
+.schedule-row:hover {
+  background-color: #fcfcfc;
+}
+
+.schedule-row:last-child {
+  border-bottom: none;
+}
+
+.time-col {
+  width: 100px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+.task-col {
+  flex: 1;
+  font-size: 1rem;
+  color: #374151;
+  padding-right: 15px;
+  line-height: 1.5;
+}
+
+.badge-col {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 80px;
+}
+
+/* Schedule Tags (Like the image) */
+.badge-col span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.tag-hifz {
+  background-color: #ffedd5;
+  color: #c2410c;
+} /* Light peach */
+.tag-academic {
+  background-color: #ecfdf5;
+  color: #047857;
+} /* Light green */
+.tag-activity {
+  background-color: #fefce8;
+  color: #854d0e;
+} /* Light yellow */
+
+/* Footer Note */
+.schedule-footer {
+  padding: 20px 30px;
+  background-color: #f9fafb;
+  font-size: 0.85rem;
+  color: #6b7280;
+  border-top: 1px solid #f3f4f6;
+}
+
+/* =========================================
+   5. Responsive Design
+========================================= */
+@media (max-width: 992px) {
+  .tahfiz-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 2.2rem;
+  }
+
+  .schedule-header,
+  .schedule-row,
+  .schedule-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .schedule-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .time-col {
+    width: 100%;
+    color: #059669; /* Make time stand out on mobile */
+  }
+
+  .badge-col {
+    justify-content: flex-start;
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-title {
+    font-size: 1.8rem;
+  }
+}

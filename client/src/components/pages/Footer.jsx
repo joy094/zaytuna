@@ -135,8 +135,8 @@ const Footer = () => {
           </p>
           <div className="payment-methods">
             {/* মাদ্রাসার জন্য পেমেন্ট আইকনের বদলে অন্য কোনো তথ্য বা সোশ্যাল আইকনও রাখতে পারেন। আপাতত আপনার আগের ডিজাইনের মতই রাখা হলো। */}
-            <span>Powered by: </span>
-            <strong>MD Jakaria</strong>
+            {/* <span>Powered by: </span>
+            <strong>MD Jakaria</strong> */}
           </div>
         </div>
       </div>

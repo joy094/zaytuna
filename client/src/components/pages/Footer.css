@@ -265,3 +265,11 @@
     gap: 8px;
   }
 }
+
+/* মোবাইলের স্ক্রিনের জন্য ফুটারের নিচে জায়গা তৈরি করা */
+@media (max-width: 768px) {
+  /* এখানে '.footer-area' এর জায়গায় আপনার ফুটারের মূল ক্লাসটির নাম দিন */
+  .footer-area {
+    padding-bottom: 65px !important;
+  }
+}

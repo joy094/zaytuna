@@ -25,6 +25,11 @@ import AdminRoute from "./components/AdminRoute/AdminRoute";
 // Components & Pages
 
 import Home from "./components/pages/HomePage";
+import About from "./components/pages/AboutPage"
+import Academic   from "./components/pages/AcademicPage"
+import Tahfiz from "./components/pages/Tahfiz";
+import Tarbiyah from "./components/pages/Tarbiyah";
+import Addmission from "./components/pages/Addmission"
 import Register from "./components/pages/RegisterPage";
 import Login from "./components/pages/LoginPage";
 import Dashboard from "./components/UserPrivateRoute/UserDashboard";
@@ -44,8 +49,7 @@ import CreateProduct from "./components/AdminRoute/CreateProduct";
 import Users from "./components/AdminRoute/Users";
 import CartPage from "./components/UserPrivateRoute/Cart"; // Cart Page ইমপোর্ট
 
-import ProductDetails from "./components/pages/ProductDetaills"; // Product Details Page ইমপোর্ট
-import CategoryProduct from "./components/pages/CategoryProduct"; // Category Product Page ইমপোর্ট
+
 
 import UpdateProduct from "./components/AdminRoute/UpdateProduct";
 import Products from "./components/AdminRoute/Products";
@@ -55,24 +59,18 @@ import ManageSlider from "./components/AdminRoute/ManageSlider"; // পাথ �
 
 // ================= PAGES =================
 
-// // About Page
-// const About = () => (
-//   <Layout>
-//     <div className="container">
-//       <h1>About Us</h1>
-//       <p>Your shop description goes here.</p>
-//     </div>
-//   </Layout>
-// );
 
-// ================= COMPONENTS =================
 
 // ================= MAIN APP COMPONENT =================
 
 const App = () => (
   <Routes>
     <Route path="/" element={<Home />} />
-    {/* <Route path="/about" element={<About />} /> */}
+    <Route path="/about" element={<About />} />
+    <Route path="/academic" element={<Academic />} />
+    <Route path="/tahfiz" element={<Tahfiz />} />
+    <Route path="/tarbiyah" element={<Tarbiyah />} />
+    <Route path="/admissions" element={<Addmission />} />
     <Route path="/register" element={<Register />} />
     <Route path="/login" element={<Login />} />
     <Route path="/fogot-password" element={<ForgotPassword />} />
@@ -80,8 +78,8 @@ const App = () => (
 
     {/* Cart Route (Public Access) */}
     <Route path="/cart" element={<CartPage />} />
-    <Route path="/product/:slug" element={<ProductDetails />} />
-    <Route path="/category/:slug" element={<CategoryProduct />} />
+   
+   
 
     {/* User Routes */}
     <Route path="/dashboard" element={<PrivateRoute />}>
