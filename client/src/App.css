@@ -342,11 +342,12 @@ input:focus {
 }
 
 .bottom-nav .nav-item.active {
-  color: var(--primary);
+  color: var(--primary) !important; /* !important যুক্ত করা হলো */
 }
 
 .bottom-nav .nav-item.active i {
   transform: translateY(-3px);
+  color: var(--primary) !important; /* আইকনেও !important দেওয়া হলো */
 }
 
 /* --- Bottom Nav Cart Badge Fix --- */
