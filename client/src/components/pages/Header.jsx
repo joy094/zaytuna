@@ -198,7 +198,7 @@ const Header = () => {
         <div className="sidebar-content">
           <button
             className="call-order-btn bg-emerald-100 text-emerald-800"
-            onClick={() => (window.location.href = "tel:+8801817141213")}
+            onClick={() => (window.location.href = "tel:+8801841515454")}
           >
             <i className="fa-solid fa-phone-volume"></i> Call Admission Office
           </button>
