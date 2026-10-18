@@ -26,6 +26,7 @@ import AdminRoute from "./components/AdminRoute/AdminRoute";
 
 import Home from "./components/pages/HomePage";
 import About from "./components/pages/AboutPage";
+import Contact from "./components/pages/Contact";
 import Academic from "./components/pages/AcademicPage";
 import Tahfiz from "./components/pages/Tahfiz";
 import Tarbiyah from "./components/pages/Tarbiyah";
@@ -41,6 +42,8 @@ import Layout from "./components/pages/Layout";
 
 import AdminMenu from "./components/AdminRoute/AdminMenu";
 import UserMenu from "./components/UserPrivateRoute/UserMenu";
+
+import AdminLayout from "./components/AdminRoute/AdminLayout"; // আপনার ফোল্ডার পাথ অনুযায়ী
 import ManageApplications from "./components/AdminRoute/ManageApplication"; // Import the ManageApplications component
 import Orders from "./components/UserPrivateRoute/Orders";
 import AdminOrders from "./components/AdminRoute/AdminOrder";
@@ -64,6 +67,7 @@ const App = () => (
   <Routes>
     <Route path="/" element={<Home />} />
     <Route path="/about" element={<About />} />
+    <Route path="/contact" element={<Contact />} />
     <Route path="/academic" element={<Academic />} />
     <Route path="/tahfiz" element={<Tahfiz />} />
     <Route path="/tarbiyah" element={<Tarbiyah />} />
@@ -85,22 +89,24 @@ const App = () => (
 
     {/* Admin Routes */}
     <Route path="/dashboard" element={<AdminRoute />}>
-      <Route path="admin" element={<AdminDashboard />} />
-      <Route
-        path="admin/manage-applications"
-        element={<ManageApplications />}
-      />
+      <Route element={<AdminLayout />}>
+        <Route path="admin" element={<AdminDashboard />} />
+        <Route
+          path="admin/manage-applications"
+          element={<ManageApplications />}
+        />
 
-      <Route path="admin/create-notice" element={<CreateNotice />} />
-      <Route path="admin/products" element={<Products />} />
-      <Route path="admin/update-product/:slug" element={<UpdateProduct />} />
-      <Route path="admin/create-product" element={<CreateProduct />} />
-      <Route path="admin/users" element={<Users />} />
-      <Route path="admin/orders" element={<AdminOrders />} />
-      <Route path="admin/manage-slider" element={<ManageSlider />} />
+        <Route path="admin/create-notice" element={<CreateNotice />} />
+        <Route path="admin/products" element={<Products />} />
+        <Route path="admin/update-product/:slug" element={<UpdateProduct />} />
+        <Route path="admin/create-product" element={<CreateProduct />} />
+        <Route path="admin/users" element={<Users />} />
+        <Route path="admin/orders" element={<AdminOrders />} />
+        <Route path="admin/manage-slider" element={<ManageSlider />} />
+      </Route>
+
+      <Route path="*" element={<NotfoundPage />} />
     </Route>
-
-    <Route path="*" element={<NotfoundPage />} />
   </Routes>
 );
 

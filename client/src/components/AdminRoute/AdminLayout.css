@@ -1,0 +1,44 @@
+/* src/components/AdminLayout.css */
+
+.admin-layout-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 85vh;
+  background-color: #f9fafb;
+}
+
+.admin-sidebar-section {
+  width: 260px;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  flex-shrink: 0;
+}
+
+.admin-content-section {
+  flex-grow: 1;
+  padding: 2rem;
+  width: calc(100% - 260px);
+  overflow-x: auto;
+}
+
+/* =======================================
+   Mobile Responsive (ছোট স্ক্রিনের জন্য)
+======================================= */
+@media (max-width: 768px) {
+  .admin-layout-wrapper {
+    flex-direction: column; /* মোবাইলে মেনু উপরে এবং কন্টেন্ট নিচে থাকবে */
+  }
+
+  .admin-sidebar-section {
+    width: 100%;
+    padding: 1rem;
+    border-right: none;
+    border-bottom: 2px solid #e5e7eb; /* মেনুর নিচে বর্ডার */
+  }
+
+  .admin-content-section {
+    width: 100%;
+    padding: 1rem;
+  }
+}

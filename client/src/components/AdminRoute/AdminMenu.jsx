@@ -38,14 +38,14 @@ function AdminMenu() {
         </NavLink> */}
 
         {/* ================= নতুন যুক্ত করা হলো: স্লাইডার ম্যানেজমেন্ট ================= */}
-        <NavLink
+        {/* <NavLink
           to="/dashboard/admin/manage-slider"
           className={({ isActive }) =>
             isActive ? "menu-item active" : "menu-item"
           }
         >
           Manage Slider
-        </NavLink>
+        </NavLink> */}
 
         <NavLink
           to="/dashboard/admin/manage-applications"

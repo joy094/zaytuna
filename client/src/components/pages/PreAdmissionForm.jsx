@@ -10,11 +10,24 @@ import "./PreAdmissionForm.css";
 // Reusable Radio Question Component
 const RadioGroup = ({ label, labelBn, name, options, value, onChange }) => (
   <div className="form-group">
-    <span className="form-label">{label}</span>
-    {labelBn && <span className="form-label-bn">{labelBn}</span>}
-    <div className="radio-group-container">
+    <label>
+      {label}
+      {labelBn && (
+        <span
+          style={{
+            display: "block",
+            color: "#6b7280",
+            fontSize: "0.9rem",
+            fontWeight: "400",
+          }}
+        >
+          {labelBn}
+        </span>
+      )}
+    </label>
+    <div className="radio-group">
       {options.map((opt, i) => (
-        <label key={i} className="radio-label">
+        <label key={i} className="custom-radio">
           <input
             type="radio"
             name={name}
@@ -173,13 +186,12 @@ export default function PreAdmissionForm({ onNavigate }) {
     }
 
     try {
-      // 🔴 axios রিকোয়েস্টে headers দিয়ে টোকেন পাঠানো হচ্ছে
       const res = await axios.post(
         "/api/v1/admission/submit-application",
         formData,
         {
           headers: {
-            Authorization: auth?.token, // আপনার auth context থেকে টোকেনটি পাঠানো হলো
+            Authorization: auth?.token,
           },
         },
       );
@@ -193,6 +205,7 @@ export default function PreAdmissionForm({ onNavigate }) {
       toast.error("Something went wrong!");
     }
   };
+
   if (!auth?.user) return null;
 
   const stepsList = ["Child", "Family", "Deen", "Home", "Habits", "Commitment"];
@@ -222,8 +235,8 @@ export default function PreAdmissionForm({ onNavigate }) {
             <p className="legend-bn">সন্তানের তথ্য</p>
 
             <div className="form-grid">
-              <label className="form-group">
-                <span className="form-label">Child's full name</span>
+              <div className="form-group">
+                <label>Child's full name</label>
                 <input
                   type="text"
                   className="form-control"
@@ -233,10 +246,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                     handleNestedChange("childInfo", "fullName", e.target.value)
                   }
                 />
-              </label>
+              </div>
 
-              <label className="form-group">
-                <span className="form-label">Date of birth</span>
+              <div className="form-group">
+                <label>Date of birth</label>
                 <input
                   type="date"
                   className="form-control"
@@ -246,10 +259,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                     handleNestedChange("childInfo", "dob", e.target.value)
                   }
                 />
-              </label>
+              </div>
 
-              <label className="form-group">
-                <span className="form-label">Gender</span>
+              <div className="form-group">
+                <label>Gender</label>
                 <select
                   className="form-control"
                   required
@@ -262,10 +275,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                 </select>
-              </label>
+              </div>
 
-              <label className="form-group">
-                <span className="form-label">Class sought for 2027</span>
+              <div className="form-group">
+                <label>Class sought for 2027</label>
                 <select
                   className="form-control"
                   required
@@ -292,10 +305,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                     </option>
                   ))}
                 </select>
-              </label>
+              </div>
 
-              <label className="form-group">
-                <span className="form-label">Current school or madrasa</span>
+              <div className="form-group">
+                <label>Current school or madrasa</label>
                 <input
                   type="text"
                   placeholder="None, if first school"
@@ -309,10 +322,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                     )
                   }
                 />
-              </label>
+              </div>
 
-              <label className="form-group">
-                <span className="form-label">Qur'an reading level</span>
+              <div className="form-group">
+                <label>Qur'an reading level</label>
                 <select
                   className="form-control"
                   required
@@ -339,13 +352,13 @@ export default function PreAdmissionForm({ onNavigate }) {
                     </option>
                   ))}
                 </select>
-              </label>
+              </div>
             </div>
 
-            <label className="form-group">
-              <span className="form-label">
+            <div className="form-group">
+              <label>
                 Does your child need any learning, health or behaviour support?
-              </span>
+              </label>
               <textarea
                 placeholder="Leave blank if none"
                 className="form-control"
@@ -358,7 +371,7 @@ export default function PreAdmissionForm({ onNavigate }) {
                   )
                 }
               ></textarea>
-            </label>
+            </div>
           </fieldset>
         )}
 
@@ -368,8 +381,8 @@ export default function PreAdmissionForm({ onNavigate }) {
             <legend>Family</legend>
             <p className="legend-bn">পরিবার</p>
             <div className="form-grid">
-              <label className="form-group">
-                <span className="form-label">Father's name</span>
+              <div className="form-group">
+                <label>Father's name</label>
                 <input
                   type="text"
                   className="form-control"
@@ -383,9 +396,9 @@ export default function PreAdmissionForm({ onNavigate }) {
                     )
                   }
                 />
-              </label>
-              <label className="form-group">
-                <span className="form-label">Father's occupation</span>
+              </div>
+              <div className="form-group">
+                <label>Father's occupation</label>
                 <input
                   type="text"
                   placeholder="e.g. Engineer, business"
@@ -400,10 +413,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                     )
                   }
                 />
-              </label>
+              </div>
 
-              <label className="form-group">
-                <span className="form-label">Mother's name</span>
+              <div className="form-group">
+                <label>Mother's name</label>
                 <input
                   type="text"
                   className="form-control"
@@ -417,9 +430,9 @@ export default function PreAdmissionForm({ onNavigate }) {
                     )
                   }
                 />
-              </label>
-              <label className="form-group">
-                <span className="form-label">Mother's occupation</span>
+              </div>
+              <div className="form-group">
+                <label>Mother's occupation</label>
                 <input
                   type="text"
                   placeholder="e.g. Homemaker"
@@ -434,10 +447,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                     )
                   }
                 />
-              </label>
+              </div>
 
-              <label className="form-group">
-                <span className="form-label">The child lives with</span>
+              <div className="form-group">
+                <label>The child lives with</label>
                 <select
                   className="form-control"
                   required
@@ -459,9 +472,9 @@ export default function PreAdmissionForm({ onNavigate }) {
                     ),
                   )}
                 </select>
-              </label>
-              <label className="form-group">
-                <span className="form-label">Primary mobile</span>
+              </div>
+              <div className="form-group">
+                <label>Primary mobile</label>
                 <input
                   type="text"
                   placeholder="01XXXXXXXXX"
@@ -477,10 +490,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                     )
                   }
                 />
-              </label>
+              </div>
 
-              <label className="form-group">
-                <span className="form-label">Email</span>
+              <div className="form-group">
+                <label>Email</label>
                 <input
                   type="email"
                   className="form-control"
@@ -489,9 +502,9 @@ export default function PreAdmissionForm({ onNavigate }) {
                     handleNestedChange("familyInfo", "email", e.target.value)
                   }
                 />
-              </label>
-              <label className="form-group">
-                <span className="form-label">Area of residence</span>
+              </div>
+              <div className="form-group">
+                <label>Area of residence</label>
                 <input
                   type="text"
                   placeholder="e.g. Mohammadpur"
@@ -506,12 +519,10 @@ export default function PreAdmissionForm({ onNavigate }) {
                     )
                   }
                 />
-              </label>
+              </div>
             </div>
-            <label className="form-group">
-              <span className="form-label">
-                A reference who knows your family (optional)
-              </span>
+            <div className="form-group">
+              <label>A reference who knows your family (optional)</label>
               <input
                 type="text"
                 placeholder="Name and mobile"
@@ -521,7 +532,7 @@ export default function PreAdmissionForm({ onNavigate }) {
                   handleNestedChange("familyInfo", "reference", e.target.value)
                 }
               />
-            </label>
+            </div>
           </fieldset>
         )}
 
@@ -631,7 +642,7 @@ export default function PreAdmissionForm({ onNavigate }) {
             <p className="legend-bn">ঘরের পরিবেশ ও জীবিকা</p>
             <div className="form-grid">
               <div className="form-group">
-                <span className="form-label">Main source of family income</span>
+                <label>Main source of family income</label>
                 <select
                   className="form-control"
                   required
@@ -661,10 +672,8 @@ export default function PreAdmissionForm({ onNavigate }) {
                   ))}
                 </select>
               </div>
-              <label className="form-group">
-                <span className="form-label">
-                  Describe the work or business
-                </span>
+              <div className="form-group">
+                <label>Describe the work or business</label>
                 <input
                   type="text"
                   placeholder="e.g. garment accessories wholesale"
@@ -679,7 +688,7 @@ export default function PreAdmissionForm({ onNavigate }) {
                     )
                   }
                 />
-              </label>
+              </div>
             </div>
 
             <RadioGroup
@@ -932,12 +941,20 @@ export default function PreAdmissionForm({ onNavigate }) {
             />
 
             <div className="form-group mt-6">
-              <span className="form-label">
+              <label>
                 Tell us about your family and why you are choosing Zaytuna
-              </span>
-              <span className="form-label-bn">
-                আপনার পরিবার সম্পর্কে এবং কেন যাইতুনা বেছে নিচ্ছেন, লিখুন
-              </span>
+                <span
+                  className="form-label-bn"
+                  style={{
+                    display: "block",
+                    color: "#6b7280",
+                    fontSize: "0.9rem",
+                    fontWeight: "400",
+                  }}
+                >
+                  আপনার পরিবার সম্পর্কে এবং কেন যাইতুনা বেছে নিচ্ছেন, লিখুন
+                </span>
+              </label>
               <textarea
                 className="form-control"
                 required
@@ -1018,10 +1035,8 @@ export default function PreAdmissionForm({ onNavigate }) {
               </label>
             </div>
 
-            <label className="form-group mt-4">
-              <span className="form-label">
-                Guardian's full name as signature
-              </span>
+            <div className="form-group mt-4">
+              <label>Guardian's full name as signature</label>
               <input
                 type="text"
                 className="form-control"
@@ -1035,7 +1050,7 @@ export default function PreAdmissionForm({ onNavigate }) {
                   )
                 }
               />
-            </label>
+            </div>
           </fieldset>
         )}
 
@@ -1043,23 +1058,34 @@ export default function PreAdmissionForm({ onNavigate }) {
         <div className="form-actions">
           <button
             type="button"
-            className="btn-outline"
+            className="btn-form btn-prev"
             onClick={() =>
               currentStep === 0
                 ? onNavigate("main")
                 : setCurrentStep((prev) => prev - 1)
             }
           >
+            <i
+              className={`fa-solid ${currentStep === 0 ? "fa-xmark" : "fa-arrow-left"}`}
+            ></i>
             {currentStep === 0 ? "Cancel" : "Back"}
           </button>
 
           {currentStep < 5 ? (
-            <button type="button" className="btn-next" onClick={handleNextStep}>
-              Continue
+            <button
+              type="button"
+              className="btn-form btn-next"
+              onClick={handleNextStep}
+            >
+              Continue <i className="fa-solid fa-arrow-right"></i>
             </button>
           ) : (
-            <button type="button" onClick={handleSubmit} className="btn-submit">
-              Submit Application
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="btn-form btn-submit"
+            >
+              Submit Application <i className="fa-solid fa-check"></i>
             </button>
           )}
         </div>

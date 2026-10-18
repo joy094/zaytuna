@@ -1,0 +1,142 @@
+/* src/components/AdminRoute/Notice.css */
+
+.create-notice-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* =========================================
+   Page Header
+========================================= */
+.notice-page-header {
+  margin-bottom: 25px;
+  border-left: 4px solid #059669; /* Emerald Green Border */
+  padding-left: 15px;
+}
+
+.notice-page-header h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 5px 0;
+}
+
+.notice-page-header p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* =========================================
+   Form Card
+========================================= */
+.notice-form-card {
+  background-color: #ffffff;
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f3f4f6;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+/* =========================================
+   Inputs & Textarea
+========================================= */
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background-color: #f9fafb;
+  color: #1f2937;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+  background-color: #ffffff;
+}
+
+textarea.form-control {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* =========================================
+   Buttons
+========================================= */
+.mt-4 {
+  margin-top: 30px;
+}
+
+.btn-publish {
+  background-color: #059669;
+  color: #ffffff;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+  width: auto;
+}
+
+.btn-publish:hover {
+  background-color: #047857;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(5, 150, 105, 0.2);
+}
+
+/* =========================================
+   Animation & Responsive
+========================================= */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .create-notice-container {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+
+  .notice-form-card {
+    padding: 20px;
+  }
+  
+  .notice-page-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .btn-publish {
+    width: 100%;
+  }
+}

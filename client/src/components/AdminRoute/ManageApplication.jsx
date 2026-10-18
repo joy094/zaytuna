@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/auth";
-import Layout from "../pages/Layout";
+
 import "./ManageApplication.css"; // CSS ফাইলটি ইমপোর্ট করা হলো
 
 export default function ManageApplications() {
@@ -46,7 +46,7 @@ export default function ManageApplications() {
   };
 
   return (
-    <Layout title="Manage Applications - Admin Dashboard">
+    <>
       <section className="page">
         <div className="wrap manage-app-container">
           <h2 className="page-title">Manage Applications</h2>
@@ -252,6 +252,6 @@ export default function ManageApplications() {
           )}
         </div>
       </section>
-    </Layout>
+    </>
   );
 }

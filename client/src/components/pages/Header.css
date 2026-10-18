@@ -78,6 +78,15 @@
   color: var(--nav-primary);
 }
 
+
+/* =========================================
+   Active Nav Menu State (Force Apply)
+========================================= */
+.header-right .desktop-menu-links .nav-item.active-nav {
+  color: #059669 !important; /* অ্যাকটিভ পেজের সবুজ রঙ */
+  border-bottom: 2px solid #059669 !important; /* নিচে সবুজ বর্ডার */
+  font-weight: 700 !important; /* লেখা বোল্ড হবে */
+}
 /* --- Cart Button --- */
 .cart-btn {
   position: relative;
