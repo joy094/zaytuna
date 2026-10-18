@@ -1,24 +1,38 @@
+// src/components/pages/Admission.jsx
+
 import React, { useState } from "react";
-import Layout from "./Layout"; // আপনার Layout কম্পোনেন্ট ইম্পোর্ট করা হলো
-import "./Admission.css"; // আপনার CSS ফাইল (যদি আলাদা থাকে)
+import { useNavigate } from "react-router-dom"; // রাউটিং এর জন্য
+import { useAuth } from "../../context/auth"; // আপনার Auth Context
+import { toast } from "react-toastify"; // নোটিফিকেশন দেখানোর জন্য
+
+import Layout from "./Layout";
+import PreAdmissionForm from "./PreAdmissionForm"; // 🔴 আপনার নতুন ৬ ধাপের ফর্মটি ইমপোর্ট করা হলো
+
+import "./Admission.css";
 
 export default function Admission() {
   const [activeSection, setActiveSection] = useState("main");
 
   return (
-    // Layout কম্পোনেন্ট দিয়ে পুরো পেজ র‍্যাপ করা হলো, ঠিক About পেজের মতো
     <Layout title={"Admissions - Madrasatuz Zaytuna International"}>
       <section className="page">
         <div className="wrap">
+          {/* Main Dashboard */}
           {activeSection === "main" && (
             <AdmissionMain onNavigate={setActiveSection} />
           )}
+
+          {/* 🔴 এখানে আমাদের নতুন PreAdmissionForm কল করা হয়েছে */}
           {activeSection === "pre-admission" && (
-            <PreAdmission onNavigate={setActiveSection} />
+            <PreAdmissionForm onNavigate={setActiveSection} />
           )}
+
+          {/* Track Application */}
           {activeSection === "track" && (
             <TrackApplication onNavigate={setActiveSection} />
           )}
+
+          {/* Final Admission Form */}
           {activeSection === "admission-form" && (
             <AdmissionFormAfterOffer onNavigate={setActiveSection} />
           )}
@@ -32,6 +46,19 @@ export default function Admission() {
 // 1. Main Admission Dashboard Component
 // ==========================================
 function AdmissionMain({ onNavigate }) {
+  const [auth] = useAuth();
+  const navigate = useNavigate();
+
+  // 🔴 স্টার্ট অ্যাডমিশন বাটনে ক্লিক করলে লগইন চেক করার লজিক
+  const handleStartAdmission = () => {
+    if (!auth?.user) {
+      toast.warning("অ্যাডমিশন ফর্ম পূরণ করতে দয়া করে আগে লগইন করুন!");
+      navigate("/login", { state: "/admissions" });
+    } else {
+      onNavigate("pre-admission");
+    }
+  };
+
   return (
     <div className="wrap">
       {/* Header Section */}
@@ -48,7 +75,7 @@ function AdmissionMain({ onNavigate }) {
         <div className="row mt-s">
           <button
             className="btn gold"
-            onClick={() => onNavigate("pre-admission")}
+            onClick={handleStartAdmission} // 🔴 এখানে নতুন ফাংশনটি কল করা হলো
           >
             Start pre-admission
           </button>
@@ -234,151 +261,6 @@ function AdmissionMain({ onNavigate }) {
             may incur actual costs, but there are no hidden school charges.
           </p>
         </details>
-      </div>
-    </div>
-  );
-}
-
-// ==========================================
-// 2. Pre-Admission Form Component
-// ==========================================
-function PreAdmission({ onNavigate }) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const nextStep = () => setCurrentStep((prev) => Math.min(prev + 1, 5));
-  const prevStep = () => setCurrentStep((prev) => Math.max(prev - 1, 0));
-
-  return (
-    <div className="wrap narrow">
-      <div className="page-head">
-        <p className="crumb">
-          <span
-            style={{ cursor: "pointer", color: "var(--muted)" }}
-            onClick={() => onNavigate("main")}
-          >
-            Admissions
-          </span>{" "}
-          / Pre-admission
-        </p>
-        <h2>Pre-admission form</h2>
-        <p className="bn" style={{ color: "var(--olive)" }}>
-          প্রাক-ভর্তি ফরম
-        </p>
-        <p className="muted">
-          This form helps the admission committee understand your family and
-          your child. Please answer honestly.
-        </p>
-      </div>
-
-      <div id="preWrap">
-        <div className="steps" id="preSteps">
-          <span
-            className={currentStep === 0 ? "on" : currentStep > 0 ? "done" : ""}
-          >
-            1 · Child
-          </span>
-          <span
-            className={currentStep === 1 ? "on" : currentStep > 1 ? "done" : ""}
-          >
-            2 · Family
-          </span>
-          <span
-            className={currentStep === 2 ? "on" : currentStep > 2 ? "done" : ""}
-          >
-            3 · Deen
-          </span>
-          <span
-            className={currentStep === 3 ? "on" : currentStep > 3 ? "done" : ""}
-          >
-            4 · Home
-          </span>
-          <span
-            className={currentStep === 4 ? "on" : currentStep > 4 ? "done" : ""}
-          >
-            5 · Habits
-          </span>
-          <span
-            className={currentStep === 5 ? "on" : currentStep > 5 ? "done" : ""}
-          >
-            6 · Commitment
-          </span>
-        </div>
-
-        <form onSubmit={(e) => e.preventDefault()}>
-          {currentStep === 0 && (
-            <fieldset>
-              <legend>About your child</legend>
-              <p className="legend-bn">সন্তানের তথ্য</p>
-              <div className="fgrid">
-                <label>
-                  Child's full name
-                  <input required />
-                </label>
-                <label>
-                  Date of birth
-                  <input type="date" required />
-                </label>
-                <label>
-                  Class sought for 2027
-                  <select required>
-                    <option value="">Select</option>
-                    <option>Play</option>
-                    <option>Nursery</option>
-                  </select>
-                </label>
-              </div>
-            </fieldset>
-          )}
-
-          {currentStep > 0 && currentStep < 5 && (
-            <fieldset>
-              <legend>Section {currentStep + 1}</legend>
-              <div className="stack">
-                <p className="muted">Form fields for this section go here.</p>
-              </div>
-            </fieldset>
-          )}
-
-          {currentStep === 5 && (
-            <fieldset>
-              <legend>Commitment</legend>
-              <p className="legend-bn">অঙ্গীকার</p>
-              <div className="q">
-                <p className="qt">If admitted, we commit to the following</p>
-                <label className="check">
-                  <input type="checkbox" required />
-                  Keep our child away from video games.
-                </label>
-              </div>
-              <label>
-                Guardian's signature
-                <input required />
-              </label>
-            </fieldset>
-          )}
-
-          <div className="form-nav mt">
-            <button
-              className="btn ghost"
-              type="button"
-              onClick={() =>
-                currentStep === 0 ? onNavigate("main") : prevStep()
-              }
-            >
-              {currentStep === 0 ? "Cancel" : "Back"}
-            </button>
-            <div className="row">
-              {currentStep < 5 ? (
-                <button className="btn" type="button" onClick={nextStep}>
-                  Continue
-                </button>
-              ) : (
-                <button className="btn gold" type="submit">
-                  Submit Application
-                </button>
-              )}
-            </div>
-          </div>
-        </form>
       </div>
     </div>
   );

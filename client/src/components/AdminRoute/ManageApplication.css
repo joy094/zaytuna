@@ -1,0 +1,212 @@
+/* =========================================
+   Manage Applications Styles (Admin)
+========================================= */
+.manage-app-container {
+  padding: 30px 0;
+  min-height: 70vh;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--nav-bg);
+  margin-bottom: 20px;
+}
+
+/* Responsive Table Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #e5e7eb;
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 700px; /* মোবাইলে স্ক্রল করার জন্য */
+}
+
+.app-table th,
+.app-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 14.5px;
+}
+
+.app-table th {
+  background-color: #f9fafb;
+  color: #374151;
+  font-weight: 600;
+}
+
+.app-table tr:hover {
+  background-color: #f8fafc;
+}
+
+.child-name {
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Score Badges */
+.score-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.score-high {
+  background-color: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.score-low {
+  background-color: #fef9c3;
+  color: #854d0e;
+  border: 1px solid #fef08a;
+}
+
+/* Status Dropdown */
+.status-select {
+  padding: 6px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #ffffff;
+  font-size: 13px;
+  cursor: pointer;
+  outline: none;
+  font-weight: 500;
+}
+
+.status-select:focus {
+  border-color: var(--primary);
+}
+
+/* Action Button */
+.btn-view {
+  padding: 6px 12px;
+  background-color: #0284c7;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.btn-view:hover {
+  background-color: #0369a1;
+  transform: translateY(-1px);
+}
+
+/* =========================================
+   Modal Styles (Document View)
+========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.btn-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.btn-close:hover {
+  background-color: #fecaca;
+}
+
+.modal-header {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.modal-section {
+  background: #f9fafb;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #f3f4f6;
+}
+
+.modal-section.full-width {
+  grid-column: 1 / -1;
+}
+
+.modal-section h4 {
+  color: #4d7c0f; /* Olive color from your theme */
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  border-bottom: 1px dashed #d1d5db;
+  padding-bottom: 6px;
+}
+
+.modal-section p {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.modal-section p strong {
+  color: #111827;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+  .modal-content {
+    padding: 20px;
+  }
+}

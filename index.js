@@ -11,6 +11,7 @@ import productRoutes from "./routes/productRoute.js";
 import { requireSignIn } from "./middleware/authMiddleware.js";
 import cors from "cors";
 import bannerRoutes from "./routes/bannerRoute.js";
+import admissionRoutes from "./routes/admissionRoutes.js";
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -29,7 +30,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/banner", bannerRoutes);
-
+app.use("/api/v1/admission", admissionRoutes);
 //get route
 app.get("/", (req, res) => {
   res.send({

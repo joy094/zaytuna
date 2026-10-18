@@ -18,14 +18,14 @@ function UserMenu() {
           My Profile
         </NavLink>
 
-        <NavLink
+        {/* <NavLink
           to="/dashboard/user/orders"
           className={({ isActive }) =>
             isActive ? "menu-item active" : "menu-item"
           }
         >
           My Orders
-        </NavLink>
+        </NavLink> */}
       </div>
     </div>
   );

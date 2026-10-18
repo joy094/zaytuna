@@ -10,32 +10,32 @@ function AdminMenu() {
         <h2 className="menu-title">Admin Panel</h2>
 
         <NavLink
-          to="/dashboard/admin/create-category"
+          to="/dashboard/admin/create-notice"
           className={({ isActive }) =>
             isActive ? "menu-item active" : "menu-item"
           }
         >
-          Create Category
+          Create Notice
         </NavLink>
 
-        <NavLink
+        {/* <NavLink
           to="/dashboard/admin/create-product"
           className={({ isActive }) =>
             isActive ? "menu-item active" : "menu-item"
           }
         >
           Create Product
-        </NavLink>
+        </NavLink> */}
 
         {/* --- এটি অবশ্যই যুক্ত করতে হবে (প্রোডাক্ট এডিট/ডিলিট করার গেটওয়ে) --- */}
-        <NavLink
-          to="/dashboard/admin/products"
+        {/* <NavLink
+          to="/dashboard/admin/all-applications"
           className={({ isActive }) =>
             isActive ? "menu-item active" : "menu-item"
           }
         >
-          All Products
-        </NavLink>
+          All Aplications
+        </NavLink> */}
 
         {/* ================= নতুন যুক্ত করা হলো: স্লাইডার ম্যানেজমেন্ট ================= */}
         <NavLink
@@ -48,12 +48,12 @@ function AdminMenu() {
         </NavLink>
 
         <NavLink
-          to="/dashboard/admin/orders"
+          to="/dashboard/admin/manage-applications"
           className={({ isActive }) =>
             isActive ? "menu-item active" : "menu-item"
           }
         >
-          Manage Orders
+          Manage Applications
         </NavLink>
 
         <NavLink

@@ -25,11 +25,11 @@ import AdminRoute from "./components/AdminRoute/AdminRoute";
 // Components & Pages
 
 import Home from "./components/pages/HomePage";
-import About from "./components/pages/AboutPage"
-import Academic   from "./components/pages/AcademicPage"
+import About from "./components/pages/AboutPage";
+import Academic from "./components/pages/AcademicPage";
 import Tahfiz from "./components/pages/Tahfiz";
 import Tarbiyah from "./components/pages/Tarbiyah";
-import Addmission from "./components/pages/Addmission"
+import Addmission from "./components/pages/Addmission";
 import Register from "./components/pages/RegisterPage";
 import Login from "./components/pages/LoginPage";
 import Dashboard from "./components/UserPrivateRoute/UserDashboard";
@@ -41,15 +41,14 @@ import Layout from "./components/pages/Layout";
 
 import AdminMenu from "./components/AdminRoute/AdminMenu";
 import UserMenu from "./components/UserPrivateRoute/UserMenu";
+import ManageApplications from "./components/AdminRoute/ManageApplication"; // Import the ManageApplications component
 import Orders from "./components/UserPrivateRoute/Orders";
 import AdminOrders from "./components/AdminRoute/AdminOrder";
 import Profile from "./components/UserPrivateRoute/Profile";
-import CreateCategory from "./components/AdminRoute/CreateCategory";
+import CreateNotice from "./components/AdminRoute/CreateNotice";
 import CreateProduct from "./components/AdminRoute/CreateProduct";
 import Users from "./components/AdminRoute/Users";
 import CartPage from "./components/UserPrivateRoute/Cart"; // Cart Page ইমপোর্ট
-
-
 
 import UpdateProduct from "./components/AdminRoute/UpdateProduct";
 import Products from "./components/AdminRoute/Products";
@@ -58,8 +57,6 @@ import ScrollToTop from "./components/ScrollToTop"; // ScrollToTop Component ই
 import ManageSlider from "./components/AdminRoute/ManageSlider"; // পাথ ঠিক করে ইম্পোর্ট করুন
 
 // ================= PAGES =================
-
-
 
 // ================= MAIN APP COMPONENT =================
 
@@ -78,8 +75,6 @@ const App = () => (
 
     {/* Cart Route (Public Access) */}
     <Route path="/cart" element={<CartPage />} />
-   
-   
 
     {/* User Routes */}
     <Route path="/dashboard" element={<PrivateRoute />}>
@@ -91,8 +86,12 @@ const App = () => (
     {/* Admin Routes */}
     <Route path="/dashboard" element={<AdminRoute />}>
       <Route path="admin" element={<AdminDashboard />} />
+      <Route
+        path="admin/manage-applications"
+        element={<ManageApplications />}
+      />
 
-      <Route path="admin/create-category" element={<CreateCategory />} />
+      <Route path="admin/create-notice" element={<CreateNotice />} />
       <Route path="admin/products" element={<Products />} />
       <Route path="admin/update-product/:slug" element={<UpdateProduct />} />
       <Route path="admin/create-product" element={<CreateProduct />} />
