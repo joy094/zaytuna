@@ -1,43 +1,68 @@
+/* client/src/components/UserPrivateRoute/UserMenu.css */
 
-
-/*usermenu css */
-/* User Menu Sidebar Style */
 .user-menu-container {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
   overflow: hidden;
   height: fit-content;
+  font-family: 'Hind Siliguri', sans-serif;
 }
 
-/* User Menu Title (Different color from Admin for visual distinction) */
+/* User Menu Title */
 .user-menu-container .menu-title {
-  background-color: #ff6347; /* Theme Color (Tomato) */
-  color: #fff;
-  padding: 15px;
-  font-size: 1.2rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%); /* Emerald Green Gradient */
+  color: #ffffff;
+  padding: 16px 20px;
+  font-size: 1.15rem;
+  font-weight: 700;
   text-align: center;
   margin: 0;
-}
-
-/* List group and items inherited from previous styles */
-.menu-item {
-  padding: 15px 20px;
-  text-decoration: none;
-  color: #555;
-  font-weight: 500;
-  border-bottom: 1px solid #eee;
-  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
   display: block;
 }
 
-.menu-item:hover {
-  background-color: #fff5f3;
-  color: #ff6347;
-  padding-left: 25px;
+/* Menu Items */
+.menu-item {
+  padding: 14px 20px;
+  text-decoration: none;
+  color: #4b5563;
+  font-weight: 600;
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.25s ease-in-out;
+  display: block;
+  font-size: 0.98rem;
 }
 
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+/* Hover Effect */
+.menu-item:hover {
+  background-color: #ecfdf5; /* Light Emerald Tint */
+  color: #059669; /* Emerald Green */
+  padding-left: 25px; /* Smooth Sliding Animation */
+}
+
+/* Active Menu Style */
 .menu-item.active {
-  background-color: #333; /* Active state dark color */
-  color: #fff;
+  background-color: #059669; /* Emerald Green */
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
+}
+
+.menu-item.active:hover {
+  background-color: #047857;
+  color: #ffffff;
+  padding-left: 20px;
+}
+
+/* Responsive adjustment */
+@media (max-width: 768px) {
+  .user-menu-container {
+    margin-bottom: 20px;
+  }
 }

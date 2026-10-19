@@ -1,19 +1,29 @@
-/* Admin Menu Sidebar Style */
+/* client/src/components/AdminRoute/AdminMenu.css */
+
 .admin-menu-container {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f3f4f6;
   overflow: hidden;
   height: fit-content;
+  font-family: "Hind Siliguri", sans-serif;
 }
 
+/* Menu Header Title */
 .menu-title {
-  background-color: #333;
-  color: #fff;
-  padding: 15px;
-  font-size: 1.2rem;
+  background: linear-gradient(
+    135deg,
+    #059669 0%,
+    #047857 100%
+  ); /* Emerald Green Gradient */
+  color: #ffffff;
+  padding: 16px 20px;
+  font-size: 1.15rem;
+  font-weight: 700;
   text-align: center;
   margin: 0;
+  letter-spacing: 0.5px;
 }
 
 .list-group {
@@ -22,13 +32,14 @@
 }
 
 .menu-item {
-  padding: 15px 20px;
+  padding: 14px 20px;
   text-decoration: none;
-  color: #555;
-  font-weight: 500;
-  border-bottom: 1px solid #eee;
-  transition: all 0.3s ease;
+  color: #4b5563;
+  font-weight: 600;
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.25s ease-in-out;
   display: block;
+  font-size: 0.98rem;
 }
 
 .menu-item:last-child {
@@ -37,19 +48,22 @@
 
 /* Hover Effect */
 .menu-item:hover {
-  background-color: #fff5f3; /* Light tomato tint */
-  color: #ff6347; /* Tomato color */
-  padding-left: 25px; /* Slight sliding animation */
+  background-color: #ecfdf5; /* Light Emerald Tint */
+  color: #059669; /* Emerald Green */
+  padding-left: 25px; /* Smooth Sliding Animation */
 }
 
 /* Active Menu Style */
 .menu-item.active {
-  background-color: #ff6347;
-  color: #fff;
+  background-color: #059669; /* Emerald Green */
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
 }
 
 .menu-item.active:hover {
-  color: #fff;
+  background-color: #047857;
+  color: #ffffff;
   padding-left: 20px;
 }
 

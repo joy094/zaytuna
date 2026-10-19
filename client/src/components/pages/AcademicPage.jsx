@@ -1,3 +1,5 @@
+// AcademicPage.jsx
+
 import React, { useState } from "react";
 import Layout from "./Layout";
 import { ArrowRight } from "lucide-react";

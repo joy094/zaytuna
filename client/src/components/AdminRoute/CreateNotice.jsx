@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 
 import { toast } from "react-toastify";
-// import axios from "axios"; // ব্যাকএন্ড কানেক্ট করার সময় এটি আনকমেন্ট করবেন
+import axios from "axios"; // ব্যাকএন্ড কানেক্ট করার সময় এটি আনকমেন্ট করবেন
 import "./CreateNotice.css";
 
 const CreateNotice = () => {
@@ -16,7 +16,7 @@ const CreateNotice = () => {
     e.preventDefault();
     try {
       // 🔴 পরে এখানে ডাটাবেজে ডাটা পাঠানোর জন্য axios.post ব্যবহার করবেন
-      // const res = await axios.post("/api/v1/notice/create", { title, description, status });
+      const res = await axios.post("/api/v1/notice/create", { title, description, status });
 
       // ডেমো সাকসেস মেসেজ
       toast.success("Notice Published Successfully!");

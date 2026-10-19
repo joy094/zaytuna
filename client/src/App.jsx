@@ -33,6 +33,8 @@ import Tarbiyah from "./components/pages/Tarbiyah";
 import Addmission from "./components/pages/Addmission";
 import Register from "./components/pages/RegisterPage";
 import Login from "./components/pages/LoginPage";
+import Notice from "./components/pages/Notice";
+import ManageNotices from "./components/AdminRoute/ManageNotices";
 import Dashboard from "./components/UserPrivateRoute/UserDashboard";
 import AdminDashboard from "./components/AdminRoute/AdminDashboard";
 import Search from "./components/pages/Search";
@@ -72,6 +74,7 @@ const App = () => (
     <Route path="/tahfiz" element={<Tahfiz />} />
     <Route path="/tarbiyah" element={<Tarbiyah />} />
     <Route path="/admissions" element={<Addmission />} />
+    <Route path="/notice" element={<Notice />} />
     <Route path="/register" element={<Register />} />
     <Route path="/login" element={<Login />} />
     <Route path="/fogot-password" element={<ForgotPassword />} />
@@ -95,6 +98,7 @@ const App = () => (
           path="admin/manage-applications"
           element={<ManageApplications />}
         />
+        <Route path="admin/manage-notices" element={<ManageNotices />} />
 
         <Route path="admin/create-notice" element={<CreateNotice />} />
         <Route path="admin/products" element={<Products />} />

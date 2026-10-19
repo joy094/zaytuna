@@ -1,115 +1,126 @@
-/* src/components/AdminRoute/Notice.css */
+/* src/components/pages/Notice.css */
 
-.create-notice-container {
-  max-width: 800px;
-  margin: 2rem auto;
+@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap");
+
+.notice-page-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: "Hind Siliguri", sans-serif;
+  min-height: 60vh;
   animation: fadeIn 0.4s ease-in-out;
 }
 
 /* =========================================
-   Page Header
+   Header Section
 ========================================= */
-.notice-page-header {
-  margin-bottom: 25px;
-  border-left: 4px solid #059669; /* Emerald Green Border */
-  padding-left: 15px;
+.notice-header-section {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 2px solid #ecfdf5;
+  padding-bottom: 20px;
 }
 
-.notice-page-header h2 {
-  font-size: 1.8rem;
+.notice-header-section h1 {
+  font-size: 2.5rem;
+  color: #059669; /* Emerald Green */
+  margin: 0 0 10px 0;
   font-weight: 700;
-  color: #111827;
-  margin: 0 0 5px 0;
 }
 
-.notice-page-header p {
+.notice-subtitle {
   color: #6b7280;
-  margin: 0;
-  font-size: 1rem;
-}
-
-/* =========================================
-   Form Card
-========================================= */
-.notice-form-card {
-  background-color: #ffffff;
-  padding: 35px;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  border: 1px solid #f3f4f6;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 8px;
-  font-size: 0.95rem;
-}
-
-/* =========================================
-   Inputs & Textarea
-========================================= */
-.form-control {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-family: inherit;
-  background-color: #f9fafb;
-  color: #1f2937;
-  transition: all 0.3s ease;
-}
-
-.form-control:focus {
-  outline: none;
-  border-color: #059669;
-  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
-  background-color: #ffffff;
-}
-
-textarea.form-control {
-  resize: vertical;
-  line-height: 1.5;
-}
-
-/* =========================================
-   Buttons
-========================================= */
-.mt-4 {
-  margin-top: 30px;
-}
-
-.btn-publish {
-  background-color: #059669;
-  color: #ffffff;
-  padding: 14px 28px;
   font-size: 1.1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  transition: all 0.3s ease;
-  width: auto;
-}
-
-.btn-publish:hover {
-  background-color: #047857;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(5, 150, 105, 0.2);
+  margin: 0;
 }
 
 /* =========================================
-   Animation & Responsive
+   Notice List & Cards
+========================================= */
+.notice-list-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.notice-card {
+  background: #ffffff;
+  border-left: 5px solid #059669;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border: 1px solid #f3f4f6;
+  border-left-width: 5px;
+}
+
+.notice-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.1);
+}
+
+.notice-date {
+  display: inline-block;
+  background-color: #ecfdf5;
+  color: #059669;
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.notice-date i {
+  margin-right: 5px;
+}
+
+.notice-title {
+  font-size: 1.6rem;
+  color: #111827;
+  margin: 0 0 15px 0;
+  font-weight: 700;
+}
+
+.notice-desc {
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 1.05rem;
+  margin: 0;
+  white-space: pre-wrap; /* এটি টেক্সট এরিয়াতে দেওয়া স্পেস বা এন্টারকে সঠিকভাবে দেখাবে */
+}
+
+/* =========================================
+   States (Loading & Empty)
+========================================= */
+.loading-spinner {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #059669;
+  padding: 50px 0;
+  font-weight: 600;
+}
+
+.no-notice-msg {
+  text-align: center;
+  color: #6b7280;
+  font-size: 1.2rem;
+  padding: 50px 0;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px dashed #d1d5db;
+}
+
+.no-notice-msg i {
+  display: block;
+  font-size: 2.5rem;
+  color: #9ca3af;
+  margin-bottom: 10px;
+}
+
+/* =========================================
+   Animations & Responsive
 ========================================= */
 @keyframes fadeIn {
   from {
@@ -123,20 +134,19 @@ textarea.form-control {
 }
 
 @media (max-width: 640px) {
-  .create-notice-container {
-    padding: 1rem;
-    margin: 1rem auto;
+  .notice-header-section h1 {
+    font-size: 2rem;
   }
 
-  .notice-form-card {
+  .notice-card {
     padding: 20px;
   }
-  
-  .notice-page-header h2 {
-    font-size: 1.5rem;
+
+  .notice-title {
+    font-size: 1.3rem;
   }
 
-  .btn-publish {
-    width: 100%;
+  .notice-desc {
+    font-size: 1rem;
   }
 }

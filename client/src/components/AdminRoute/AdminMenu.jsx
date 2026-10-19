@@ -46,7 +46,14 @@ function AdminMenu() {
         >
           Manage Slider
         </NavLink> */}
-
+        <NavLink
+          to="/dashboard/admin/manage-notices"
+          className={({ isActive }) =>
+            isActive ? "menu-item active" : "menu-item"
+          }
+        >
+          Manage Notices
+        </NavLink>
         <NavLink
           to="/dashboard/admin/manage-applications"
           className={({ isActive }) =>

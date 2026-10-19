@@ -12,6 +12,7 @@ import { requireSignIn } from "./middleware/authMiddleware.js";
 import cors from "cors";
 import bannerRoutes from "./routes/bannerRoute.js";
 import admissionRoutes from "./routes/admissionRoutes.js";
+import noticeRoutes from "./routes/noticeRoute.js";
 
 // 🔴 Socket.io এর জন্য ইমপোর্ট
 import http from "http";
@@ -62,6 +63,7 @@ app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
 app.use("/api/v1/banner", bannerRoutes);
 app.use("/api/v1/admission", admissionRoutes);
+app.use("/api/v1/notice", noticeRoutes);
 
 //get route
 app.get("/", (req, res) => {
