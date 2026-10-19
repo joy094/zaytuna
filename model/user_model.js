@@ -17,19 +17,19 @@ const UserSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true, // বানান ঠিক করা হয়েছে
+      required: false, // বানান ঠিক করা হয়েছে
     },
     phone: {
       type: String,
-      required: true,
+      required: false,
     },
     address: {
       type: String,
-      required: true,
+      required: false,
     },
     answer: {
       type: String,
-      required: true,
+      required: false,
     },
     role: {
       type: Number,
