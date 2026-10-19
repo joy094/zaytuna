@@ -16,6 +16,10 @@ import { isAdmin, requireSignIn } from "../middleware/authMiddleware.js";
 
 import { deleteOrderController } from "../controller/deleteOrderController.js";
 
+import { googleLoginController } from "../controller/authController.js";
+
+
+
 const router = express.Router();
 
 // Register || POST
@@ -23,6 +27,9 @@ router.post("/register", registerController);
 
 // LOGIN || POST
 router.post("/login", loginController);
+
+// Google Login || POST
+router.post("/google-login", googleLoginController);
 
 // Forget password || POST
 router.post("/forgot-password", forgotPasswordController);

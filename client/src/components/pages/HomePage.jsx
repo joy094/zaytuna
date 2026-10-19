@@ -1,5 +1,9 @@
+// src/components/pages/HomePage.jsx
+
 import React from "react";
-import Layout from "./Layout"; // আপনার লেআউট কম্পোনেন্ট
+import { Link, useNavigate } from "react-router-dom"; // useNavigate ইমপোর্ট করা হলো
+import Layout from "./Layout";
+
 import {
   BookOpen,
   GraduationCap,
@@ -7,9 +11,11 @@ import {
   CalendarDays,
   ArrowRight,
 } from "lucide-react";
-import "./HomePage.css"; // Pure CSS ফাইলটি অবশ্যই ইমপোর্ট রাখবেন
+import "./HomePage.css";
 
 const Home = () => {
+  const navigate = useNavigate(); // হুক ইনিশিয়ালাইজ করা হলো
+
   return (
     <Layout title={"Madrasatuz Zaytuna International - Home"}>
       <div className="home-container">
@@ -20,16 +26,28 @@ const Home = () => {
             <h1 className="hero-title">
               Rooted in faith. Reaching for excellence.
             </h1>
-            <h2 className="hero-subtitle">মাদরাসাতুয যায়তুনা ইন্টারন্যাশনাল</h2>
+            <h2 className="hero-subtitle">
+              মাদরাসাতুয যায়তুনা ইন্টারন্যাশনাল
+            </h2>
             <p className="hero-desc">
               Nurturing future leaders with the perfect blend of Islamic morals
               and modern academic excellence.
             </p>
             <div className="hero-buttons">
-              <button className="btn btn-primary">
+              {/* Apply Now বাটন */}
+              <button
+                className="btn btn-primary"
+                onClick={() => navigate("/admissions")}
+              >
                 Apply Now <ArrowRight size={20} />
               </button>
-              <button className="btn btn-secondary">Discover Pathways</button>
+              {/* Discover Pathways বাটন */}
+              <button
+                className="btn btn-secondary"
+                onClick={() => navigate("/academic")}
+              >
+                Discover Pathways
+              </button>
             </div>
           </div>
         </section>
@@ -44,7 +62,7 @@ const Home = () => {
               "Read in the name of your Lord who created"
             </p>
             <p className="verse-bangla">
-              "পড়ুন আপনার রবের নামে, যিনি সৃষ্টি করেছেন" (সূরা আলাক: ১)
+              "পড়ুন আপনার রবের নামে, যিনি সৃষ্টি করেছেন" (সূরা আলাক: ১)
             </p>
           </div>
         </section>
@@ -105,7 +123,7 @@ const Home = () => {
               <p className="pathway-desc">
                 আমরা শিক্ষার্থীদের জন্য এমন একটি শিক্ষাব্যবস্থা তৈরি করেছি,
                 যেখানে তারা ফাউন্ডেশন কোর্সের পর নিজেদের পছন্দমতো ট্র্যাকে
-                পড়াশোনা চালিয়ে যেতে পারবে।
+                পড়াশোনা চালিয়ে যেতে পারবে।
               </p>
 
               <div className="pathway-list">
@@ -166,8 +184,20 @@ const Home = () => {
               <div className="form-card">
                 <h4>Ready to Apply?</h4>
                 <p>Complete the pre-admission form online.</p>
-                <button className="btn btn-apply">Start Application</button>
-                <button className="btn-link">View Admission Guide</button>
+                {/* Start Application বাটন */}
+                <button
+                  className="btn btn-apply"
+                  onClick={() => navigate("/admissions")}
+                >
+                  Start Application
+                </button>
+                {/* View Admission Guide বাটন */}
+                <button
+                  className="btn-link"
+                  onClick={() => navigate("/admissions")}
+                >
+                  View Admission Guide
+                </button>
               </div>
             </div>
           </div>

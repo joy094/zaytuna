@@ -72,7 +72,7 @@
 .hero-title {
   font-size: 3.5rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--white) !important;
   margin-bottom: 15px;
   letter-spacing: 1px;
 }
@@ -80,7 +80,7 @@
 .hero-subtitle {
   font-family: var(--font-bangla-hind);
   font-size: 2rem;
-  color: #6ee7b7; /* Emerald 300 */
+  color: #c4f8e3 !important;  /* Emerald 300 */
   margin-bottom: 20px;
 }
 
@@ -460,7 +460,7 @@
 ========================================= */
 @media (max-width: 992px) {
   .hero-title {
-    font-size: 3rem;
+    font-size: 1.25rem !important;
   }
   .pathway-container,
   .admission-container {

@@ -108,9 +108,9 @@ const App = () => (
         <Route path="admin/orders" element={<AdminOrders />} />
         <Route path="admin/manage-slider" element={<ManageSlider />} />
       </Route>
-
-      <Route path="*" element={<NotfoundPage />} />
     </Route>
+
+    <Route path="*" element={<NotfoundPage />} />
   </Routes>
 );
 

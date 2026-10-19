@@ -5,6 +5,7 @@ import user_model from "../model/user_model.js";
 import orderModel from "../model/orderModel.js"; // নতুন অর্ডার মডেল ইমপোর্ট
 import userModel from "../model/user_model.js"; // নতুন ইউজার মডেল ইমপোর্ট
 import JWT from "jsonwebtoken";
+import { OAuth2Client } from "google-auth-library";
 //REGISTE ROUTE LOGIC POST
 
 export const registerController = async (req, res) => {
@@ -283,6 +284,57 @@ export const getOrdersController = async (req, res) => {
     res.status(500).send({
       success: false,
       message: "Error While Getting Orders",
+      error,
+    });
+  }
+};
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+export const googleLoginController = async (req, res) => {
+  try {
+    const { idToken } = req.body;
+
+    // ১. গুগলের আইডি টোকেন ভেরিফাই করা
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const { name, email } = ticket.getPayload();
+
+    // ২. চেক করা ইউজার ডাটাবেজে আগে থেকে আছে কি না
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+      // ইউজার না থাকলে নতুন ইউজার ক্রিয়েট করা
+      user = await new userModel({
+        name,
+        email,
+      }).save();
+    }
+
+    // ৩. JWT টোকেন তৈরি করা
+    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.status(200).send({
+      success: true,
+      message: "Google Login Successful",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error in Google Login",
       error,
     });
   }
