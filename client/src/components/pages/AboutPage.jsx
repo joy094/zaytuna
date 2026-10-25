@@ -3,32 +3,67 @@ import Layout from "./Layout";
 import "./AboutPage.css";
 
 const About = () => {
-  const [selectedFloor, setSelectedFloor] = useState(2);
+  const [selectedFloor, setSelectedFloor] = useState(1);
 
-  // ছবির হুবহু ফ্লোর ডেটা[cite: 3, 4]
+  // ক্লায়েন্টের নির্দেশিত নতুন ফ্লোর ডেটা
   const campusFloors = [
-    { id: 9, title: "Studio", details: "" },
-    { id: 8, title: "Conference hall & auditorium", details: "" },
-    { id: 7, title: "Tahfiz Wing", details: "" },
-    { id: 6, title: "Classrooms & facilities", details: "" },
-    { id: 5, title: "Classrooms & facilities", details: "" },
-    { id: 4, title: "Classrooms & facilities", details: "" },
-    { id: 3, title: "Classrooms & facilities", details: "" },
+    { id: 8, title: "Studio", details: "School studio and media room." },
+    {
+      id: 7,
+      title: "Auditorium",
+      details: "Main auditorium for events and gatherings.",
+    },
+    {
+      id: 6,
+      title: "Hifz (Tahfiz) wing",
+      details: "Dedicated wing for the Hifz programme.",
+    },
+    {
+      id: 5,
+      title: "Classrooms & facilities",
+      details: "Classrooms, teachers' rooms, library, computer lab.",
+    },
+    {
+      id: 4,
+      title: "Classrooms & facilities",
+      details: "Classrooms, teachers' rooms, library, computer lab.",
+    },
+    {
+      id: 3,
+      title: "Classrooms & facilities",
+      details: "Classrooms, teachers' rooms, library, computer lab.",
+    },
     {
       id: 2,
-      title: "Administration",
-      details: "Principal and directors' offices, meeting room.",
+      title: "Classrooms & facilities",
+      details: "Classrooms, teachers' rooms, library, computer lab.",
     },
-    { id: 1, title: "Administration", details: "" },
+    {
+      id: 1,
+      title: "Office",
+      details:
+        "Reception, accounts, Vice Principal, Principal, and Chairman's office.",
+    },
+    { id: 0, title: "Ground Floor", details: "Playground for students." },
   ];
 
   return (
     <Layout title={"About Zaytuna - Madrasatuz Zaytuna International"}>
       <div className="zaytuna-modern-wrapper">
-        {/* Header Section (ছবি অনুযায়ী)[cite: 3] */}
+        {/* Header Section */}
         <div className="zaytuna-page-header">
           <p className="breadcrumb-text">Home / About</p>
-          <h1 className="main-title">About Zaytuna</h1>
+          <h1 className="main-title">Madrasatuz Zaytuna International</h1>
+          <p
+            className="tagline-text"
+            style={{
+              fontWeight: "bold",
+              color: "#059669",
+              marginBottom: "15px",
+            }}
+          >
+            A Cambridge Curriculum-Based School & Madrasah
+          </p>
           <p className="main-subtitle">
             The olive tree is named in the Qur'an as blessed: deep-rooted,
             long-living and generous. We want the same for our students: firm
@@ -36,7 +71,7 @@ const About = () => {
           </p>
         </div>
 
-        {/* Top Grid: Vision, Mission & Message[cite: 3, 4] */}
+        {/* Top Grid: Vision, Mission & Message */}
         <div className="top-info-grid">
           {/* Left Side: Vision, Mission, Core Values */}
           <div className="info-column">
@@ -70,7 +105,7 @@ const About = () => {
             </div>
           </div>
 
-          {/* Right Side: Message from Head[cite: 3] */}
+          {/* Right Side: Message from Head */}
           <div className="message-column">
             <div className="message-box">
               <h4 className="message-eyebrow">FROM THE HEAD OF INSTITUTION</h4>
@@ -86,7 +121,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* Bottom Grid: Governance & Campus[cite: 4] */}
+        {/* Bottom Grid: Governance & Campus */}
         <div className="bottom-feature-grid">
           {/* Governance Card */}
           <div className="feature-card">
@@ -94,17 +129,29 @@ const About = () => {
             <p className="card-sub-text">Approved organisational structure</p>
 
             <div className="org-structure">
-              <div className="org-box outline">Advisory Board</div>
+              <div className="org-box filled">
+                <strong>Chairman & Founder</strong>
+                <br />
+                Professor Mokhtar Ahmad
+              </div>
               <div className="org-line"></div>
-              <div className="org-box filled">Chairman / Founder</div>
-              <div className="org-line"></div>
-              <div className="org-box outline">Principal</div>
+              <div className="org-box outline">
+                <strong>Principal</strong>
+                <br />
+                Munshi Harun Ar Rashid
+              </div>
               <div className="org-line"></div>
               <div className="org-branches">
                 <div className="org-box outline split">
-                  Administrative Director
+                  <strong>Vice Principal</strong>
+                  <br />
+                  Hafizur Rahman
                 </div>
-                <div className="org-box outline split">Academic Director</div>
+                <div className="org-box outline split">
+                  <strong>Admission & Communication Officer</strong>
+                  <br />
+                  Asif Mostofa
+                </div>
               </div>
             </div>
           </div>
@@ -113,7 +160,8 @@ const About = () => {
           <div className="feature-card">
             <h2>Explore the campus</h2>
             <p className="card-sub-text">
-              Nine storeys in West Dhanmondi Housing, Bosila. Select a floor.
+              Located in West Dhanmondi Housing, Bosila. Select a floor to
+              explore.
             </p>
 
             <div className="campus-interactive-box">
@@ -124,7 +172,9 @@ const About = () => {
                     className={`floor-btn-modern ${selectedFloor === floor.id ? "active" : ""}`}
                     onClick={() => setSelectedFloor(floor.id)}
                   >
-                    <span className="f-num">{floor.id}</span>
+                    <span className="f-num">
+                      {floor.id === 0 ? "G" : floor.id}
+                    </span>
                     <span className="f-name">{floor.title}</span>
                   </button>
                 ))}
@@ -140,7 +190,9 @@ const About = () => {
                         : "f-detail hide"
                     }
                   >
-                    <p className="f-label">FLOOR {floor.id}</p>
+                    <p className="f-label">
+                      {floor.id === 0 ? "GROUND FLOOR" : `FLOOR ${floor.id}`}
+                    </p>
                     <h3 className="f-title">{floor.title}</h3>
                     <p className="f-desc">{floor.details}</p>
                   </div>

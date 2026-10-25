@@ -355,3 +355,47 @@
     justify-content: center;
   }
 }
+
+
+/* =========================================
+   Start Pre-Admission Button Animation
+========================================= */
+
+/* পালস অ্যানিমেশন (সবুজ গ্লো) */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.5); /* Emerald Green color */
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(5, 150, 105, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+  }
+}
+
+/* বাটনের মূল স্টাইলে অ্যানিমেশন যুক্ত করা */
+.adm-btn-primary {
+  animation: pulse-glow 2s infinite; /* লুপে পালস হতে থাকবে */
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* টেক্সট এবং আইকনের মাঝে গ্যাপ */
+}
+
+/* মাউস নিলে যা হবে */
+.adm-btn-primary:hover {
+  transform: translateY(-3px); /* হালকা উপরে উঠবে */
+  animation: none; /* হোভার করলে পালস বন্ধ হবে */
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3); /* সুন্দর শ্যাডো */
+}
+
+/* অ্যারো আইকনের অ্যানিমেশন */
+.adm-btn-primary i {
+  transition: transform 0.3s ease;
+}
+
+/* মাউস নিলে অ্যারো ডানদিকে সরবে */
+.adm-btn-primary:hover i {
+  transform: translateX(6px);
+}
