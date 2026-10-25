@@ -38,13 +38,13 @@
 .hero-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #111827;
+  color: #111827 !important;
   margin-bottom: 15px;
 }
 .hero-subtitle {
   font-size: 1.15rem;
   line-height: 1.7;
-  color: #4b5563;
+  color: #4b5563 !important;;
   max-width: 800px;
   margin: 0 auto;
 }
