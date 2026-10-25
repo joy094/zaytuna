@@ -235,6 +235,7 @@
 @media (max-width: 768px) {
   .footer-area {
     padding-top: 55px;
+    padding-bottom: 65px !important; /* মোবাইলে নিচের দিকে একটু ফাঁকা রাখার জন্য */
   }
 
   .footer-grid {
@@ -242,27 +243,28 @@
     gap: 35px;
   }
 
-  .bottom-container {
-    flex-direction: column;
-    text-align: center;
-    justify-content: center;
+  /* 🔴 মোবাইলে সব টেক্সট এবং কন্টেন্ট বাম দিকে (Left Align) রাখার জন্য আপডেট */
+  .footer-widget,
+  .bottom-container,
+  .contact-info li,
+  .footer-logo,
+  .widget-title,
+  .footer-desc,
+  .newsletter-text,
+  .copyright-text {
+    align-items: flex-start !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
   }
 
   .widget-title::after {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .footer-widget {
-    align-items: center;
-    text-align: center;
+    left: 0; /* দাগটি বাম পাশেই থাকবে */
+    transform: none;
   }
 
   .contact-info li {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
+    flex-direction: row; /* আইকন ও লেখা পাশাপাশি থাকবে */
+    gap: 12px;
   }
 }
 
@@ -272,4 +274,22 @@
   .footer-area {
     padding-bottom: 65px !important;
   }
+}
+
+/* =========================================
+   Footer Brand Logo
+========================================= */
+.footer-brand-logo {
+  max-width: 180px; /* লোগোটি ছোট রাখার জন্য (প্রয়োজনে কম-বেশি করতে পারেন) */
+  height: auto;
+  margin-bottom: 15px;
+
+  /* ক্লায়েন্টের ডকুমেন্ট অনুযায়ী লোগোটি সাদার উপর ডিজাইন করা[cite: 6]। 
+     ফুটারের গাঢ় সবুজ ব্যাকগ্রাউন্ডে লোগোটি যদি স্পষ্ট না হয়, 
+     তবে নিচের লাইনগুলোর কমেন্ট (/* ... */
+ 
+
+  /* background-color: #ffffff; */
+  /* padding: 10px 15px; */
+  /* border-radius: 8px; */
 }
