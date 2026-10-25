@@ -196,10 +196,10 @@ const Academic = () => {
         {/* ১. Hero Section */}
         <section className="academic-hero">
           <div className="container-box text-center">
-            <h1 className="hero-title">
+            <h1 className="aca-hero-title">
               Two educational pathways, one integrated foundation
             </h1>
-            <p className="hero-subtitle">
+            <p className="aca-hero-subtitle">
               Every child builds the same foundation first. The pathway is
               chosen before Grade 6, after six years of observation and guidance
               from teachers.
