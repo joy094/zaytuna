@@ -27,11 +27,10 @@ const Home = () => {
               Rooted in faith. Reaching for excellence.
             </h1>
             <h2 className="hero-subtitle">
-              মাদরাসাতুয যায়তুনা ইন্টারন্যাশনাল
+              মাদ্রাসাতুয যায়তূনা ইন্টারন্যাশনাল  
             </h2>
             <p className="hero-desc">
-              Nurturing future leaders with the perfect blend of Islamic morals
-              and modern academic excellence.
+             A Cambridge Curriculum-Based School & Madrasah
             </p>
             <div className="hero-buttons">
               {/* Apply Now বাটন */}

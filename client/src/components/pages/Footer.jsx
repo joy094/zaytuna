@@ -12,7 +12,7 @@ const Footer = () => {
           {/* ১. কন্টাক্ট এবং ব্র্যান্ড সেকশন */}
           <div className="footer-widget contact-widget">
             <h2 className="footer-logo">
-              Madrasatuz <span>Zaytuna</span>
+             Madrasatuz <span>Zaytuna International</span>
             </h2>
             <p className="footer-desc">
               Nurturing future leaders with the perfect blend of Islamic morals
@@ -22,18 +22,18 @@ const Footer = () => {
               <li>
                 <i className="fa-solid fa-location-dot"></i>
                 
-              </li>West Dhanmondi Housing, Bosila, Mohammadpur, Dhaka
+              </li>House-19, Road-10, Block-B, West Dhanmondi Housing, Bosila, Mohammadpur, Dhaka-1207
               <li>
                 <i className="fa-solid fa-phone"></i>
-                +8801817141213
+               +880 1841-515454
               </li>
               <li>
                 <i className="fa-brands fa-whatsapp"></i>
-                +8801817141213
+            +880 1841-515454
               </li>
               <li>
                 <i className="fa-solid fa-envelope"></i>
-                info@madrasatuzzaytuna.com
+                madrasatuzzaytuna.info@gmail.com
               </li>
             </ul>
           </div>

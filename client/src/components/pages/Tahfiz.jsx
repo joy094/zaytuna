@@ -1,3 +1,5 @@
+//src/components/pages/Tahfiz.jsx
+
 import React from "react";
 import Layout from "./Layout";
 import {
@@ -21,9 +23,9 @@ const Tahfiz = () => {
               Memorising the Qur'an without leaving schooling behind
             </h1>
             <p className="main-subtitle">
-              A full-day programme on floor 7 for boys aged 6 to 10. Hifz is the
-              main work of the day. Three academic periods keep each boy ready
-              to rejoin his age group.
+              An integrated programme on floor 6 for boys aged 6 to 10. Hifz is
+              the main work of the day, alongside daily academic periods to keep
+              each boy ready to rejoin his age group.
             </p>
           </div>
         </section>
@@ -82,24 +84,24 @@ const Tahfiz = () => {
                   <div className="schedule-header">
                     <h3>The Tahfiz day</h3>
                     <span className="time-badge">
-                      <Clock size={14} /> 7:30 am – Isha
+                      <Clock size={14} /> 6:45 am – 3:00 pm
                     </span>
                   </div>
 
                   <div className="schedule-list">
                     {/* Row 1 */}
                     <div className="schedule-row">
-                      <div className="time-col">7:30</div>
-                      <div className="task-col">Sabaq · new lesson</div>
+                      <div className="time-col">6:45 am</div>
+                      <div className="task-col">Arrival (Before 6:45 am)</div>
                       <div className="badge-col">
-                        <span className="tag-hifz">Hifz</span>
+                        <span className="tag-activity">Morning</span>
                       </div>
                     </div>
 
                     {/* Row 2 */}
                     <div className="schedule-row">
-                      <div className="time-col">Morning</div>
-                      <div className="task-col">Sabqi · recent revision</div>
+                      <div className="time-col">7:00 am</div>
+                      <div className="task-col">Hifz classes start</div>
                       <div className="badge-col">
                         <span className="tag-hifz">Hifz</span>
                       </div>
@@ -107,48 +109,56 @@ const Tahfiz = () => {
 
                     {/* Row 3 */}
                     <div className="schedule-row">
-                      <div className="time-col">Midday</div>
+                      <div className="time-col">9:00 am</div>
+                      <div className="task-col">Breakfast</div>
+                      <div className="badge-col">
+                        <span className="tag-activity">Meal</span>
+                      </div>
+                    </div>
+
+                    {/* Row 4 */}
+                    <div className="schedule-row">
+                      <div className="time-col">12:30 pm</div>
+                      <div className="task-col">Zuhr prayer</div>
+                      <div className="badge-col">
+                        <span className="tag-activity">Prayer</span>
+                      </div>
+                    </div>
+
+                    {/* Row 5 */}
+                    <div className="schedule-row">
+                      <div className="time-col">12:40 pm</div>
+                      <div className="task-col">Snack</div>
+                      <div className="badge-col">
+                        <span className="tag-activity">Meal</span>
+                      </div>
+                    </div>
+
+                    {/* Row 6 */}
+                    <div className="schedule-row">
+                      <div className="time-col">12:45 pm</div>
                       <div className="task-col">
-                        3 × 40-min periods: English, Bangla, Arabic, Maths,
-                        Science
+                        General subjects (Bangla, English, Maths, Science)
                       </div>
                       <div className="badge-col">
                         <span className="tag-academic">Academic</span>
                       </div>
                     </div>
 
-                    {/* Row 4 */}
+                    {/* Row 7 */}
                     <div className="schedule-row">
-                      <div className="time-col">Afternoon</div>
-                      <div className="task-col">Manzil · older revision</div>
+                      <div className="time-col">3:00 pm</div>
+                      <div className="task-col">Departure</div>
                       <div className="badge-col">
-                        <span className="tag-hifz">Hifz</span>
-                      </div>
-                    </div>
-
-                    {/* Row 5 */}
-                    <div className="schedule-row">
-                      <div className="time-col">Asr – Maghrib</div>
-                      <div className="task-col">
-                        One hour of indoor activities
-                      </div>
-                      <div className="badge-col">
-                        <span className="tag-activity">Activity</span>
-                      </div>
-                    </div>
-
-                    {/* Row 6 */}
-                    <div className="schedule-row">
-                      <div className="time-col">To Isha</div>
-                      <div className="task-col">
-                        Evening revision, then home
-                      </div>
-                      <div className="badge-col">
-                        <span className="tag-hifz">Hifz</span>
+                        <span className="tag-activity">Home</span>
                       </div>
                     </div>
                   </div>
 
+                  <div className="schedule-footer">
+                    Hifz classes alongside daily academics. Meals (Breakfast &
+                    Snack) provided.
+                  </div>
                   <div className="schedule-footer">
                     About six hours of hifz and two hours of academics daily.
                     Meals provided.

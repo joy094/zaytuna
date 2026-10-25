@@ -54,17 +54,24 @@ function AdmissionMain({ onNavigate }) {
   return (
     <div className="admission-main-container">
       {/* Header Section */}
+      {/* Header Section */}
       <div className="adm-page-head">
         <p className="adm-crumb">
           <a href="/">Home</a> / Admissions
         </p>
         <h2>Admissions 2027</h2>
         <p className="adm-muted">
-          Admission is open for Play, Nursery, KG, Grade 1, Grade 2 and the
-          Tahfiz Wing. The founding year has 80 seats.
+          Admission is open for Play, Nursery, KG 1, KG 2, Grade 1, Grade 2 and
+          the Tahfiz Wing. The first session starts in January 2027, and from
+          July 2027, the school will follow a July–June academic year.
+        </p>
+        <p className="adm-muted mt-s">
+          <strong>Admission enquiries:</strong> Asif Mostofa (Admission &
+          Communication Officer) | Phone: +880 1841-515454
         </p>
 
         <div className="adm-action-row mt-s">
+          {/* Action buttons (আগের মতোই থাকবে) */}
           <button
             className="adm-btn adm-btn-primary"
             onClick={handleStartAdmission}
@@ -158,7 +165,7 @@ function AdmissionMain({ onNavigate }) {
         </div>
       </div>
 
-      {/* Age Guide */}
+      {/* Age Guide
       <div className="adm-section-title mt-l">
         <h2>Age guide</h2>
         <p className="adm-muted">Minimum age required as of January 1, 2027.</p>
@@ -190,33 +197,57 @@ function AdmissionMain({ onNavigate }) {
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       {/* Fees Section */}
       <div className="adm-section-title mt-l">
         <h2>Fees & Payments</h2>
         <p className="adm-muted">
-          Transparent fee structure for the 2027 academic year.
+          Monthly tuition is due by the 10th of each month.
         </p>
       </div>
-      <div className="adm-fgrid">
-        <div className="adm-card fee-card">
-          <h4>Admission Fee</h4>
-          <p className="adm-muted">
-            A one-time non-refundable fee paid at the time of admission.
-          </p>
-          <h3 className="fee-amount">৳ 15,000</h3>
-        </div>
-        <div className="adm-card fee-card">
-          <h4>Monthly Tuition</h4>
-          <p className="adm-muted">
-            Payable by the 10th of every month. Includes standard
-            extracurriculars.
-          </p>
-          <h3 className="fee-amount">
-            ৳ 3,000 <span>/ month</span>
-          </h3>
-        </div>
+      <div className="adm-table-card">
+        <table className="adm-table">
+          <thead>
+            <tr>
+              <th>Fee</th>
+              <th>How often</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Admission form & assessment fee</td>
+              <td>Once, with the application (non-refundable)</td>
+              <td>Please contact the admission office</td>
+            </tr>
+            <tr>
+              <td>Admission fee</td>
+              <td>Once, when admission is confirmed (non-refundable)</td>
+              <td>Please contact the admission office</td>
+            </tr>
+            <tr>
+              <td>Annual fee</td>
+              <td>Every year</td>
+              <td>Please contact the admission office</td>
+            </tr>
+            <tr>
+              <td>Monthly tuition fee</td>
+              <td>Monthly (all 12 months)</td>
+              <td>Please contact the admission office</td>
+            </tr>
+            <tr>
+              <td>Books & materials</td>
+              <td>Every year (varies by class)</td>
+              <td>Please contact the admission office</td>
+            </tr>
+            <tr>
+              <td>Hifz (Tahfiz) section fee</td>
+              <td>Monthly (includes meals)</td>
+              <td>Please contact the admission office</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       {/* Questions Families Ask (FAQ) */}

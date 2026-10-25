@@ -279,7 +279,8 @@ const Academic = () => {
                   {[
                     "Play",
                     "Nursery",
-                    "KG",
+                    "KG 1",
+                    "KG 2",
                     "Grade 1",
                     "Grade 2",
                     "Grade 3",
@@ -533,7 +534,7 @@ const Academic = () => {
                   <div>
                     <h3 className="card-title">A school day · Grade 1</h3>
                     <p className="card-subtitle">
-                      Sunday to Thursday, 8:00 am – 2:00 pm
+                      Class time: 8:30 am – 2:00 pm
                     </p>
                   </div>
                   <span className="draft-badge">SAMPLE</span>
@@ -542,17 +543,16 @@ const Academic = () => {
                 <div className="routine-list">
                   {[
                     {
-                      time: "8:00",
+                      time: "8:30",
                       subject: "Assembly, Qur'an recitation and du'a",
                     },
-                    { time: "8:20", subject: "Qur'an - Nazera & Tajwid" },
-                    { time: "9:00", subject: "English" },
-                    { time: "9:40", subject: "Mathematics" },
-                    { time: "10:20", subject: "Break" },
-                    { time: "10:40", subject: "Arabic" },
-                    { time: "11:20", subject: "Bangla" },
-                    { time: "12:00", subject: "Islamic Studies" },
-                    { time: "12:40", subject: "Dhuhr in congregation & lunch" },
+                    { time: "8:50", subject: "Qur'an - Nazera & Tajwid" },
+                    { time: "9:30", subject: "English" },
+                    { time: "10:10", subject: "Mathematics" },
+                    { time: "10:50", subject: "Break" },
+                    { time: "11:10", subject: "Arabic" },
+                    { time: "11:50", subject: "Bangla & Islamic Studies" },
+                    { time: "12:30", subject: "Zuhr in congregation & lunch" },
                     { time: "1:20", subject: "Science / Art / PE" },
                     { time: "2:00", subject: "Dismissal" },
                   ].map((item, index) => (
@@ -616,9 +616,12 @@ const Academic = () => {
                 <div>
                   <p className="eyebrow-text">ACADEMIC CALENDAR</p>
                   <h3 className="card-title">
-                    Session 2027 · January to December
+                    First Session · Starts January 2027
                   </h3>
                   <p className="card-subtitle">
+                    From July 2027, the school transitions to a July–June
+                    academic year.
+                    <br />
                     Islamic dates depend on moon sighting in Bangladesh.
                   </p>
                 </div>
