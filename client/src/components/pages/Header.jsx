@@ -11,6 +11,7 @@ import "./Header.css";
 const Header = () => {
   const [auth, setAuth] = useAuth();
   const [isOpen, setIsOpen] = useState(false); // মোবাইল মেনুর স্টেট
+  const [openMobileDropdown, setOpenMobileDropdown] = useState(null); // মোবাইলের সাব-মেনু ওপেন রাখার স্টেট
   const navigate = useNavigate();
 
   // নোটিফিকেশন স্টেটস
@@ -25,6 +26,67 @@ const Header = () => {
     { name: "Staff Portal", path: "/staff-portal" },
   ];
 
+  // ==========================================
+  // ক্লায়েন্টের সাইটম্যাপ অনুযায়ী মেনু ডেটা
+  // ==========================================
+  const menuData = [
+    { name: "Home", path: "/" },
+    {
+      name: "About",
+      path: "/about",
+      dropdown: [
+        // { name: "Overview of Madrasatuz Zaytuna", path: "/about" },
+        { name: "Prospectus 2027", path: "/about#prospectus" },
+        { name: "About Us", path: "/about" },
+        { name: "Message from the Chairman", path: "/about#chairman" },
+        { name: "Why Choose Us?", path: "/about#why-choose-us" },
+        { name: "Community Engagement", path: "/about#community" },
+      ],
+    },
+    {
+      name: "Academics",
+      path: "/academic",
+      dropdown: [
+        { name: "Academic Overview", path: "/academic" },
+        { name: "Integrated Foundation", path: "/academic#foundation" },
+        { name: "Full Pathway", path: "/academic#pathway" },
+        { name: "Tahfiz Wing", path: "/tahfiz" },
+        { name: "Academic Calendar", path: "/academic#calendar" },
+      ],
+    },
+    {
+      name: "Admissions",
+      path: "/admissions",
+      dropdown: [
+        { name: "Admission Policy", path: "/admissions" },
+        { name: "Admission Procedure", path: "/admissions#procedure" },
+        { name: "Waiver and Scholarship", path: "/admissions#scholarship" },
+        { name: "Apply Online", path: "/admissions#apply" },
+        { name: "Fees and Payments", path: "/admissions#fees" },
+      ],
+    },
+    {
+      name: "Media & Events",
+      path: "/media",
+      dropdown: [
+        { name: "Parenting Sessions", path: "/media/parenting" },
+        { name: "Halaqah", path: "/media/halaqah" },
+        { name: "Training", path: "/media/training" },
+        { name: "Photo Gallery", path: "/media/photos" },
+        { name: "Video Gallery", path: "/media/videos" },
+      ],
+    },
+    {
+      name: "Notices",
+      path: "/notice",
+      dropdown: [
+        { name: "Career", path: "/notice#career" },
+        { name: "Academic Notice", path: "/notice#academic" },
+        { name: "Official Notice", path: "/notice#official" },
+      ],
+    },
+  ];
+
   const handleLogout = () => {
     setAuth({ ...auth, user: null, token: "" });
     localStorage.removeItem("auth");
@@ -36,7 +98,6 @@ const Header = () => {
   // নোটিফিকেশন ফেচ করা
   const fetchNotifications = async () => {
     try {
-      // axios ইমপোর্ট করতে হবে যদি না থাকে
       const axios = (await import("axios")).default;
       const res = await axios.get("/api/v1/admission/notifications", {
         headers: { Authorization: auth?.token },
@@ -131,52 +192,40 @@ const Header = () => {
 
           {/* ============ ৩. ডান পাশ: একশন লিংকস ও নোটিফিকেশন ============ */}
           <div className="header-right nav-actions flex items-center">
+            {/* ডাইনামিক ডেস্কটপ মেনু */}
             <div className="desktop-menu-links desktop-only flex gap-4 mr-4 items-center font-semibold text-gray-700">
-              <NavLink to="/" className="nav-item hover:text-emerald-600">
-                Home
-              </NavLink>
-              <NavLink to="/about" className="nav-item hover:text-emerald-600">
-                About
-              </NavLink>
-              <NavLink
-                to="/admissions"
-                className="nav-item hover:text-emerald-600"
-              >
-                Admissions
-              </NavLink>
-
-              <NavLink
-                to="/academic"
-                className="nav-item hover:text-emerald-600"
-              >
-                Academic
-              </NavLink>
-
-              <NavLink
-                to="/tarbiyah"
-                className="nav-item hover:text-emerald-600"
-              >
-                Tarbiyah
-              </NavLink>
-
-              <NavLink to="/tahfiz" className="nav-item hover:text-emerald-600">
-                Tahfiz
-              </NavLink>
-
-              <NavLink
-                to="/contact"
-                className="nav-item hover:text-emerald-600"
-              >
-                Contact
-              </NavLink>
-
-
-                <NavLink
-                to="/notice"
-                className="nav-item hover:text-emerald-600"
-              >
-                Notice
-              </NavLink>
+              {menuData.map((menu, index) =>
+                menu.dropdown ? (
+                  <div key={index} className="dropdown-wrapper relative">
+                    <NavLink
+                      to={menu.path}
+                      className="nav-item hover:text-emerald-600 has-dropdown cursor-pointer"
+                    >
+                      {menu.name}{" "}
+                      <i className="fa-solid fa-angle-down ms-1 text-sm"></i>
+                    </NavLink>
+                    <div className="dropdown-menu">
+                      {menu.dropdown.map((sub, i) => (
+                        <NavLink
+                          key={i}
+                          to={sub.path}
+                          className="dropdown-link"
+                        >
+                          {sub.name}
+                        </NavLink>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <NavLink
+                    key={index}
+                    to={menu.path}
+                    className="nav-item hover:text-emerald-600"
+                  >
+                    {menu.name}
+                  </NavLink>
+                ),
+              )}
             </div>
 
             <div className="dropdown-wrapper desktop-only">
@@ -192,6 +241,7 @@ const Header = () => {
               </div>
             </div>
 
+            {/* Auth Links (অপরিবর্তিত রাখা হয়েছে) */}
             {!auth.user ? (
               <div className="auth-links desktop-only ml-2">
                 <NavLink
@@ -224,7 +274,7 @@ const Header = () => {
               </div>
             )}
 
-            {/* নোটিফিকেশন বেল এবং ফ্লোটিং ড্রপডাউন */}
+            {/* নোটিফিকেশন বেল (অপরিবর্তিত রাখা হয়েছে) */}
             {auth?.user && (
               <div
                 className="notification-wrapper"
@@ -396,6 +446,7 @@ const Header = () => {
         </div>
 
         <div className="sidebar-content">
+          {/* Mobile Auth Section (অপরিবর্তিত রাখা হয়েছে) */}
           <div className="mobile-auth-section">
             {!auth.user ? (
               <NavLink to="/login" onClick={() => setIsOpen(false)}>
@@ -422,27 +473,72 @@ const Header = () => {
           </div>
 
           <p className="sidebar-label">Menu</p>
-          <div className="sidebar-category-list">
-            {[
-              { name: "Home", path: "/" },
-              { name: "About Us", path: "/about" },
-              // { name: "Admissions", path: "/admissions" },
-              // { name: "Academic", path: "/academic" },
-              { name: "Tarbiyah", path: "/tarbiyah" },
-              { name: "Tahfiz", path: "/tahfiz" },
 
-              { name: "Contact Us", path: "/contact" },
-              { name: "Notice", path: "/notice" },
-            ].map((menuItem, index) => (
-              <NavLink
-                key={index}
-                to={menuItem.path}
-                className="sidebar-cat-link"
-                onClick={() => setIsOpen(false)}
-              >
-                <span>{menuItem.name}</span>
-                <i className="fa-solid fa-chevron-right arrow-icon"></i>
-              </NavLink>
+          {/* ডাইনামিক মোবাইল একর্ডিয়ন মেনু */}
+          <div className="sidebar-category-list">
+            {menuData.map((menu, index) => (
+              <div key={index} className="mobile-menu-item-wrapper">
+                {menu.dropdown ? (
+                  <>
+                    <div
+                      className="sidebar-cat-link"
+                      style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        setOpenMobileDropdown(
+                          openMobileDropdown === menu.name ? null : menu.name,
+                        )
+                      }
+                    >
+                      <span>{menu.name}</span>
+                      <i
+                        className={`fa-solid fa-chevron-${openMobileDropdown === menu.name ? "down" : "right"} arrow-icon`}
+                      ></i>
+                    </div>
+
+                    {/* সাব-মেনু (অ্যাকর্ডিয়ন ওপেন হলে দেখাবে) */}
+                    {openMobileDropdown === menu.name && (
+                      <div
+                        className="mobile-submenu"
+                        style={{
+                          paddingLeft: "1.5rem",
+                          paddingTop: "0.5rem",
+                          paddingBottom: "0.5rem",
+                          backgroundColor: "#f8fafc",
+                          borderLeft: "2px solid #059669",
+                          marginLeft: "10px",
+                          marginBottom: "5px",
+                        }}
+                      >
+                        {menu.dropdown.map((sub, i) => (
+                          <NavLink
+                            key={i}
+                            to={sub.path}
+                            style={{
+                              display: "block",
+                              padding: "8px 0",
+                              color: "#4b5563",
+                              fontSize: "0.9rem",
+                              textDecoration: "none",
+                            }}
+                            onClick={() => setIsOpen(false)}
+                          >
+                            {sub.name}
+                          </NavLink>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <NavLink
+                    to={menu.path}
+                    className="sidebar-cat-link"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <span>{menu.name}</span>
+                    <i className="fa-solid fa-chevron-right arrow-icon"></i>
+                  </NavLink>
+                )}
+              </div>
             ))}
           </div>
         </div>

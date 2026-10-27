@@ -1,152 +1,162 @@
 /* src/components/pages/Notice.css */
 
-@import url("https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap");
+/* src/components/pages/Notice.css */
 
-.notice-page-container {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 0 20px;
-  font-family: "Hind Siliguri", sans-serif;
-  min-height: 60vh;
-  animation: fadeIn 0.4s ease-in-out;
+.notice-page-wrapper {
+  background-color: #f9fafb;
+  min-height: 80vh;
+  padding: 60px 20px 80px 20px;
+  font-family: "Inter", "Hind Siliguri", sans-serif;
 }
 
-/* =========================================
-   Header Section
-========================================= */
-.notice-header-section {
-  text-align: center;
+.notice-container {
+  max-width: 900px; /* নোটিশ বোর্ডের জন্য একটু সরু কন্টেইনার দেখতে ভালো লাগে */
+  margin: 0 auto;
+}
+
+.notice-header {
   margin-bottom: 40px;
-  border-bottom: 2px solid #ecfdf5;
-  padding-bottom: 20px;
 }
 
-.notice-header-section h1 {
-  font-size: 2.5rem;
-  color: #059669; /* Emerald Green */
-  margin: 0 0 10px 0;
+.notice-title {
+  font-size: 2.8rem;
   font-weight: 700;
+  color: #059669; /* Emerald 600 */
+  margin-bottom: 10px;
 }
 
 .notice-subtitle {
+  font-size: 1.15rem;
   color: #6b7280;
-  font-size: 1.1rem;
-  margin: 0;
 }
 
-/* =========================================
-   Notice List & Cards
-========================================= */
-.notice-list-wrapper {
+/* Category Tabs */
+.notice-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 20px;
+}
+
+.tab-btn {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  border-color: #059669;
+  color: #059669;
+}
+
+.tab-btn.active {
+  background-color: #059669;
+  border-color: #059669;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
+}
+
+/* Notice Cards */
+.notice-list {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
 }
 
 .notice-card {
-  background: #ffffff;
-  border-left: 5px solid #059669;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  background-color: #ffffff;
   border: 1px solid #f3f4f6;
-  border-left-width: 5px;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  border-left: 4px solid #059669;
 }
 
 .notice-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+.notice-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .notice-date {
-  display: inline-block;
-  background-color: #ecfdf5;
-  color: #059669;
-  padding: 6px 12px;
-  border-radius: 50px;
   font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 15px;
-}
-
-.notice-date i {
-  margin-right: 5px;
-}
-
-.notice-title {
-  font-size: 1.6rem;
-  color: #111827;
-  margin: 0 0 15px 0;
   font-weight: 700;
+  color: #059669;
+  background-color: #ecfdf5; /* Light Emerald */
+  padding: 5px 12px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
 }
 
-.notice-desc {
+.notice-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.notice-badge.official {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.notice-badge.academic {
+  background-color: #e0e7ff;
+  color: #4f46e5;
+}
+
+.notice-badge.career {
+  background-color: #fce7f3;
+  color: #db2777;
+}
+
+.notice-item-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.notice-content {
+  font-size: 1rem;
   color: #4b5563;
   line-height: 1.6;
-  font-size: 1.05rem;
-  margin: 0;
-  white-space: pre-wrap; /* এটি টেক্সট এরিয়াতে দেওয়া স্পেস বা এন্টারকে সঠিকভাবে দেখাবে */
-}
-
-/* =========================================
-   States (Loading & Empty)
-========================================= */
-.loading-spinner {
-  text-align: center;
-  font-size: 1.2rem;
-  color: #059669;
-  padding: 50px 0;
-  font-weight: 600;
 }
 
 .no-notice-msg {
   text-align: center;
-  color: #6b7280;
-  font-size: 1.2rem;
-  padding: 50px 0;
-  background: #f9fafb;
-  border-radius: 8px;
+  padding: 50px 20px;
+  color: #9ca3af;
+  background: #ffffff;
+  border-radius: 12px;
   border: 1px dashed #d1d5db;
 }
 
 .no-notice-msg i {
-  display: block;
-  font-size: 2.5rem;
-  color: #9ca3af;
-  margin-bottom: 10px;
-}
-
-/* =========================================
-   Animations & Responsive
-========================================= */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (max-width: 640px) {
-  .notice-header-section h1 {
-    font-size: 2rem;
-  }
-
-  .notice-card {
-    padding: 20px;
-  }
-
-  .notice-title {
-    font-size: 1.3rem;
-  }
-
-  .notice-desc {
-    font-size: 1rem;
-  }
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #d1d5db;
 }

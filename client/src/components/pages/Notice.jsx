@@ -1,77 +1,143 @@
 // src/components/pages/Notice.jsx
 
 import React, { useState, useEffect } from "react";
-import Layout from "./Layout"; // Layout এর সঠিক পাথ দিন
-import axios from "axios";
+import { useLocation } from "react-router-dom";
+import Layout from "./Layout";
 import "./Notice.css";
 
 const Notice = () => {
-  const [notices, setNotices] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const [activeTab, setActiveTab] = useState("all");
 
-  // নোটিশ ফেচ করা
+  // 🔴 হেডার মেনু থেকে লিংকে ক্লিক করলে অটোমেটিক ট্যাব ফিল্টার হওয়ার লজিক
   useEffect(() => {
-    const fetchNotices = async () => {
-      try {
-        const { data } = await axios.get("/api/v1/notice/get-notices");
-        if (data?.success) {
-          // সাধারণ ইউজারদের জন্য শুধুমাত্র "Active" নোটিশগুলো ফিল্টার করা হলো
-          const activeNotices = data.notices.filter(
-            (notice) => notice.status === "Active",
-          );
-          setNotices(activeNotices);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchNotices();
-  }, []);
+    if (location.hash === "#career") {
+      setActiveTab("career");
+    } else if (location.hash === "#academic") {
+      setActiveTab("academic");
+    } else if (location.hash === "#official") {
+      setActiveTab("official");
+    } else {
+      setActiveTab("all");
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location]);
 
-  // তারিখ সুন্দর ফরম্যাটে দেখানোর ফাংশন
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  };
+  // ==========================================
+  // 🔴 Mock Data (পরবর্তীতে এটি API থেকে আসবে)
+  // ==========================================
+  const dummyNotices = [
+    {
+      _id: "1",
+      title: "Eid Ul Ajhah Holidays",
+      date: "October 19, 2026",
+      category: "official",
+      tag: "Official Notice",
+      content:
+        "The Madrasah will remain closed on the occasion of Eid Ul Ajhah. We wish all our students and their families a blessed Eid. Regular classes will resume as per the academic calendar.",
+    },
+    {
+      _id: "2",
+      title: "Mid-Term Examination Routine Published",
+      date: "October 25, 2026",
+      category: "academic",
+      tag: "Academic Notice",
+      content:
+        "The mid-term examination routine for Play to Grade 5 has been published. Parents are requested to check the student portal for detailed subject-wise schedules.",
+    },
+    {
+      _id: "3",
+      title: "Hiring: Assistant Teacher (English)",
+      date: "November 01, 2026",
+      category: "career",
+      tag: "Career",
+      content:
+        "Madrasatuz Zaytuna International is looking for a qualified English teacher. Applicants must have excellent command over the English language and prior teaching experience.",
+    },
+    {
+      _id: "4",
+      title: "Parent-Teacher Meeting for Grade 1",
+      date: "November 05, 2026",
+      category: "academic",
+      tag: "Academic Notice",
+      content:
+        "A mandatory parent-teacher meeting will be held to discuss the academic progress of Grade 1 students. Please ensure your presence.",
+    },
+  ];
+
+  // ফিল্টারিং লজিক
+  const filteredNotices =
+    activeTab === "all"
+      ? dummyNotices
+      : dummyNotices.filter((notice) => notice.category === activeTab);
 
   return (
-    <Layout title={"Notice Board - Madrasatuz Zaytuna"}>
-      <div className="notice-page-container">
-        {/* পেজ হেডার */}
-        <div className="notice-header-section">
-          <h1>Notice Board</h1>
-          <p className="notice-subtitle">
-            Stay updated with the latest announcements, events, and holidays.
-          </p>
-        </div>
+    <Layout title={"Notice Board - Madrasatuz Zaytuna International"}>
+      <section className="notice-page-wrapper">
+        <div className="notice-container">
+          {/* Header Section */}
+          <div className="notice-header text-center">
+            <h1 className="notice-title">Notice Board</h1>
+            <p className="notice-subtitle">
+              Stay updated with the latest announcements, events, and holidays.
+            </p>
+          </div>
 
-        {/* নোটিশ লিস্ট */}
-        <div className="notice-list-wrapper">
-          {loading ? (
-            <div className="loading-spinner">
-              <i className="fa-solid fa-spinner fa-spin"></i> Loading notices...
-            </div>
-          ) : notices.length === 0 ? (
-            <div className="no-notice-msg">
-              <i className="fa-regular fa-folder-open"></i> No notices available
-              at the moment.
-            </div>
-          ) : (
-            notices.map((notice) => (
-              <div key={notice._id} className="notice-card">
-                <div className="notice-date">
-                  <i className="fa-regular fa-calendar-days"></i>{" "}
-                  {formatDate(notice.createdAt)}
+          {/* Category Tabs */}
+          <div className="notice-tabs">
+            <button
+              className={`tab-btn ${activeTab === "all" ? "active" : ""}`}
+              onClick={() => setActiveTab("all")}
+            >
+              All Notices
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "academic" ? "active" : ""}`}
+              onClick={() => setActiveTab("academic")}
+            >
+              Academic Notice
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "official" ? "active" : ""}`}
+              onClick={() => setActiveTab("official")}
+            >
+              Official Notice
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "career" ? "active" : ""}`}
+              onClick={() => setActiveTab("career")}
+            >
+              Career
+            </button>
+          </div>
+
+          {/* Notice List */}
+          <div className="notice-list">
+            {filteredNotices.length > 0 ? (
+              filteredNotices.map((notice) => (
+                <div key={notice._id} className="notice-card">
+                  <div className="notice-card-header">
+                    <span className="notice-date">
+                      <i className="fa-regular fa-calendar me-1"></i>{" "}
+                      {notice.date}
+                    </span>
+                    <span className={`notice-badge ${notice.category}`}>
+                      {notice.tag}
+                    </span>
+                  </div>
+                  <h3 className="notice-item-title">{notice.title}</h3>
+                  <p className="notice-content">{notice.content}</p>
                 </div>
-                <h3 className="notice-title">{notice.title}</h3>
-                <p className="notice-desc">{notice.description}</p>
+              ))
+            ) : (
+              <div className="no-notice-msg">
+                <i className="fa-regular fa-folder-open"></i>
+                <p>No notices available in this category.</p>
               </div>
-            ))
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      </section>
     </Layout>
   );
 };

@@ -1,11 +1,28 @@
 // AcademicPage.jsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Layout from "./Layout";
 import { ArrowRight } from "lucide-react";
 import "./AcademicPage.css";
 
 const Academic = () => {
+  const { hash } = useLocation();
+
+  // 🔴 হেডার মেনু থেকে হ্যাস-লিংকে (#foundation, #pathway, #calendar) ক্লিক করলে অটো স্ক্রল করার লজিক
+  useEffect(() => {
+    if (hash) {
+      const element = document.getElementById(hash.replace("#", ""));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [hash]);
+
   // Pathway Planner State
   const [childName, setChildName] = useState("Maryam");
   const [dob, setDob] = useState("2020-08-14");
@@ -193,8 +210,8 @@ const Academic = () => {
   return (
     <Layout title={"Academic Pathways - Madrasatuz Zaytuna International"}>
       <div className="academic-modern-wrapper">
-        {/* ১. Hero Section */}
-        <section className="academic-hero">
+        {/* ১. Hero Section (#overview) */}
+        <section className="academic-hero" id="overview">
           <div className="container-box text-center">
             <h1 className="aca-hero-title">
               Two educational pathways, one integrated foundation
@@ -207,8 +224,8 @@ const Academic = () => {
           </div>
         </section>
 
-        {/* ২. Three Main Educational Stages */}
-        <section className="educational-stages">
+        {/* ২. Three Main Educational Stages (#foundation) */}
+        <section className="educational-stages" id="foundation">
           <div className="container-box">
             <div className="stages-grid">
               <div className="stage-card">
@@ -264,8 +281,8 @@ const Academic = () => {
           </div>
         </section>
 
-        {/* ৩. The Full Pathway Flowchart */}
-        <section className="full-pathway-section">
+        {/* ৩. The Full Pathway Flowchart (#pathway) */}
+        <section className="full-pathway-section" id="pathway">
           <div className="container-box">
             <h2 className="section-heading">The full pathway</h2>
 
@@ -346,7 +363,7 @@ const Academic = () => {
             <div className="tahfiz-wing-box">
               <div className="box-header-flex">
                 <h4>Tahfiz Wing · boys aged 6–10</h4>
-                <a href="#" className="details-link">
+                <a href="/tahfiz" className="details-link">
                   Details
                 </a>
               </div>
@@ -365,7 +382,7 @@ const Academic = () => {
           </div>
         </section>
 
-        {/* 🌟 NEW: Pathway Planner Section */}
+        {/* Pathway Planner Section (আগের মতোই থাকবে) */}
         <section className="pathway-planner-section">
           <div className="container-box">
             <p className="eyebrow-text">PATHWAY PLANNER</p>
@@ -525,7 +542,7 @@ const Academic = () => {
           </div>
         </section>
 
-        {/* ৪. School Day & Assessment (আগের মতোই থাকবে) */}
+        {/* ৪. School Day & Assessment */}
         <section className="routine-assessment-section">
           <div className="container-box">
             <div className="ra-grid">
@@ -608,8 +625,8 @@ const Academic = () => {
           </div>
         </section>
 
-        {/* ৫. Academic Calendar (আগের মতোই থাকবে) */}
-        <section className="calendar-section">
+        {/* ৫. Academic Calendar (#calendar) */}
+        <section className="calendar-section" id="calendar">
           <div className="container-box">
             <div className="info-card calendar-card">
               <div className="card-header-flex">
