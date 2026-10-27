@@ -14,8 +14,13 @@ const ManageNotices = () => {
   // Edit Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+
+  // 🔴 নতুন স্কিমা অনুযায়ী স্টেটগুলো
   const [editTitle, setEditTitle] = useState("");
-  const [editDescription, setEditDescription] = useState("");
+  const [editContent, setEditContent] = useState("");
+  const [editCategory, setEditCategory] = useState("academic");
+  const [editTag, setEditTag] = useState("");
+  const [editDate, setEditDate] = useState("");
   const [editStatus, setEditStatus] = useState("Active");
 
   // নোটিশগুলো ব্যাকএন্ড থেকে ফেচ করা
@@ -37,7 +42,7 @@ const ManageNotices = () => {
     fetchNotices();
   }, []);
 
-  // নোটিশ ডিলিট করার ফাংশন (Real DB Delete)
+  // নোটিশ ডিলিট করার ফাংশন
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this notice?")) return;
 
@@ -58,15 +63,20 @@ const ManageNotices = () => {
     }
   };
 
-  // স্ট্যাটাস সরাসরি ড্রপডাউন থেকে পরিবর্তন করার ফাংশন (Real DB Update)
+  // স্ট্যাটাস সরাসরি ড্রপডাউন থেকে পরিবর্তন করার ফাংশন
   const handleStatusChange = async (id, newStatus) => {
     try {
       const targetNotice = notices.find((n) => n._id === id);
+
+      // ব্যাকএন্ডে সব ডেটা পাঠাতে হবে যাতে অন্য ফিল্ডগুলো null না হয়ে যায়
       const { data } = await axios.put(
         `/api/v1/notice/update-status/${id}`,
         {
           title: targetNotice.title,
-          description: targetNotice.description,
+          content: targetNotice.content,
+          category: targetNotice.category,
+          tag: targetNotice.tag,
+          date: targetNotice.date,
           status: newStatus,
         },
         { headers: { Authorization: auth?.token } },
@@ -88,9 +98,21 @@ const ManageNotices = () => {
   const handleEditClick = (notice) => {
     setEditingId(notice._id);
     setEditTitle(notice.title);
-    setEditDescription(notice.description);
+    setEditContent(notice.content);
+    setEditCategory(notice.category);
+    setEditTag(notice.tag);
+    setEditDate(notice.date);
     setEditStatus(notice.status);
     setIsModalOpen(true);
+  };
+
+  // ক্যাটাগরি চেঞ্জ হলে অটোমেটিক ট্যাগ সেট করা (এডিট মডালের জন্য)
+  const handleEditCategoryChange = (e) => {
+    const selectedCat = e.target.value;
+    setEditCategory(selectedCat);
+    if (selectedCat === "academic") setEditTag("Academic Notice");
+    if (selectedCat === "official") setEditTag("Official Notice");
+    if (selectedCat === "career") setEditTag("Career");
   };
 
   // এডিট ফর্ম সাবমিট করা
@@ -101,7 +123,10 @@ const ManageNotices = () => {
         `/api/v1/notice/update-status/${editingId}`,
         {
           title: editTitle,
-          description: editDescription,
+          content: editContent,
+          category: editCategory,
+          tag: editTag,
+          date: editDate,
           status: editStatus,
         },
         { headers: { Authorization: auth?.token } },
@@ -110,18 +135,12 @@ const ManageNotices = () => {
       if (data?.success) {
         toast.success("Notice updated successfully");
         setIsModalOpen(false);
-        fetchNotices(); // আপডেট হওয়া ডেটা পুনরায় লোড করা
+        fetchNotices(); // আপডেট হওয়া ডেটা পুনরায় লোড করা
       }
     } catch (error) {
       console.log(error);
       toast.error("Failed to update notice");
     }
-  };
-
-  // তারিখ ফরম্যাট করা
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "short", day: "numeric" };
-    return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
   return (
@@ -148,8 +167,9 @@ const ManageNotices = () => {
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Title</th>
-                  <th>Date</th>
+                  <th>Title & Details</th>
+                  <th>Category</th>
+                  <th>Publish Date</th>
                   <th>Status</th>
                   <th>Actions</th>
                 </tr>
@@ -161,10 +181,16 @@ const ManageNotices = () => {
                     <td className="notice-title-col">
                       <span className="title-text">{notice.title}</span>
                       <small className="desc-text">
-                        {notice.description.substring(0, 40)}...
+                        {/* description এর বদলে content ব্যবহার করা হলো */}
+                        {notice.content?.substring(0, 50)}...
                       </small>
                     </td>
-                    <td>{formatDate(notice.createdAt)}</td>
+                    <td>
+                      <span className={`badge-cat ${notice.category}`}>
+                        {notice.tag}
+                      </span>
+                    </td>
+                    <td>{notice.date}</td>
                     <td>
                       <select
                         className={`status-select ${notice.status.toLowerCase()}`}
@@ -214,7 +240,8 @@ const ManageNotices = () => {
                 &times;
               </button>
             </div>
-            <form onSubmit={handleEditSubmit}>
+
+            <form onSubmit={handleEditSubmit} className="modal-form-scroll">
               <div className="form-group">
                 <label>Title</label>
                 <input
@@ -225,16 +252,63 @@ const ManageNotices = () => {
                   required
                 />
               </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "15px",
+                }}
+              >
+                <div className="form-group">
+                  <label>Category</label>
+                  <select
+                    className="form-control"
+                    value={editCategory}
+                    onChange={handleEditCategoryChange}
+                    required
+                  >
+                    <option value="academic">Academic</option>
+                    <option value="official">Official</option>
+                    <option value="career">Career</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label>Badge / Tag</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={editTag}
+                    onChange={(e) => setEditTag(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
               <div className="form-group">
-                <label>Description</label>
+                <label>Publish Date</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={editDate}
+                  onChange={(e) => setEditDate(e.target.value)}
+                  placeholder="e.g. October 20, 2026"
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Content / Details</label>
                 <textarea
                   className="form-control"
                   rows="5"
-                  value={editDescription}
-                  onChange={(e) => setEditDescription(e.target.value)}
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
                   required
                 ></textarea>
               </div>
+
               <div className="form-group">
                 <label>Status</label>
                 <select
@@ -246,6 +320,7 @@ const ManageNotices = () => {
                   <option value="Draft">Draft</option>
                 </select>
               </div>
+
               <div className="modal-actions">
                 <button
                   type="button"

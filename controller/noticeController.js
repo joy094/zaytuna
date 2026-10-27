@@ -1,23 +1,25 @@
 // controllers/noticeController.js
 import noticeModel from "../model/noticeModel.js";
 
-// নোটিশ তৈরি করার কন্ট্রোলার
+// ১. নোটিশ তৈরি করার কন্ট্রোলার
 export const createNoticeController = async (req, res) => {
   try {
-    const { title, description, status } = req.body;
+    const { title, content, category, tag, date, status } = req.body;
 
     // ভ্যালিডেশন
-    if (!title) {
-      return res.send({ error: "Title is required" });
-    }
-    if (!description) {
-      return res.send({ error: "Description is required" });
-    }
+    if (!title) return res.send({ error: "Title is required" });
+    if (!content) return res.send({ error: "Content is required" });
+    if (!category) return res.send({ error: "Category is required" });
+    if (!tag) return res.send({ error: "Tag is required" });
+    if (!date) return res.send({ error: "Date is required" });
 
     // ডাটাবেজে সেভ করা
     const notice = await new noticeModel({
       title,
-      description,
+      content,
+      category,
+      tag,
+      date,
       status: status || "Active",
     }).save();
 
@@ -36,10 +38,11 @@ export const createNoticeController = async (req, res) => {
   }
 };
 
-// সব নোটিশ দেখার জন্য (অপশনাল, ফ্রন্টএন্ডে দেখানোর জন্য কাজে লাগবে)
+// ২. সব নোটিশ ফেচ করার কন্ট্রোলার (ফ্রন্টএন্ডে দেখানোর জন্য)
 export const getNoticesController = async (req, res) => {
   try {
-    const notices = await noticeModel.find({}).sort({ createdAt: -1 }); // নতুন নোটিশ আগে দেখাবে
+    // নতুন নোটিশ আগে দেখানোর জন্য createdAt: -1
+    const notices = await noticeModel.find({}).sort({ createdAt: -1 });
     res.status(200).send({
       success: true,
       message: "All notices fetched successfully",
@@ -55,7 +58,7 @@ export const getNoticesController = async (req, res) => {
   }
 };
 
-// নোটিশ ডিলিট করার কন্ট্রোলার
+// ৩. নোটিশ ডিলিট করার কন্ট্রোলার
 export const deleteNoticeController = async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,15 +78,15 @@ export const deleteNoticeController = async (req, res) => {
   }
 };
 
-// নোটিশের স্ট্যাটাস বা তথ্য আপডেট করার কন্ট্রোলার
+// ৪. নোটিশ আপডেট করার কন্ট্রোলার
 export const updateNoticeController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, status } = req.body;
+    const { title, content, category, tag, date, status } = req.body;
 
     const updatedNotice = await noticeModel.findByIdAndUpdate(
       id,
-      { title, description, status },
+      { title, content, category, tag, date, status },
       { new: true },
     );
 

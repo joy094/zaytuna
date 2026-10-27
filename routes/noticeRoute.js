@@ -10,7 +10,7 @@ import { requireSignIn, isAdmin } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 // নোটিশ তৈরি করার রাউট
-router.post("/create", requireSignIn, isAdmin, createNoticeController);
+router.post("/create-notice", requireSignIn, isAdmin, createNoticeController);
 
 // নোটিশ দেখার রাউট
 router.get("/get-notices", getNoticesController);
