@@ -8,7 +8,8 @@ export default function FinalAdmissionAdmin() {
   const [loading, setLoading] = useState(true);
   const [selectedApp, setSelectedApp] = useState(null);
 
-  const BACKEND_URL = "http://localhost:3001/";
+ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:3001/";
+
 
   const fetchFinalApplications = async () => {
     try {
