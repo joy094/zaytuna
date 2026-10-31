@@ -1,3 +1,4 @@
+// model/admissionModel.js
 import mongoose from "mongoose";
 
 const admissionSchema = new mongoose.Schema(
@@ -76,11 +77,49 @@ const admissionSchema = new mongoose.Schema(
     },
 
     score: { type: Number, default: 0 },
+
     status: {
       type: String,
-      enum: ["Pending", "Invite to Interview", "Hold", "Cancelled", "Accepted"],
+      // 🔴 এখানে Final Form-এর নতুন স্ট্যাটাসগুলো যোগ করা হয়েছে
+      enum: [
+        "Pending",
+        "Invite to Interview",
+        "Hold",
+        "Cancelled",
+        "Accepted",
+        "Under Review",
+        "Admitted",
+        "Rejected",
+      ],
       default: "Pending",
     },
+
+    // ==========================================
+    // 🔴 Final Admission Form Fields (নতুন যুক্ত করা হলো)
+    // ==========================================
+    studentName: { type: String },
+    dob: { type: String }, // ফ্রন্টএন্ড থেকে আসা string date এর জন্য
+    applyingClass: { type: String },
+    session: { type: String },
+
+    fatherNid: { type: String },
+    motherNid: { type: String },
+    fatherMobile: { type: String },
+    motherMobile: { type: String },
+    email: { type: String },
+
+    emergencyName: { type: String },
+    emergencyMobile: { type: String },
+    siblingName: { type: String },
+    siblingClass: { type: String },
+
+    offerCode: { type: String, default: null },
+    fatherNidFile: { type: String },
+    birthCertFile: { type: String },
+    photoFile: { type: String },
+    guardianName: { type: String },
+    guardianSignature: { type: String },
+
     appliedAt: { type: Date, default: Date.now },
   },
   { timestamps: true },

@@ -3,9 +3,20 @@
 import express from "express";
 import Admission from "../model/admissionModel.js";
 import { requireSignIn, isAdmin } from "../middleware/authMiddleware.js";
+// import { updateAdmissionStatus } from "../controller/admissionStatusController.js";
 // 🔴 Socket.io এবং Notification মডেল ইমপোর্ট করা হলো
 import { io } from "../index.js";
 import Notification from "../model/Notification.js";
+import user_model from "../model/user_model.js"; // ইউজার রোল চেক করার জন্য ইমপোর্ট
+import {
+  updateAdmissionStatus,
+  verifyOfferCode,
+} from "../controller/admissionStatusController.js";
+import { upload } from "../middleware/uploadMiddleware.js";
+import {
+  getFinalApplications,
+  updateFinalAdmissionStatus,
+} from "../controller/admissionStatusController.js";
 
 const router = express.Router();
 
@@ -46,7 +57,7 @@ const calculateScreeningScore = (data) => {
   return score; // Total out of 100
 };
 
-// 1. Submit Application (Updated with Unique ID & Admin Notification)
+// 1. Submit Application
 router.post("/submit-application", requireSignIn, async (req, res) => {
   try {
     const totalApplications = await Admission.countDocuments();
@@ -99,40 +110,8 @@ router.get("/all-applications", requireSignIn, isAdmin, async (req, res) => {
   }
 });
 
-// 3. Update Application Status (For Admin - Updated with User Notification)
-router.put("/update-status/:id", requireSignIn, isAdmin, async (req, res) => {
-  try {
-    const { status } = req.body;
-    const application = await Admission.findByIdAndUpdate(
-      req.params.id,
-      { status },
-      { new: true },
-    );
-
-    // 🔴 ইউজারের জন্য নোটিফিকেশন সেভ করা
-    const userNotif = new Notification({
-      userId: application.user, // আবেদনকারীর আইডি
-      forAdmin: false,
-      title: "Application Status Updated",
-      message: `Your application status for ${application.childInfo?.fullName} is now: ${status}.`,
-      link: "/dashboard/user",
-    });
-    await userNotif.save();
-
-    // 🔴 রিয়েল-টাইমে নির্দিষ্ট ইউজারের রুমে নোটিফিকেশন পাঠানো
-    io.to(application.user.toString()).emit("receive_notification", userNotif);
-
-    res.status(200).send({
-      success: true,
-      message: "Status updated successfully",
-      application,
-    });
-  } catch (error) {
-    res
-      .status(500)
-      .send({ success: false, message: "Error updating status", error });
-  }
-});
+// 3. Update Application Status & Send Email (Using controller with Nodemailer & Socket.io)
+router.put("/update-status/:id", requireSignIn, isAdmin, updateAdmissionStatus);
 
 // Get Logged-in User's Applications
 router.get("/my-applications", requireSignIn, async (req, res) => {
@@ -150,16 +129,13 @@ router.get("/my-applications", requireSignIn, async (req, res) => {
   }
 });
 
-import user_model from "../model/user_model.js"; // ইউজার রোল চেক করার জন্য ইমপোর্ট করুন
-
 // Get Notifications for Header
 router.get("/notifications", requireSignIn, async (req, res) => {
   try {
     const user = await user_model.findById(req.user._id);
-    const isAdmin = user.role === 1;
+    const isAdminUser = user.role === 1;
 
-    // অ্যাডমিন হলে forAdmin: true খুঁজবে, ইউজার হলে নিজের আইডি খুঁজবে
-    const query = isAdmin ? { forAdmin: true } : { userId: req.user._id };
+    const query = isAdminUser ? { forAdmin: true } : { userId: req.user._id };
 
     const notifications = await Notification.find(query)
       .sort({ createdAt: -1 })
@@ -182,10 +158,9 @@ router.get("/notifications", requireSignIn, async (req, res) => {
 router.put("/notifications/mark-read", requireSignIn, async (req, res) => {
   try {
     const user = await user_model.findById(req.user._id);
-    const isAdmin = user.role === 1;
-    const query = isAdmin ? { forAdmin: true } : { userId: req.user._id };
+    const isAdminUser = user.role === 1;
+    const query = isAdminUser ? { forAdmin: true } : { userId: req.user._id };
 
-    // সব আনরিড নোটিফিকেশনকে রিড করে দেওয়া
     await Notification.updateMany(
       { ...query, isRead: false },
       { isRead: true },
@@ -196,5 +171,124 @@ router.put("/notifications/mark-read", requireSignIn, async (req, res) => {
     res.status(500).send({ success: false });
   }
 });
+
+//verify Otp Route
+
+router.post("/verify-offer-code", verifyOfferCode);
+
+// যেহেতু ৩টি আলাদা ফাইল আসবে, তাই upload.fields() ব্যবহার করতে হবে
+const admissionFilesUpload = upload.fields([
+  { name: "fatherNidFile", maxCount: 1 },
+  { name: "birthCertFile", maxCount: 1 },
+  { name: "photoFile", maxCount: 1 },
+]);
+
+// 🔴 Final Admission Form Submit API (Updated with Find One & Update)
+router.post(
+  "/final-submit",
+  requireSignIn,
+  admissionFilesUpload,
+  async (req, res) => {
+    try {
+      console.log("🔥 HIT FINAL SUBMIT ROUTE!");
+      const {
+        refNumber,
+        studentName,
+        dob,
+        applyingClass,
+        session,
+        fatherNid,
+        motherNid,
+        fatherMobile,
+        motherMobile,
+        email,
+        emergencyName,
+        emergencyMobile,
+        siblingName,
+        siblingClass,
+        guardianName,
+        guardianSignature,
+      } = req.body;
+
+      // ফাইলগুলোর পাথ রিসিভ করা
+      const fatherNidPath = req.files["fatherNidFile"]
+        ? req.files["fatherNidFile"][0].path
+        : "";
+      const birthCertPath = req.files["birthCertFile"]
+        ? req.files["birthCertFile"][0].path
+        : "";
+      const photoPath = req.files["photoFile"]
+        ? req.files["photoFile"][0].path
+        : "";
+
+      // 🔴 রেফারেন্স নাম্বার (applicationId) দিয়ে প্রি-এডমিশনের ডকুমেন্টটি খুঁজে বের করে আপডেট করা
+      const updatedAdmission = await Admission.findOneAndUpdate(
+        { applicationId: refNumber.trim() },
+        {
+          studentName,
+          dob,
+          applyingClass,
+          session,
+          fatherNid,
+          motherNid,
+          fatherMobile,
+          motherMobile,
+          email,
+          emergencyName,
+          emergencyMobile,
+          siblingName,
+          siblingClass,
+          guardianName,
+          guardianSignature,
+          fatherNidFile: fatherNidPath,
+          birthCertFile: birthCertPath,
+          photoFile: photoPath,
+          status: "Under Review", // অথবা ফাইনাল সাবমিটেড স্ট্যাটাস
+        },
+        { new: true },
+      );
+
+      if (!updatedAdmission) {
+        return res
+          .status(404)
+          .send({
+            success: false,
+            message: "Application not found with this Reference Number!",
+          });
+      }
+
+      console.log(
+        "✅ Final admission data updated successfully for:",
+        refNumber,
+      );
+
+      res
+        .status(200)
+        .send({
+          success: true,
+          message: "Final Application submitted successfully!",
+        });
+    } catch (error) {
+      console.log("Final Submit Error:", error);
+      res
+        .status(500)
+        .send({
+          success: false,
+          message: "Server error",
+          error: error.message,
+        });
+    }
+  },
+);
+
+router.get("/final-applications", requireSignIn, isAdmin, getFinalApplications);
+
+// 2. Finalize Admission Status Route (Admin Only)
+router.put(
+  "/finalize-status/:id",
+  requireSignIn,
+  isAdmin,
+  updateFinalAdmissionStatus,
+);
 
 export default router;

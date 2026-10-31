@@ -71,6 +71,15 @@ function AdminMenu() {
         >
           Users List
         </NavLink>
+
+        <NavLink
+          to="/dashboard/admin/final-admissions"
+          className={({ isActive }) =>
+            isActive ? "menu-item active" : "menu-item"
+          }
+        >
+          Final Admission
+        </NavLink>
       </div>
     </div>
   );

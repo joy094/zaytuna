@@ -1,0 +1,453 @@
+/* =========================================
+   Final Admission Admin Panel Pure CSS
+   ========================================= */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+/* Utilities */
+.text-center {
+  text-align: center;
+}
+.text-primary {
+  color: #0ea5e9;
+}
+.text-muted {
+  color: #64748b;
+}
+.text-danger {
+  color: #ef4444;
+  font-weight: 500;
+}
+.fw-bold {
+  font-weight: 700;
+}
+.mt-4 {
+  margin-top: 1.5rem;
+}
+.p-4 {
+  padding: 1.5rem;
+}
+
+/* Main Container */
+.adm-container {
+  font-family: "Inter", sans-serif;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.adm-heading {
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* =========================================
+   Table Styling
+   ========================================= */
+.adm-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.adm-table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.adm-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+}
+
+.adm-table thead th {
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  padding: 16px;
+  border-bottom: 2px solid #e2e8f0;
+  text-align: left;
+}
+
+.adm-table tbody tr {
+  transition: all 0.2s ease-in-out;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.adm-table tbody tr:hover {
+  background-color: #f0fdf4;
+}
+
+.adm-table td {
+  color: #334155;
+  font-size: 0.95rem;
+  padding: 16px;
+  vertical-align: middle;
+}
+
+/* Badges */
+.adm-badge {
+  padding: 6px 12px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: inline-block;
+  letter-spacing: 0.3px;
+}
+
+.adm-badge-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+.adm-badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+.adm-badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Table Action Button */
+.btn-view-details {
+  background-color: #0ea5e9;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-view-details:hover {
+  background-color: #0284c7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(14, 165, 233, 0.25);
+}
+
+/* =========================================
+   Modal Styling
+   ========================================= */
+.adm-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  padding: 20px;
+}
+
+.adm-modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: modalFadeUp 0.3s ease-out forwards;
+}
+
+@keyframes modalFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.adm-modal-header {
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 20px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 16px 16px 0 0;
+}
+
+.adm-modal-title {
+  margin: 0;
+  color: #059669;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.adm-btn-close {
+  background: transparent;
+  border: none;
+  font-size: 1.75rem;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: color 0.3s;
+  line-height: 1;
+}
+
+.adm-btn-close:hover {
+  color: #ef4444;
+}
+
+.adm-modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Grid System for Modal */
+.adm-modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+/* Info Tables */
+.adm-section-title {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.adm-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.adm-info-table th,
+.adm-info-table td {
+  border: 1px solid #e2e8f0;
+  padding: 10px 14px;
+}
+
+.adm-info-table th {
+  background-color: #f8fafc;
+  color: #475569;
+  width: 35%;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.adm-info-table td {
+  color: #1e293b;
+  font-size: 0.95rem;
+  background: #ffffff;
+}
+
+/* Document Cards */
+.adm-doc-card {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.adm-doc-card p {
+  color: #334155;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.btn-view-doc {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 1px solid #0ea5e9;
+  color: #0ea5e9;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-view-doc:hover {
+  background: #0ea5e9;
+  color: #ffffff;
+}
+
+/* Image Preview */
+.adm-image-preview {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 12px;
+}
+
+.adm-image-preview img {
+  max-height: 180px;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.btn-open-img {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #ffffff;
+  border: 1px solid #10b981;
+  color: #10b981;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-open-img:hover {
+  background: #10b981;
+  color: #ffffff;
+}
+
+/* Modal Footer */
+.adm-modal-footer {
+  border-top: 1px solid #e2e8f0;
+  padding: 20px 24px;
+  background-color: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0 0 16px 16px;
+}
+
+.adm-footer-sig {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.adm-footer-sig strong {
+  color: #0f172a;
+}
+
+/* Action Buttons (Reject / Admit) */
+.adm-action-btns {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-reject {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.3s;
+}
+
+.btn-reject:hover {
+  background-color: #dc2626;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.btn-admit {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.3s;
+}
+
+.btn-admit:hover {
+  background-color: #059669;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* =========================================
+   Responsive Media Queries
+   ========================================= */
+@media (max-width: 992px) {
+  .adm-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .adm-container {
+    padding: 15px;
+  }
+
+  .adm-modal-header {
+    padding: 16px 20px;
+  }
+  .adm-modal-title {
+    font-size: 1.1rem;
+  }
+  .adm-modal-body {
+    padding: 20px 16px;
+  }
+
+  .adm-modal-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px 20px;
+  }
+
+  .adm-footer-sig {
+    text-align: center;
+  }
+
+  .adm-action-btns {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-reject,
+  .btn-admit {
+    width: 100%;
+    justify-content: center;
+  }
+}

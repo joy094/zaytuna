@@ -13,6 +13,7 @@ import cors from "cors";
 import bannerRoutes from "./routes/bannerRoute.js";
 import admissionRoutes from "./routes/admissionRoutes.js";
 import noticeRoutes from "./routes/noticeRoute.js";
+import path from "path";
 
 // 🔴 Socket.io এর জন্য ইমপোর্ট
 import http from "http";
@@ -53,6 +54,7 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 //DB config
 connectDB();

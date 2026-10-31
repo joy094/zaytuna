@@ -5,12 +5,16 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/auth";
 
-import "./ManageApplication.css"; // CSS ফাইলটি ইমপোর্ট করা হলো
+import "./ManageApplication.css";
 
 export default function ManageApplications() {
   const [applications, setApplications] = useState([]);
   const [selectedApp, setSelectedApp] = useState(null);
   const [auth] = useAuth();
+
+  // 🔴 নতুন State: Search & Filter এর জন্য
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("All");
 
   const fetchApplications = async () => {
     try {
@@ -45,17 +49,95 @@ export default function ManageApplications() {
     }
   };
 
+  // 🔴 Search এবং Filter লজিক
+  const filteredApplications = applications.filter((app) => {
+    // Search Matching
+    const childName = app.childInfo?.fullName?.toLowerCase() || "";
+    const appId = app.applicationId?.toLowerCase() || "";
+    const email = app.familyInfo?.email?.toLowerCase() || "";
+    const searchLower = searchTerm.toLowerCase();
+
+    const matchesSearch =
+      childName.includes(searchLower) ||
+      appId.includes(searchLower) ||
+      email.includes(searchLower);
+
+    // Filter Matching
+    let matchesFilter = true;
+    if (filterStatus === "Final Phase") {
+      matchesFilter = ["Under Review", "Admitted", "Rejected"].includes(
+        app.status,
+      );
+    } else if (filterStatus !== "All") {
+      matchesFilter = app.status === filterStatus;
+    }
+
+    return matchesSearch && matchesFilter;
+  });
+
   return (
     <>
       <section className="page">
         <div className="wrap manage-app-container">
           <h2 className="page-title">Manage Applications</h2>
 
+          {/* 🔴 Search and Filter Section */}
+          <div
+            style={{
+              display: "flex",
+              gap: "15px",
+              marginBottom: "20px",
+              flexWrap: "wrap",
+              backgroundColor: "#f9fafb",
+              padding: "15px",
+              borderRadius: "8px",
+              border: "1px solid #e5e7eb",
+            }}
+          >
+            <input
+              type="text"
+              placeholder="Search by ID, Name or Email..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                flex: "1",
+                padding: "10px 15px",
+                border: "1px solid #cbd5e1",
+                borderRadius: "6px",
+                minWidth: "250px",
+                outline: "none",
+              }}
+            />
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              style={{
+                padding: "10px 15px",
+                border: "1px solid #cbd5e1",
+                borderRadius: "6px",
+                minWidth: "200px",
+                outline: "none",
+                cursor: "pointer",
+              }}
+            >
+              <option value="All">All Applications</option>
+              <option value="Pending">Pending</option>
+              <option value="Invite to Interview">Invite to Interview</option>
+              <option value="Hold">Hold</option>
+              <option value="Accepted">Accepted (Offer Sent)</option>
+              <option value="Final Phase">
+                Final Phase (Review/Admitted/Rejected)
+              </option>
+            </select>
+          </div>
+
           <div className="table-responsive">
             <table className="app-table">
               <thead>
                 <tr>
-                  <th>Child Name</th>
+                  <th>SL</th> {/* 🔴 Serial Number Header */}
+                  <th>Child Name & ID</th>
+                  <th>Email</th> {/* 🔴 Email Header */}
                   <th>Class</th>
                   <th>Score</th>
                   <th>Status</th>
@@ -63,11 +145,15 @@ export default function ManageApplications() {
                 </tr>
               </thead>
               <tbody>
-                {applications.map((app) => (
+                {/* 🔴 applications.map এর বদলে filteredApplications.map ব্যবহার করা হয়েছে */}
+                {filteredApplications.map((app, index) => (
                   <tr key={app._id}>
+                    <td>
+                      <strong>{index + 1}</strong>
+                    </td>{" "}
+                    {/* 🔴 Serial Number */}
                     <td className="child-name">
                       {app.childInfo?.fullName}
-                      {/* 🔴 অ্যাডমিন টেবিলে আইডি */}
                       {app.applicationId && (
                         <div
                           style={{
@@ -80,6 +166,12 @@ export default function ManageApplications() {
                         </div>
                       )}
                     </td>
+                    {/* 🔴 Email Column */}
+                    <td>
+                      <span style={{ fontSize: "14px", color: "#374151" }}>
+                        {app.familyInfo?.email || "N/A"}
+                      </span>
+                    </td>
                     <td>{app.childInfo?.classSought}</td>
                     <td>
                       <span
@@ -89,43 +181,67 @@ export default function ManageApplications() {
                       </span>
                     </td>
                     <td>
-                      <select
-                        className="status-select"
-                        value={app.status}
-                        onChange={(e) =>
-                          handleStatusChange(app._id, e.target.value)
-                        }
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Invite to Interview">
-                          Invite to Interview
-                        </option>
-                        <option value="Hold">Hold</option>
-                        <option value="Accepted">Accepted</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </select>
+                      {["Under Review", "Admitted", "Rejected"].includes(
+                        app.status,
+                      ) ? (
+                        <span
+                          style={{
+                            padding: "6px 12px",
+                            borderRadius: "20px",
+                            fontSize: "13px",
+                            fontWeight: "bold",
+                            color: "#fff",
+                            backgroundColor:
+                              app.status === "Admitted"
+                                ? "#10b981"
+                                : app.status === "Rejected"
+                                  ? "#ef4444"
+                                  : "#f59e0b",
+                            display: "inline-block",
+                          }}
+                        >
+                          {app.status} (Final)
+                        </span>
+                      ) : (
+                        <select
+                          className="status-select"
+                          value={app.status}
+                          onChange={(e) =>
+                            handleStatusChange(app._id, e.target.value)
+                          }
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Invite to Interview">
+                            Invite to Interview
+                          </option>
+                          <option value="Hold">Hold</option>
+                          <option value="Accepted">Accepted</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </select>
+                      )}
                     </td>
                     <td>
                       <button
                         className="btn-view"
                         onClick={() => setSelectedApp(app)}
                       >
-                        View Document
+                        View
                       </button>
                     </td>
                   </tr>
                 ))}
-                {applications.length === 0 && (
+
+                {filteredApplications.length === 0 && (
                   <tr>
                     <td
-                      colSpan="5"
+                      colSpan="7"
                       style={{
                         textAlign: "center",
-                        padding: "20px",
+                        padding: "30px",
                         color: "#6b7280",
                       }}
                     >
-                      No applications found.
+                      No applications found matching your search.
                     </td>
                   </tr>
                 )}

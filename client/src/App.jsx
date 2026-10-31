@@ -61,6 +61,8 @@ import Products from "./components/AdminRoute/Products";
 import ScrollToTop from "./components/ScrollToTop"; // ScrollToTop Component ইমপোর্ট
 import ManageSlider from "./components/AdminRoute/ManageSlider"; // পাথ ঠিক করে ইম্পোর্ট করুন
 
+import FinalAdmission from "./components/AdminRoute/FinalAdmissionAdmin";
+import FinalAdmissionAdmin from "./components/AdminRoute/FinalAdmissionAdmin";
 // ================= PAGES =================
 
 // ================= MAIN APP COMPONENT =================
@@ -98,6 +100,8 @@ const App = () => (
           path="admin/manage-applications"
           element={<ManageApplications />}
         />
+        <Route path="admin/final-admissions" element={<FinalAdmissionAdmin />} />
+
         <Route path="admin/manage-notices" element={<ManageNotices />} />
 
         <Route path="admin/create-notice" element={<CreateNotice />} />
