@@ -439,14 +439,14 @@
 }
 
 /* =========================================
-   Pre-Admission Form: Step Indicator with Arrows
+   Pre-Admission Form: Step Indicator (No Arrows)
    ========================================= */
 
 .steps-indicator {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 10px;
+  gap: 25px; /* অ্যারো নেই, তাই আইটেমগুলোর মাঝে একটু গ্যাপ বাড়িয়ে দিলাম */
   margin-bottom: 30px;
   padding-bottom: 15px;
   border-bottom: 2px solid var(--adm-border);
@@ -460,37 +460,17 @@
 }
 
 .step-item {
-  position: relative;
   font-size: 0.95rem;
   font-weight: 600;
   color: #9ca3af; /* Gray color for inactive */
-  padding-right: 25px; /* অ্যারো চিহ্নের জন্য জায়গা রাখা হলো */
   transition: color 0.3s ease;
   display: flex;
   align-items: center;
 }
 
-/* 🔴 Pure CSS Arrow (Chevron) */
-.step-item:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: 5px;
-  top: 50%;
-  transform: translateY(-50%) rotate(45deg);
-  width: 8px;
-  height: 8px;
-  border-top: 2px solid #d1d5db; /* Gray arrow */
-  border-right: 2px solid #d1d5db;
-  transition: border-color 0.3s ease;
-}
-
 /* Active Step Style */
 .step-item.active {
   color: var(--adm-primary);
-}
-
-.step-item.active::after {
-  border-color: var(--adm-primary); /* Active Arrow Color */
 }
 
 /* Completed Step Style */

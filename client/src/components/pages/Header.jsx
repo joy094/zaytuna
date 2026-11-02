@@ -60,7 +60,7 @@ const Header = () => {
       dropdown: [
         { name: "Admission Policy", path: "/admissions" },
         { name: "Admission Procedure", path: "/admissions#procedure" },
-        { name: "Waiver and Scholarship", path: "/admissions#scholarship" },
+        // { name: "Waiver and Scholarship", path: "/admissions#scholarship" },
         { name: "Apply Online", path: "/admissions#apply" },
         { name: "Fees and Payments", path: "/admissions#fees" },
       ],

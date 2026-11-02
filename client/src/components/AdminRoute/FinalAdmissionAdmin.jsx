@@ -510,8 +510,11 @@ export default function FinalAdmissionAdmin() {
                     </div>
                   </div>
 
+
+
+
                   {/* Office Use Only Section */}
-                  <div
+                  {/* <div
                     className="adm-print-section-title page-break-before"
                     style={{ backgroundColor: "#1e293b", marginTop: "30px" }}
                   >
@@ -546,7 +549,10 @@ export default function FinalAdmissionAdmin() {
                       </div>
                       <div className="adm-office-sign">Signature</div>
                     </div>
-                  </div>
+                  </div> */}
+
+
+                  
                 </div>
               </div>
               {/* 🔴 Printable Area Ends */}
