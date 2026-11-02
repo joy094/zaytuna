@@ -83,10 +83,13 @@
 }
 
 .mt-l {
-  margin-top: 60px;
+  margin-top: 80px;
 }
 .mt-s {
   margin-top: 30px;
+}
+.mb-4 {
+  margin-bottom: 30px;
 }
 
 /* --- Buttons --- */
@@ -113,12 +116,22 @@
   background-color: var(--adm-primary);
   color: white;
   border: none;
+  animation: pulse-glow 2s infinite;
 }
 
 .adm-btn-primary:hover {
   background-color: var(--adm-primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(5, 150, 105, 0.25);
+  transform: translateY(-3px);
+  animation: none;
+  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3);
+}
+
+.adm-btn-primary i {
+  transition: transform 0.3s ease;
+}
+
+.adm-btn-primary:hover i {
+  transform: translateX(6px);
 }
 
 .adm-btn-outline {
@@ -129,6 +142,18 @@
 
 .adm-btn-outline:hover {
   background-color: #ecfdf5;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 12px rgba(5, 150, 105, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
+  }
 }
 
 /* --- Journey Grid --- */
@@ -182,6 +207,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 25px;
+  margin-bottom: 60px;
 }
 
 .adm-card {
@@ -210,54 +236,6 @@
   margin: 0 0 10px 0;
   font-size: 1.2rem;
   color: var(--adm-text);
-}
-
-.fee-card {
-  border-top: 4px solid var(--adm-primary);
-}
-
-.fee-amount {
-  font-size: 2rem;
-  color: var(--adm-primary);
-  margin: 15px 0 0;
-  font-weight: 800;
-}
-
-.fee-amount span {
-  font-size: 1rem;
-  color: var(--adm-text-muted);
-  font-weight: 500;
-}
-
-/* --- Table Styles --- */
-.adm-table-card {
-  background: white;
-  border-radius: 12px;
-  border: 1px solid var(--adm-border);
-  overflow: hidden;
-}
-
-.adm-table {
-  width: 100%;
-  text-align: left;
-  border-collapse: collapse;
-}
-
-.adm-table th {
-  background-color: #f3f4f6;
-  padding: 15px 20px;
-  color: var(--adm-text);
-  font-weight: 600;
-}
-
-.adm-table td {
-  padding: 15px 20px;
-  border-bottom: 1px solid var(--adm-border);
-  color: var(--adm-text-muted);
-}
-
-.adm-table tbody tr:last-child td {
-  border-bottom: none;
 }
 
 /* --- FAQ Section --- */
@@ -309,6 +287,226 @@
   line-height: 1.6;
 }
 
+/* =========================================
+   Admission Fees Structure Custom CSS
+   ========================================= */
+.adm-fee-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+.adm-table-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.adm-table-heading {
+  background-color: var(--adm-primary);
+  color: white;
+  margin: 0;
+  padding: 15px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-bottom: 2px solid var(--adm-primary-hover);
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.adm-fee-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.adm-fee-table th,
+.adm-fee-table td {
+  padding: 12px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.adm-fee-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #0f172a;
+  border-bottom: 2px solid #cbd5e1;
+  white-space: nowrap;
+}
+
+.adm-fee-table td:nth-child(2),
+.adm-fee-table td:nth-child(3) {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.adm-fee-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.highlight-row {
+  background-color: #fef3c7;
+}
+.highlight-row:hover {
+  background-color: #fde68a !important;
+}
+
+.secondary-table th {
+  background-color: #f1f5f9;
+}
+
+.adm-fee-note {
+  font-size: 0.85rem;
+  color: #64748b;
+  padding: 10px 20px;
+  margin: 0;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.adm-fee-covers {
+  padding: 20px;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.adm-fee-covers strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+.adm-fee-covers ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* Policy Section */
+.adm-policy-card {
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-left: 5px solid #0ea5e9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.adm-policy-heading {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #0f172a;
+  font-size: 1.2rem;
+}
+
+.adm-policy-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+}
+
+.adm-policy-list li {
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #e2e8f0;
+  color: #334155;
+}
+
+.adm-policy-list li:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.adm-policy-alert {
+  background-color: #fef08a;
+  border-left: 4px solid #ca8a04;
+  padding: 15px;
+  border-radius: 4px;
+  color: #854d0e;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* =========================================
+   Pre-Admission Form: Step Indicator with Arrows
+   ========================================= */
+
+.steps-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--adm-border);
+  overflow-x: auto; /* Mobile-এ ডানে-বামে স্ক্রল করার জন্য */
+  white-space: nowrap;
+  scrollbar-width: none; /* Firefox এর স্ক্রলবার লুকানোর জন্য */
+}
+
+.steps-indicator::-webkit-scrollbar {
+  display: none; /* Chrome/Safari এর স্ক্রলবার লুকানোর জন্য */
+}
+
+.step-item {
+  position: relative;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #9ca3af; /* Gray color for inactive */
+  padding-right: 25px; /* অ্যারো চিহ্নের জন্য জায়গা রাখা হলো */
+  transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+/* 🔴 Pure CSS Arrow (Chevron) */
+.step-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid #d1d5db; /* Gray arrow */
+  border-right: 2px solid #d1d5db;
+  transition: border-color 0.3s ease;
+}
+
+/* Active Step Style */
+.step-item.active {
+  color: var(--adm-primary);
+}
+
+.step-item.active::after {
+  border-color: var(--adm-primary); /* Active Arrow Color */
+}
+
+/* Completed Step Style */
+.step-item.completed {
+  color: var(--adm-primary-hover);
+}
+
+.step-item.completed::after {
+  border-color: var(--adm-primary-hover); /* Completed Arrow Color */
+}
+
+/* Remove padding from the last item */
+.step-item:last-child {
+  padding-right: 0;
+}
+
 /* --- Forms --- */
 .adm-form-grid {
   display: flex;
@@ -340,7 +538,7 @@
   background-color: white;
 }
 
-/* Responsive */
+/* --- Mobile Responsive --- */
 @media (max-width: 768px) {
   .adm-page-head h2 {
     font-size: 2.2rem;
@@ -354,48 +552,14 @@
   .adm-btn {
     justify-content: center;
   }
-}
 
-
-/* =========================================
-   Start Pre-Admission Button Animation
-========================================= */
-
-/* পালস অ্যানিমেশন (সবুজ গ্লো) */
-@keyframes pulse-glow {
-  0% {
-    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.5); /* Emerald Green color */
+  .adm-fee-table th,
+  .adm-fee-table td {
+    padding: 10px 12px;
+    font-size: 0.9rem;
   }
-  70% {
-    box-shadow: 0 0 0 12px rgba(5, 150, 105, 0);
+  .adm-table-heading {
+    padding: 12px 15px;
+    font-size: 1rem;
   }
-  100% {
-    box-shadow: 0 0 0 0 rgba(5, 150, 105, 0);
-  }
-}
-
-/* বাটনের মূল স্টাইলে অ্যানিমেশন যুক্ত করা */
-.adm-btn-primary {
-  animation: pulse-glow 2s infinite; /* লুপে পালস হতে থাকবে */
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px; /* টেক্সট এবং আইকনের মাঝে গ্যাপ */
-}
-
-/* মাউস নিলে যা হবে */
-.adm-btn-primary:hover {
-  transform: translateY(-3px); /* হালকা উপরে উঠবে */
-  animation: none; /* হোভার করলে পালস বন্ধ হবে */
-  box-shadow: 0 8px 20px rgba(5, 150, 105, 0.3); /* সুন্দর শ্যাডো */
-}
-
-/* অ্যারো আইকনের অ্যানিমেশন */
-.adm-btn-primary i {
-  transition: transform 0.3s ease;
-}
-
-/* মাউস নিলে অ্যারো ডানদিকে সরবে */
-.adm-btn-primary:hover i {
-  transform: translateX(6px);
 }

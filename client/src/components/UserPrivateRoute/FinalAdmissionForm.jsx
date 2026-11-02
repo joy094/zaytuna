@@ -67,7 +67,7 @@ export default function FinalAdmissionForm({ onNavigate, userPreData }) {
   const handleUnlock = async (e) => {
     e.preventDefault();
     if (!refNumber || !offerCode) {
-      toast.warning("Please enter both Reference Number and Offer Code.");
+      toast.warning("Please enter both Application ID and Offer Code.");
       return;
     }
 
@@ -87,7 +87,7 @@ export default function FinalAdmissionForm({ onNavigate, userPreData }) {
         window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         toast.error(
-          response.data.message || "Invalid Reference Number or Offer Code!",
+          response.data.message || "Invalid Application ID or Offer Code!",
         );
       }
     } catch (error) {
@@ -187,7 +187,7 @@ export default function FinalAdmissionForm({ onNavigate, userPreData }) {
               className="adm-muted"
               style={{ color: "#64748b", fontSize: "0.95rem" }}
             >
-              Please enter your Application Reference Number and the
+              Please enter your Application Application ID and the
               confidential <strong>Offer Code</strong> sent to your registered
               email.
             </p>
@@ -211,7 +211,7 @@ export default function FinalAdmissionForm({ onNavigate, userPreData }) {
                   display: "block",
                 }}
               >
-                Reference Number *
+                Application ID *
               </label>
               <input
                 type="text"

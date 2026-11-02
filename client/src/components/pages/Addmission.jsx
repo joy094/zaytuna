@@ -189,7 +189,7 @@ function AdmissionMain({ onNavigate }) {
       </div>
 
       {/* 🔴 NEW: Waiver and Scholarship (#scholarship) */}
-      <div className="adm-section-title mt-l" id="scholarship">
+      {/* <div className="adm-section-title mt-l" id="scholarship">
         <h2>Waiver and Scholarship</h2>
         <p className="adm-muted">
           Ensuring quality education is accessible for deserving families.
@@ -227,59 +227,174 @@ function AdmissionMain({ onNavigate }) {
             than one child at Madrasatuz Zaytuna International.
           </p>
         </div>
-      </div>
+      </div> */}
 
       {/* Fees Section (#fees) */}
+      {/* Fees Section (#fees) */}
       <div className="adm-section-title mt-l" id="fees">
-        <h2>Fees & Payments</h2>
+        <h2>Fees Structure — Session 2027</h2>
         <p className="adm-muted">
-          Monthly tuition is due by the 10th of each month.
+          All amounts in Bangladeshi Taka (BDT). Session: January – December
+          2027.
         </p>
       </div>
-      <div className="adm-table-card">
-        <table className="adm-table">
-          <thead>
-            <tr>
-              <th>Fee</th>
-              <th>How often</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Admission form & assessment fee</td>
-              <td>Once, with the application (non-refundable)</td>
-              <td>Please contact the admission office</td>
-            </tr>
-            <tr>
-              <td>Admission fee</td>
-              <td>Once, when admission is confirmed (non-refundable)</td>
-              <td>Please contact the admission office</td>
-            </tr>
-            <tr>
-              <td>Annual fee</td>
-              <td>Every year</td>
-              <td>Please contact the admission office</td>
-            </tr>
-            <tr>
-              <td>Monthly tuition fee</td>
-              <td>Monthly (all 12 months)</td>
-              <td>Please contact the admission office</td>
-            </tr>
-            <tr>
-              <td>Books & materials</td>
-              <td>Every year (varies by class)</td>
-              <td>Please contact the admission office</td>
-            </tr>
-            <tr>
-              <td>Hifz (Tahfiz) section fee</td>
-              <td>Monthly (includes meals)</td>
-              <td>Please contact the admission office</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
 
+      <div className="adm-fee-container">
+        {/* Tuition Fees Table */}
+        <div className="adm-table-card mb-4">
+          <h3 className="adm-table-heading">Monthly Tuition & Admission</h3>
+          <div className="table-responsive">
+            <table className="adm-fee-table">
+              <thead>
+                <tr>
+                  <th>Class / শ্রেণি</th>
+                  <th>Admission (BDT) ভর্তি ফি</th>
+                  <th>Monthly Tuition (BDT) মাসিক বেতন</th>
+                  <th>What is included</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Play Group</td>
+                  <td>80,000</td>
+                  <td>8,000</td>
+                  <td rowSpan="2">
+                    Integrated 50:50 programme; play-based learning with
+                    qualified mentors
+                  </td>
+                </tr>
+                <tr>
+                  <td>Nursery</td>
+                  <td>80,000</td>
+                  <td>8,000</td>
+                </tr>
+                <tr>
+                  <td>KG-1</td>
+                  <td>90,000</td>
+                  <td>8,500</td>
+                  <td rowSpan="2"></td>
+                </tr>
+                <tr>
+                  <td>KG-2</td>
+                  <td>90,000</td>
+                  <td>8,500</td>
+                </tr>
+                <tr>
+                  <td>Grade 1</td>
+                  <td>1,00,000</td>
+                  <td>9,000</td>
+                  <td rowSpan="2">
+                    Integrated 50:50 programme; enhanced co-curricular
+                    activities
+                  </td>
+                </tr>
+                <tr>
+                  <td>Grade 2</td>
+                  <td>1,00,000</td>
+                  <td>9,000</td>
+                </tr>
+                <tr className="highlight-row">
+                  <td>Tahfiz Wing</td>
+                  <td>1,00,000</td>
+                  <td>10,000</td>
+                  <td>
+                    6 hour Hifz, 2 hrs daily academics, morning tiffin and
+                    afternoon snack
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="adm-fee-note">
+            <em>
+              * Tuition is charged for all twelve months of the session (January
+              – December), including holiday months.
+            </em>
+          </p>
+        </div>
+
+        {/* Annual & Other Fees Table */}
+        <div className="adm-table-card mb-4">
+          <h3 className="adm-table-heading">Annual and Other Fees</h3>
+          <div className="table-responsive">
+            <table className="adm-fee-table secondary-table">
+              <thead>
+                <tr>
+                  <th>Fee Type</th>
+                  <th>Amount (BDT)</th>
+                  <th>When Payable / Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>Annual fee</strong>
+                  </td>
+                  <td>12,000</td>
+                  <td>Every January (or on admission)</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Books & learning materials</strong>
+                  </td>
+                  <td>At cost</td>
+                  <td>Every January; varies by class</td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Uniform</strong>
+                  </td>
+                  <td>At cost</td>
+                  <td>Purchased from the school's approved supplier</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="adm-fee-covers">
+            <strong>The annual fee covers:</strong>
+            <ul>
+              <li>
+                Term and annual examinations, report cards and progress reports
+              </li>
+              <li>Student ID card, student diary and handbook</li>
+              <li>
+                Co-curricular programmes, annual sports, prize-giving and Qur'an
+                competition
+              </li>
+              <li>
+                Basic first-aid supplies and student accident cover [PROPOSED]
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Payment Policy Block */}
+        <div className="adm-policy-card">
+          <h3 className="adm-policy-heading">Payment Policy</h3>
+          <ul className="adm-policy-list">
+            <li>
+              <strong>Monthly Tuition:</strong> Due by the 5th of each month.
+            </li>
+            <li>
+              <strong>Admission & Annual Fees:</strong> At confirmation of
+              admission; annual fee renewed each January.
+            </li>
+            <li>
+              <strong>Methods:</strong> Cash at the Accounts Office, bank
+              deposit, or mobile banking (bKash/Nagad) / Online Payment Gateway.
+            </li>
+            <li>
+              <strong>Receipt:</strong> An official money receipt is issued for
+              every payment.
+            </li>
+          </ul>
+          <div className="adm-policy-alert">
+            <strong>সংক্ষেপে:</strong> মাসিক বেতন প্রতি মাসের ৫ তারিখের মধ্যে
+            পরিশোধযোগ্য। ভর্তি ফি এককালীন ও অফেরতযোগ্য। বার্ষিক ফি প্রতি সেশনের
+            শুরুতেই পরিশোধ করতে হবে।
+          </div>
+        </div>
+      </div>
       {/* Questions Families Ask (FAQ) */}
       <div className="adm-section-title mt-l">
         <h2>Questions families ask</h2>
@@ -314,41 +429,41 @@ function AdmissionMain({ onNavigate }) {
 // ==========================================
 // 2. Admission Form After Offer
 // ==========================================
-function AdmissionFormAfterOffer({ onNavigate }) {
-  return (
-    <div className="admission-main-container narrow">
-      <div className="adm-page-head">
-        <h2>Admission form (After Offer)</h2>
-      </div>
-      <form className="adm-card">
-        <div className="adm-form-grid">
-          <div className="adm-input-group">
-            <label>Reference number</label>
-            <input type="text" required placeholder="e.g. ZI-27-0001" />
-          </div>
-          <div className="adm-input-group">
-            <label>Offer code</label>
-            <input
-              type="text"
-              required
-              inputMode="numeric"
-              placeholder="Enter your 4 or 6 digit code"
-            />
-          </div>
-        </div>
-        <div className="adm-action-row mt-l">
-          <button className="adm-btn adm-btn-primary" type="submit">
-            Open Form
-          </button>
-          <button
-            className="adm-btn adm-btn-outline"
-            type="button"
-            onClick={() => onNavigate("main")}
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-}
+// function AdmissionFormAfterOffer({ onNavigate }) {
+//   return (
+//     <div className="admission-main-container narrow">
+//       <div className="adm-page-head">
+//         <h2>Admission form (After Offer)</h2>
+//       </div>
+//       <form className="adm-card">
+//         <div className="adm-form-grid">
+//           <div className="adm-input-group">
+//             <label>Reference number</label>
+//             <input type="text" required placeholder="e.g. ZI-27-0001" />
+//           </div>
+//           <div className="adm-input-group">
+//             <label>Offer code</label>
+//             <input
+//               type="text"
+//               required
+//               inputMode="numeric"
+//               placeholder="Enter your 4 or 6 digit code"
+//             />
+//           </div>
+//         </div>
+//         <div className="adm-action-row mt-l">
+//           <button className="adm-btn adm-btn-primary" type="submit">
+//             Open Form
+//           </button>
+//           <button
+//             className="adm-btn adm-btn-outline"
+//             type="button"
+//             onClick={() => onNavigate("main")}
+//           >
+//             Cancel
+//           </button>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// }

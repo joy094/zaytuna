@@ -182,7 +182,7 @@ const Header = () => {
             <div className="brand-logo">
               <Link to="/">
                 <img
-                  src="/img/madrasatuz-zaytuna-logo.svg"
+                  src="/img/madrasatuz-zaytuna-logo.png"
                   alt="Madrasatuz Zaytuna Logo"
                   style={{ height: "50px", width: "auto" }}
                 />
@@ -435,7 +435,7 @@ const Header = () => {
         <div className="sidebar-header">
           <Link to="/" onClick={() => setIsOpen(false)}>
             <img
-              src="/img/madrasatuz-zaytuna-logo.svg"
+              src="/img/madrasatuz-zaytuna-logo.png"
               alt="Logo"
               style={{ height: "45px", width: "auto" }}
             />

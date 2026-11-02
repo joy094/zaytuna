@@ -1,9 +1,10 @@
 // src/components/pages/Admin/ManageApplications.jsx
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/auth";
+import { useReactToPrint } from "react-to-print"; // 🔴 Print করার জন্য লাইব্রেরি (npm install react-to-print করতে হবে)
 
 import "./ManageApplication.css";
 
@@ -12,9 +13,20 @@ export default function ManageApplications() {
   const [selectedApp, setSelectedApp] = useState(null);
   const [auth] = useAuth();
 
-  // 🔴 নতুন State: Search & Filter এর জন্য
+  // Search & Filter States
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All");
+
+  // 🔴 Print Reference (ভেতরে null দিন)
+  const printRef = useRef(null);
+
+  // 🔴 নতুন ভার্সনের নিয়ম অনুযায়ী contentRef ব্যবহার করা হয়েছে
+  const handlePrint = useReactToPrint({
+    contentRef: printRef,
+    documentTitle: selectedApp
+      ? `Application_${selectedApp.applicationId}`
+      : "Application_Form",
+  });
 
   const fetchApplications = async () => {
     try {
@@ -49,9 +61,7 @@ export default function ManageApplications() {
     }
   };
 
-  // 🔴 Search এবং Filter লজিক
   const filteredApplications = applications.filter((app) => {
-    // Search Matching
     const childName = app.childInfo?.fullName?.toLowerCase() || "";
     const appId = app.applicationId?.toLowerCase() || "";
     const email = app.familyInfo?.email?.toLowerCase() || "";
@@ -62,7 +72,6 @@ export default function ManageApplications() {
       appId.includes(searchLower) ||
       email.includes(searchLower);
 
-    // Filter Matching
     let matchesFilter = true;
     if (filterStatus === "Final Phase") {
       matchesFilter = ["Under Review", "Admitted", "Rejected"].includes(
@@ -81,7 +90,7 @@ export default function ManageApplications() {
         <div className="wrap manage-app-container">
           <h2 className="page-title">Manage Applications</h2>
 
-          {/* 🔴 Search and Filter Section */}
+          {/* Search and Filter Section */}
           <div
             style={{
               display: "flex",
@@ -96,7 +105,7 @@ export default function ManageApplications() {
           >
             <input
               type="text"
-              placeholder="Search by ID, Name or Email..."
+              placeholder="Search by Application ID, Name or Email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               style={{
@@ -135,9 +144,9 @@ export default function ManageApplications() {
             <table className="app-table">
               <thead>
                 <tr>
-                  <th>SL</th> {/* 🔴 Serial Number Header */}
-                  <th>Child Name & ID</th>
-                  <th>Email</th> {/* 🔴 Email Header */}
+                  <th>SL</th>
+                  <th>Child Name & Application ID</th>
+                  <th>Email</th>
                   <th>Class</th>
                   <th>Score</th>
                   <th>Status</th>
@@ -145,13 +154,11 @@ export default function ManageApplications() {
                 </tr>
               </thead>
               <tbody>
-                {/* 🔴 applications.map এর বদলে filteredApplications.map ব্যবহার করা হয়েছে */}
                 {filteredApplications.map((app, index) => (
                   <tr key={app._id}>
                     <td>
                       <strong>{index + 1}</strong>
-                    </td>{" "}
-                    {/* 🔴 Serial Number */}
+                    </td>
                     <td className="child-name">
                       {app.childInfo?.fullName}
                       {app.applicationId && (
@@ -166,7 +173,6 @@ export default function ManageApplications() {
                         </div>
                       )}
                     </td>
-                    {/* 🔴 Email Column */}
                     <td>
                       <span style={{ fontSize: "14px", color: "#374151" }}>
                         {app.familyInfo?.email || "N/A"}
@@ -249,120 +255,455 @@ export default function ManageApplications() {
             </table>
           </div>
 
-          {/* Document View Modal */}
+          {/* 🔴 Full Detail & Printable Modal */}
           {selectedApp && (
             <div className="modal-overlay">
-              <div className="modal-content">
-                <button
-                  className="btn-close"
-                  onClick={() => setSelectedApp(null)}
+              <div className="modal-content" style={{ maxWidth: "850px" }}>
+                {/* Modal Header with Print & Close Buttons */}
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    borderBottom: "2px solid #e2e8f0",
+                    paddingBottom: "15px",
+                    marginBottom: "20px",
+                  }}
                 >
-                  Close
-                </button>
-
-                <h3 className="modal-header">Application Details</h3>
-
-                <div className="modal-grid">
-                  <div className="modal-section">
-                    <h4>Child Information</h4>
-                    <p>
-                      <strong>Name:</strong> {selectedApp.childInfo?.fullName}
-                    </p>
-                    <p>
-                      <strong>DOB:</strong>{" "}
-                      {new Date(
-                        selectedApp.childInfo?.dob,
-                      ).toLocaleDateString()}
-                    </p>
-                    <p>
-                      <strong>Class:</strong>{" "}
-                      {selectedApp.childInfo?.classSought}
-                    </p>
-                    <p>
-                      <strong>Quran Level:</strong>{" "}
-                      {selectedApp.childInfo?.quranLevel}
-                    </p>
-                    <p>
-                      <strong>Support Needed:</strong>{" "}
-                      {selectedApp.childInfo?.supportNeeded || "None"}
-                    </p>
-                  </div>
-
-                  <div className="modal-section">
-                    <h4>Family Information</h4>
-                    <p>
-                      <strong>Father:</strong>{" "}
-                      {selectedApp.familyInfo?.fatherName} (
-                      {selectedApp.familyInfo?.fatherOccupation})
-                    </p>
-                    <p>
-                      <strong>Mother:</strong>{" "}
-                      {selectedApp.familyInfo?.motherName} (
-                      {selectedApp.familyInfo?.motherOccupation})
-                    </p>
-                    <p>
-                      <strong>Mobile:</strong>{" "}
-                      {selectedApp.familyInfo?.primaryMobile}
-                    </p>
-                    <p>
-                      <strong>Income Source:</strong>{" "}
-                      {selectedApp.homeInfo?.incomeSource}
-                    </p>
-                  </div>
-
-                  <div className="modal-section full-width">
-                    <h4>Deen & Habits Summary</h4>
-                    <div
+                  <h3 style={{ margin: 0, color: "#059669" }}>
+                    <i className="fa-solid fa-file-lines"></i> Pre-Admission
+                    Form Details
+                  </h3>
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button
+                      onClick={handlePrint}
                       style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
-                        gap: "15px",
+                        backgroundColor: "#0284c7",
+                        color: "white",
+                        border: "none",
+                        padding: "8px 16px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
                       }}
                     >
-                      <div>
-                        <p>
-                          <strong>Father's Prayer:</strong>{" "}
-                          {selectedApp.deenInfo?.fatherPrayer}
-                        </p>
-                        <p>
-                          <strong>Mother's Prayer:</strong>{" "}
-                          {selectedApp.deenInfo?.motherPrayer}
-                        </p>
-                        <p>
-                          <strong>Qur'an Recitation:</strong>{" "}
-                          {selectedApp.deenInfo?.quranRecitation}
-                        </p>
+                      <i className="fa-solid fa-print"></i> Print Form
+                    </button>
+                    <button
+                      onClick={() => setSelectedApp(null)}
+                      style={{
+                        backgroundColor: "#ef4444",
+                        color: "white",
+                        border: "none",
+                        padding: "8px 16px",
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <i className="fa-solid fa-xmark"></i> Close
+                    </button>
+                  </div>
+                </div>
+
+                {/* 🔴 Printable Area Starts Here */}
+                <div ref={printRef} className="adm-print-container">
+                  <div className="adm-print-header">
+                    <h2>Madrasatuz Zaytuna International</h2>
+                    <h4>Pre-Admission Application Form — Session 2027</h4>
+                    <div className="adm-print-meta">
+                      <div className="adm-print-badge">
+                        App ID: {selectedApp.applicationId}
                       </div>
-                      <div>
-                        <p>
-                          <strong>Screen Time:</strong>{" "}
-                          {selectedApp.habitsInfo?.screenTime}
-                        </p>
-                        <p>
-                          <strong>Conduct (Obeys Parents):</strong>{" "}
-                          {selectedApp.habitsInfo?.conduct?.obeysParents}
-                        </p>
-                        <p>
-                          <strong>TV/Music in Home:</strong>{" "}
-                          {selectedApp.homeInfo?.television} /{" "}
-                          {selectedApp.homeInfo?.music}
-                        </p>
+                      <br />
+                      <div
+                        className="adm-print-badge"
+                        style={{ color: "#059669", borderColor: "#059669" }}
+                      >
+                        Score: {selectedApp.score}/100
                       </div>
                     </div>
                   </div>
 
-                  <div className="modal-section full-width">
-                    <h4>Commitment & Reasoning</h4>
-                    <p>
-                      <strong>Main Hope:</strong>{" "}
+                  {/* Section 1: Child Info */}
+                  <div className="adm-print-section-title">
+                    1. About Your Child
+                  </div>
+                  <div className="adm-print-grid-2">
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Child's Name:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.childInfo?.fullName}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Date of Birth:</div>
+                        <div className="adm-print-value">
+                          {new Date(
+                            selectedApp.childInfo?.dob,
+                          ).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Gender:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.childInfo?.gender}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Class Sought:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.childInfo?.classSought}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Current School:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.childInfo?.currentSchool || "None"}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Qur'an Level:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.childInfo?.quranLevel}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="adm-print-field">
+                    <div className="adm-print-label">Support Needed:</div>
+                    <div className="adm-print-value">
+                      {selectedApp.childInfo?.supportNeeded || "None"}
+                    </div>
+                  </div>
+
+                  {/* Section 2: Family Info */}
+                  <div className="adm-print-section-title">
+                    2. Family Information
+                  </div>
+                  <div className="adm-print-grid-2">
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Father's Name:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.familyInfo?.fatherName}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Father's Job:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.familyInfo?.fatherOccupation}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Lives With:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.familyInfo?.livesWith}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Residence Area:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.familyInfo?.areaOfResidence}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Mother's Name:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.familyInfo?.motherName}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Mother's Job:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.familyInfo?.motherOccupation}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Primary Mobile:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.familyInfo?.primaryMobile}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Family Email:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.familyInfo?.email || "N/A"}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Section 3: Deen in the Family */}
+                  <div className="adm-print-section-title">
+                    3. Deen in the Family
+                  </div>
+                  <div className="adm-print-grid-2">
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Father's Prayer:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.deenInfo?.fatherPrayer}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Mother's Prayer:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.deenInfo?.motherPrayer}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">
+                          Qur'an Recitation:
+                        </div>
+                        <div className="adm-print-value">
+                          {selectedApp.deenInfo?.quranRecitation}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Fasting & Zakat:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.deenInfo?.fastingAndZakat}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Islamic Dress:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.deenInfo?.islamicDress}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Islamic Learning:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.deenInfo?.islamicLearning}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Section 4: Home & Livelihood */}
+                  <div className="adm-print-section-title">
+                    4. Home & Livelihood
+                  </div>
+                  <div className="adm-print-grid-2">
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Income Source:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.homeInfo?.incomeSource}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Work Description:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.homeInfo?.workDescription}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">
+                          Riba / Prohibited:
+                        </div>
+                        <div className="adm-print-value">
+                          {selectedApp.homeInfo?.ribaOrProhibited}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Television:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.homeInfo?.television}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Music Played:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.homeInfo?.music}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Observes Purdah:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.homeInfo?.purdah}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Meals Together:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.homeInfo?.mealsTogether}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Section 5: Child's Habits & Conduct */}
+                  <div className="adm-print-section-title">
+                    5. Child's Habits & Conduct
+                  </div>
+                  <div className="adm-print-grid-2">
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Screen Time:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.screenTime}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Own Device:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.ownDevice}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Video Games:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.videoGames}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Watch TV/YouTube:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.watchTV}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Usual Bedtime:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.bedtime}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="adm-print-col">
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Obeys Parents:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.conduct?.obeysParents}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Tantrums/Anger:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.conduct?.tantrums}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Bad Words:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.conduct?.badWords}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Shares Kindly:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.conduct?.sharesKindly}
+                        </div>
+                      </div>
+                      <div className="adm-print-field">
+                        <div className="adm-print-label">Interest in Deen:</div>
+                        <div className="adm-print-value">
+                          {selectedApp.habitsInfo?.conduct?.showsInterestInDeen}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Section 6: Commitment */}
+                  <div className="adm-print-section-title">
+                    6. Commitment & Declaration
+                  </div>
+                  <div className="adm-print-field">
+                    <div className="adm-print-label long">
+                      Main Hope at Zaytuna:
+                    </div>
+                    <div className="adm-print-value">
                       {selectedApp.commitmentInfo?.mainHope}
-                    </p>
-                    <p>
-                      <strong>Why Zaytuna:</strong>{" "}
-                      {selectedApp.commitmentInfo?.familyDescription}
-                    </p>
+                    </div>
+                  </div>
+                  <div className="adm-print-field">
+                    <div className="adm-print-label long">
+                      Parent goes over Qur'an:
+                    </div>
+                    <div className="adm-print-value">
+                      {selectedApp.commitmentInfo?.parentGoOverQuran}
+                    </div>
+                  </div>
+                  <div className="adm-print-field">
+                    <div
+                      className="adm-print-label long"
+                      style={{ width: "100%" }}
+                    >
+                      About Family & Why Zaytuna:
+                    </div>
+                  </div>
+                  <div className="adm-print-desc-box">
+                    {selectedApp.commitmentInfo?.familyDescription}
+                  </div>
+
+                  <div className="adm-print-signature-block">
+                    <div className="adm-print-sign-area">
+                      <div className="adm-print-sign-line">
+                        {new Date(selectedApp.appliedAt).toLocaleDateString()}
+                      </div>
+                      <span style={{ fontSize: "12px", color: "#64748b" }}>
+                        Date of Submission
+                      </span>
+                    </div>
+                    <div className="adm-print-sign-area">
+                      <div className="adm-print-sign-line">
+                        {selectedApp.commitmentInfo?.guardianSignature}
+                      </div>
+                      <span style={{ fontSize: "12px", color: "#64748b" }}>
+                        Guardian's Signature
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Office Use Only Section */}
+                  <div
+                    className="adm-print-section-title"
+                    style={{ backgroundColor: "#1e293b", marginTop: "30px" }}
+                  >
+                    7. Office Use Only
+                  </div>
+                  <div className="adm-office-grid">
+                    <div className="adm-office-box">
+                      <div className="adm-office-title">Admission Officer</div>
+                      <div className="adm-office-comment">
+                        Comments / Verification notes...
+                      </div>
+                      <div className="adm-office-sign">Signature</div>
+                    </div>
+                    <div className="adm-office-box">
+                      <div className="adm-office-title">Vice-Principal</div>
+                      <div className="adm-office-comment">
+                        Assessment evaluation...
+                      </div>
+                      <div className="adm-office-sign">Signature</div>
+                    </div>
+                    <div className="adm-office-box">
+                      <div className="adm-office-title">Principal</div>
+                      <div className="adm-office-comment">
+                        Final recommendation...
+                      </div>
+                      <div className="adm-office-sign">Signature</div>
+                    </div>
+                    <div className="adm-office-box">
+                      <div className="adm-office-title">Chairman</div>
+                      <div className="adm-office-comment">
+                        Approval remarks...
+                      </div>
+                      <div className="adm-office-sign">Signature</div>
+                    </div>
                   </div>
                 </div>
+                {/* 🔴 Printable Area Ends Here */}
               </div>
             </div>
           )}

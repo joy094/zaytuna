@@ -83,7 +83,9 @@ export const updateAdmissionStatus = async (req, res) => {
               <h2 style="color: #059669; text-align: center; margin-bottom: 20px;">Congratulations!</h2>
               <p style="color: #334155; font-size: 16px;">Dear Parent,</p>
               <p style="color: #334155; font-size: 16px; line-height: 1.6;">
-                We are delighted to inform you that the pre-admission application for <strong>${studentName}</strong> (ID: ${admission.applicationId}) has been <strong>Approved</strong>.
+
+
+                We are delighted to inform you that the pre-admission application for <strong>${studentName}</strong> (Application ID: ${admission.applicationId}) has been <strong>Approved</strong>.
               </p>
               <p style="color: #334155; font-size: 16px; line-height: 1.6;">
                 To complete the final admission process, please log in to your dashboard and enter the following highly confidential Offer Code:
@@ -117,7 +119,7 @@ export const updateAdmissionStatus = async (req, res) => {
               <h2 style="color: #059669; text-align: center; margin-bottom: 20px;">Madrasatuz Zaytuna International</h2>
               <p style="color: #334155; font-size: 16px;">Dear Parent,</p>
               <p style="color: #334155; font-size: 16px; line-height: 1.6;">
-                This is an update regarding the admission application for <strong>${studentName}</strong> (ID: ${admission.applicationId}). 
+                This is an update regarding the admission application for <strong>${studentName}</strong> (Application ID: ${admission.applicationId}). 
                 The current status of your application has been updated to: <strong style="color: #0284c7;">${status}</strong>.
               </p>
               <p style="color: #334155; font-size: 16px; line-height: 1.6;">
@@ -175,7 +177,7 @@ export const verifyOfferCode = async (req, res) => {
     if (!refNumber || !offerCode) {
       return res.status(400).send({
         success: false,
-        message: "Please provide both Reference Number and Offer Code.",
+        message: "Please provide both Application ID and Offer Code.",
       });
     }
 
@@ -187,7 +189,7 @@ export const verifyOfferCode = async (req, res) => {
     if (!admission) {
       return res.status(400).send({
         success: false,
-        message: "Invalid Reference Number or Offer Code!",
+        message: "Invalid Application ID or Offer Code!",
       });
     }
 
@@ -277,8 +279,8 @@ export const updateFinalAdmissionStatus = async (req, res) => {
             : "Admission Update",
         message:
           status === "Admitted"
-            ? `Congratulations! The final admission for ${studentName} (ID: ${application.applicationId}) has been successfully completed and confirmed.`
-            : `We regret to inform you that the final admission application for ${studentName} (ID: ${application.applicationId}) has been rejected.`,
+            ? `Congratulations! The final admission for ${studentName} (Application ID: ${application.applicationId}) has been successfully completed and confirmed.`
+            : `We regret to inform you that the final admission application for ${studentName} (Application ID: ${application.applicationId}) has been rejected.`,
         isRead: false,
         link: "/dashboard/user",
       });
@@ -318,7 +320,7 @@ export const updateFinalAdmissionStatus = async (req, res) => {
               <h3 style="color: #1e293b; text-align: center;">Congratulations, ${studentName}!</h3>
               <p style="color: #334155; font-size: 16px; line-height: 1.6;">
                 We are delighted to inform you that your final admission process has been completed successfully. 
-                You are now officially admitted to <strong>${targetClass}</strong> (ID: ${application.applicationId}) for the upcoming session.
+                You are now officially admitted to <strong>${targetClass}</strong> (Application ID: ${application.applicationId}) for the upcoming session.
               </p>
               <p style="color: #334155; font-size: 16px; line-height: 1.6;">
                 Please log in to your student dashboard for further instructions, class schedules, and payment details.
