@@ -24,13 +24,13 @@ const Home = () => {
           <div className="hero-overlay"></div>
           <div className="hero-content">
             <h1 className="hero-title">
-              Rooted in faith. Reaching for excellence.
+              Welcome to Madrasatuz Zaytuna International
             </h1>
             <h2 className="hero-subtitle">
-              মাদ্রাসাতুয যায়তূনা ইন্টারন্যাশনাল  
+              মাদ্রাসাতুয যায়তূনা ইন্টারন্যাশনাল
             </h2>
             <p className="hero-desc">
-             A Cambridge Curriculum-Based School & Madrasah
+              A Cambridge Curriculum-Based School & Madrasah
             </p>
             <div className="hero-buttons">
               {/* Apply Now বাটন */}

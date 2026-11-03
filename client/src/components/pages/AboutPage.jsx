@@ -310,7 +310,7 @@ const About = () => {
               </p>
             </div>
             <a
-              href="/prospectus.pdf"
+              href="/docs/Bangla_Prospectus.pdf"
               target="_blank"
               rel="noopener noreferrer"
               style={{

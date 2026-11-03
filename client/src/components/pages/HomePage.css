@@ -46,7 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("https://images.unsplash.com/photo-1585036156171-384164a8c675?q=80&w=1600&auto=format&fit=crop");
+  background-image: url("/img/ZaytunaBuldingPhoto2.png");
   background-size: cover;
   background-position: center;
 }
@@ -503,7 +503,7 @@
   }
 
   .verse-arabic {
-    font-size: 2.8rem;
+    font-size: 2rem;
   }
   .verse-english {
     font-size: 1rem;
