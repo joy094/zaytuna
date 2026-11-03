@@ -310,7 +310,7 @@ const About = () => {
               </p>
             </div>
             <a
-              href="/docs/Bangla_Prospectus.pdf"
+              href="https://drive.google.com/uc?export=download&id=1r-S2XjZMIyvQ1oqVx6zL-gB2W0zFn1kA"
               target="_blank"
               rel="noopener noreferrer"
               style={{
