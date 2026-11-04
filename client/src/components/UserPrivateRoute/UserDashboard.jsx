@@ -203,7 +203,7 @@ const Dashboard = () => {
                                     marginLeft: "8px",
                                   }}
                                 >
-                                  | REF: {app.applicationId}
+                                  | Application ID: {app.applicationId}
                                 </span>
                               )}
                             </span>
