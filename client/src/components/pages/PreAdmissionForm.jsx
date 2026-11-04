@@ -435,7 +435,7 @@ export default function PreAdmissionForm({ onNavigate }) {
                 <label>Mother's occupation</label>
                 <input
                   type="text"
-                  placeholder="e.g. Homemaker"
+                  placeholder="e.g. Teacher"
                   className="form-control"
                   required
                   value={formData.familyInfo.motherOccupation}
@@ -521,7 +521,7 @@ export default function PreAdmissionForm({ onNavigate }) {
                 />
               </div>
             </div>
-            <div className="form-group">
+            {/* <div className="form-group">
               <label>A reference who knows your family (optional)</label>
               <input
                 type="text"
@@ -532,7 +532,7 @@ export default function PreAdmissionForm({ onNavigate }) {
                   handleNestedChange("familyInfo", "reference", e.target.value)
                 }
               />
-            </div>
+            </div> */}
           </fieldset>
         )}
 
