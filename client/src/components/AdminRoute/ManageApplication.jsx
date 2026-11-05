@@ -61,6 +61,33 @@ export default function ManageApplications() {
     }
   };
 
+  // handle delete ফ্রন্টএন্ডে ফাংশনটি যুক্ত করুন
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this application?",
+    );
+
+    if (confirmDelete) {
+      try {
+        const { data } = await axios.delete(
+          `/api/v1/admission/delete-application/${id}`,
+          {
+            headers: { Authorization: auth?.token }, // যদি টোকেন লাগে
+          },
+        );
+
+        if (data.success) {
+          toast.success(data.message);
+          // স্টেট আপডেট করে ডিলিট হওয়া আইটেমটি লিস্ট থেকে সরিয়ে দিন
+          setApplications(applications.filter((app) => app._id !== id));
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Something went wrong while deleting");
+      }
+    }
+  };
+
   const filteredApplications = applications.filter((app) => {
     const childName = app.childInfo?.fullName?.toLowerCase() || "";
     const appId = app.applicationId?.toLowerCase() || "";
@@ -226,13 +253,41 @@ export default function ManageApplications() {
                         </select>
                       )}
                     </td>
-                    <td>
-                      <button
-                        className="btn-view"
-                        onClick={() => setSelectedApp(app)}
-                      >
-                        View
-                      </button>
+                   <td>
+                      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                        <button
+                          className="btn-view"
+                          style={{
+                            padding: "6px 14px",
+                            borderRadius: "5px",
+                            cursor: "pointer",
+                            fontWeight: "500",
+                            border: "none"
+                          }}
+                          onClick={() => setSelectedApp(app)}
+                        >
+                          View
+                        </button>
+
+                        <button
+                          className="btn btn-sm btn-danger"
+                          style={{
+                            backgroundColor: "#ef4444",
+                            color: "white",
+                            padding: "6px 14px",
+                            borderRadius: "5px",
+                            border: "none",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            fontWeight: "500"
+                          }}
+                          onClick={() => handleDelete(app._id)}
+                        >
+                          <i className="fa-solid fa-trash"></i> Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -664,10 +719,6 @@ export default function ManageApplications() {
                       </span>
                     </div>
                   </div>
-
-
-
-                  
 
                   {/* Office Use Only Section */}
                   {/* <div

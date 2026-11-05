@@ -364,3 +364,32 @@ export const updateFinalAdmissionStatus = async (req, res) => {
     });
   }
 };
+
+// Delete Application Controller
+export const deleteApplicationController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // AdmissionModel এর জায়গায় আপনার ডেটাবেস মডেলের নাম বসাবেন
+    const deletedApp = await Admission.findByIdAndDelete(id);
+
+    if (!deletedApp) {
+      return res.status(404).send({
+        success: false,
+        message: "Application not found",
+      });
+    }
+
+    res.status(200).send({
+      success: true,
+      message: "Application deleted successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "Error while deleting application",
+      error,
+    });
+  }
+};

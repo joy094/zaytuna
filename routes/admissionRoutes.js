@@ -8,6 +8,9 @@ import { requireSignIn, isAdmin } from "../middleware/authMiddleware.js";
 import { io } from "../index.js";
 import Notification from "../model/Notification.js";
 import user_model from "../model/user_model.js"; // ইউজার রোল চেক করার জন্য ইমপোর্ট
+
+import { deleteApplicationController } from "../controller/admissionStatusController.js";
+// আপনার মিডলওয়্যার ইম্পোর্ট করুন (requireSignIn, isAdmin ইত্যাদি যদি থাকে)
 import {
   updateAdmissionStatus,
   verifyOfferCode,
@@ -249,12 +252,10 @@ router.post(
       );
 
       if (!updatedAdmission) {
-        return res
-          .status(404)
-          .send({
-            success: false,
-            message: "Application not found with this Reference Number!",
-          });
+        return res.status(404).send({
+          success: false,
+          message: "Application not found with this Reference Number!",
+        });
       }
 
       console.log(
@@ -262,21 +263,17 @@ router.post(
         refNumber,
       );
 
-      res
-        .status(200)
-        .send({
-          success: true,
-          message: "Final Application submitted successfully!",
-        });
+      res.status(200).send({
+        success: true,
+        message: "Final Application submitted successfully!",
+      });
     } catch (error) {
       console.log("Final Submit Error:", error);
-      res
-        .status(500)
-        .send({
-          success: false,
-          message: "Server error",
-          error: error.message,
-        });
+      res.status(500).send({
+        success: false,
+        message: "Server error",
+        error: error.message,
+      });
     }
   },
 );
@@ -289,6 +286,14 @@ router.put(
   requireSignIn,
   isAdmin,
   updateFinalAdmissionStatus,
+);
+
+// Delete route
+router.delete(
+  "/delete-application/:id",
+  requireSignIn,
+  isAdmin,
+  deleteApplicationController,
 );
 
 export default router;
