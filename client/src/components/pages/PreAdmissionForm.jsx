@@ -1083,9 +1083,9 @@ export default function PreAdmissionForm({ onNavigate }) {
             <button
               type="button"
               onClick={handleSubmit}
-              className="btn-form btn-submit"
+              className="btn-form btn-submit-smart"
             >
-              Submit Application <i className="fa-solid fa-check"></i>
+              Submit Application <i className="fa-solid fa-paper-plane"></i>
             </button>
           )}
         </div>

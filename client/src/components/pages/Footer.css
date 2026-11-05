@@ -36,6 +36,9 @@
 /* =========================================
    Brand & Contact Widget
 ========================================= */
+/* =========================================
+   Brand & Contact Widget (Updated for White Color)
+========================================= */
 .footer-logo {
   font-size: 2.2rem;
   font-weight: 700;
@@ -48,11 +51,12 @@
   color: #34d399; /* Emerald 400 */
 }
 
+/* মাদ্রাসার ডেসক্রিপশন টেক্সট */
 .footer-desc {
   font-size: 0.95rem;
   line-height: 1.7;
   margin-bottom: 25px;
-  color: #a7f3d0;
+  color: #ffffff; /* 🔴 হালকা সবুজের বদলে সাদা করা হলো */
 }
 
 .contact-info {
@@ -68,10 +72,21 @@
   margin-bottom: 16px;
   font-size: 0.95rem;
   line-height: 1.5;
+  color: #ffffff !important; /* 🔴 কন্টাক্ট ইনফোর লেখাগুলো সাদা করা হলো */
+}
+
+.contact-info li a {
+  color: #ffffff !important; /* 🔴 ইমেইল বা নম্বরের লিংক সাদা করা হলো */
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.contact-info li a:hover {
+  color: #34d399 !important; /* হোভার করলে সুন্দর সবুজ হবে */
 }
 
 .contact-info i {
-  color: #34d399;
+  color: #ffffff !important; /* 🔴 আইকনগুলোও সাদা করা হলো */
   font-size: 1.1rem;
   margin-top: 3px;
 }
@@ -287,7 +302,6 @@
   /* ক্লায়েন্টের ডকুমেন্ট অনুযায়ী লোগোটি সাদার উপর ডিজাইন করা[cite: 6]। 
      ফুটারের গাঢ় সবুজ ব্যাকগ্রাউন্ডে লোগোটি যদি স্পষ্ট না হয়, 
      তবে নিচের লাইনগুলোর কমেন্ট (/* ... */
- 
 
   /* background-color: #ffffff; */
   /* padding: 10px 15px; */

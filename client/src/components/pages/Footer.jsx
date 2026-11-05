@@ -13,7 +13,7 @@ const Footer = () => {
           <div className="footer-widget contact-widget">
             {/* 🔴 টেক্সটের বদলে এখানে লোগো ইমেজ বসানো হলো */}
             <img
-              src="/img/madrasatuz-zaytuna-logo.png" /* এখানে আপনার লোগোর সঠিক পাথ (Path) বা import করা নাম দিন */
+              src="/img/madrasatuz-zaytuna-f-logo.png" /* এখানে আপনার লোগোর সঠিক পাথ (Path) বা import করা নাম দিন */
               alt="Madrasatuz Zaytuna Logo"
               className="footer-brand-logo"
             />

@@ -241,7 +241,7 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Auth Links (অপরিবর্তিত রাখা হয়েছে) */}
+            {/* Auth Links (আপডেট করা হয়েছে) */}
             {!auth.user ? (
               <div className="auth-links desktop-only ml-2">
                 <NavLink
@@ -253,10 +253,25 @@ const Header = () => {
               </div>
             ) : (
               <div className="dropdown-wrapper desktop-only ml-2">
-                <span className="nav-item has-dropdown user-name-badge bg-emerald-600 text-white px-3 py-1 rounded-md">
-                  <i className="fa-regular fa-circle-user me-1"></i>
-                  {auth?.user?.name.split(" ")[0]}
+                {/* 🔴 এখানে আইকন ও নামের ওভারল্যাপিং ঠিক করা হয়েছে */}
+                <span
+                  className="nav-item has-dropdown user-name-badge bg-emerald-600 text-white px-3 py-1 rounded-md user-profile-info"
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
+                  <i
+                    className="fa-regular fa-circle-user"
+                    style={{
+                      position: "static",
+                      margin: 0,
+                      fontSize: "1.1rem",
+                    }}
+                  ></i>
+                  <span style={{ fontWeight: 600 }}>
+                    {auth?.user?.name.split(" ")[0]}
+                  </span>
                 </span>
+
+                {/* ইউজার ড্রপডাউন মেনু */}
                 <div className="dropdown-menu user-menu">
                   <NavLink
                     to={`/dashboard/${auth?.user?.role === 1 ? "admin" : "user"}`}
