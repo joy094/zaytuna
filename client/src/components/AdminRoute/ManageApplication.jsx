@@ -177,11 +177,16 @@ export default function ManageApplications() {
                   <th>Class</th>
                   <th>Score</th>
                   <th>Status</th>
+                  {/* 🔴 ১. এখানে Date & Time হেডার যুক্ত করা হলো */}
+                  <th>Date & Time</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {filteredApplications.map((app, index) => (
+                {/* 🔴 এখানে ডেটাগুলোকে সর্ট করে নেওয়া হচ্ছে (পুরোনো বা প্রথম আবেদন আগে আসবে) */}
+{[...filteredApplications]
+  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+  .map((app, index) => (
                   <tr key={app._id}>
                     <td>
                       <strong>{index + 1}</strong>
@@ -253,8 +258,58 @@ export default function ManageApplications() {
                         </select>
                       )}
                     </td>
-                   <td>
-                      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+
+                    {/* 🔴 ২. এখানে Date & Time এর ডেটা রেন্ডার করা হলো (Status ও Action এর মাঝে) */}
+                    <td>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "2px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "0.9rem",
+                            fontWeight: "600",
+                            color: "#374151",
+                          }}
+                        >
+                          {new Date(app.createdAt).toLocaleDateString("en-GB", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: "0.8rem",
+                            color: "#6b7280",
+                            fontWeight: "500",
+                          }}
+                        >
+                          <i
+                            className="fa-regular fa-clock"
+                            style={{ marginRight: "4px" }}
+                          ></i>
+                          {new Date(app.createdAt).toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          })}
+                        </span>
+                      </div>
+                    </td>
+
+                    {/* Action কলাম */}
+                    <td>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "10px",
+                          alignItems: "center",
+                        }}
+                      >
                         <button
                           className="btn-view"
                           style={{
@@ -262,7 +317,7 @@ export default function ManageApplications() {
                             borderRadius: "5px",
                             cursor: "pointer",
                             fontWeight: "500",
-                            border: "none"
+                            border: "none",
                           }}
                           onClick={() => setSelectedApp(app)}
                         >
@@ -281,7 +336,7 @@ export default function ManageApplications() {
                             display: "flex",
                             alignItems: "center",
                             gap: "6px",
-                            fontWeight: "500"
+                            fontWeight: "500",
                           }}
                           onClick={() => handleDelete(app._id)}
                         >
@@ -295,7 +350,7 @@ export default function ManageApplications() {
                 {filteredApplications.length === 0 && (
                   <tr>
                     <td
-                      colSpan="7"
+                      colSpan="8" // 🔴 ৩. যেহেতু নতুন একটি কলাম যুক্ত হয়েছে, তাই colSpan 7 থেকে 8 করে দেওয়া হলো
                       style={{
                         textAlign: "center",
                         padding: "30px",

@@ -73,7 +73,7 @@ export default function PreAdmissionForm({ onNavigate }) {
       motherOccupation: "",
       livesWith: "",
       primaryMobile: "",
-      email: "",
+      email: auth?.user?.email || "",
       areaOfResidence: "",
       reference: "",
     },
@@ -149,12 +149,15 @@ export default function PreAdmissionForm({ onNavigate }) {
   };
 
   const handleNextStep = () => {
-    setErrorMsg("");
+    setErrorMsg(""); // আগের কোনো এরর থাকলে ক্লিয়ার করবে
 
+    // ================= STEP 1: Child Info Validation =================
     if (currentStep === 0) {
       const { dob, classSought, fullName, gender, quranLevel } =
         formData.childInfo;
+
       if (!fullName || !dob || !gender || !classSought || !quranLevel) {
+        toast.warning("দয়া করে প্রথম ধাপের সব তথ্য পূরণ করুন।");
         return setErrorMsg("Please fill all required fields in Step 1.");
       }
 
@@ -169,10 +172,125 @@ export default function PreAdmissionForm({ onNavigate }) {
         return setErrorMsg("Grade 1 needs minimum 7 years by Jan 1, 2027.");
     }
 
+    // ================= STEP 2: Family Info Validation =================
+    if (currentStep === 1) {
+      const {
+        fatherName,
+        fatherOccupation,
+        motherName,
+        motherOccupation,
+        livesWith,
+        primaryMobile,
+        areaOfResidence,
+      } = formData.familyInfo;
+
+      if (
+        !fatherName ||
+        !fatherOccupation ||
+        !motherName ||
+        !motherOccupation ||
+        !livesWith ||
+        !primaryMobile ||
+        !areaOfResidence
+      ) {
+        toast.warning(
+          "দয়া করে দ্বিতীয় ধাপের সব তথ্য (ফোন নম্বর সহ) পূরণ করুন।",
+        );
+        return setErrorMsg(
+          "Please fill all required fields (including Phone Number) in Step 2.",
+        );
+      }
+
+      // ফোন নম্বর ১১ ডিজিটের কম দিলে ওয়ার্নিং দেখাবে
+      if (primaryMobile.length < 11) {
+        toast.warning("দয়া করে সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন।");
+        return setErrorMsg("Please enter a valid 11-digit mobile number.");
+      }
+    }
+
+    // ================= STEP 3: Deen Info Validation =================
+    if (currentStep === 2) {
+      const {
+        fatherPrayer,
+        motherPrayer,
+        quranRecitation,
+        fastingAndZakat,
+        islamicDress,
+        islamicLearning,
+      } = formData.deenInfo;
+
+      if (
+        !fatherPrayer ||
+        !motherPrayer ||
+        !quranRecitation ||
+        !fastingAndZakat ||
+        !islamicDress ||
+        !islamicLearning
+      ) {
+        toast.warning("দয়া করে তৃতীয় ধাপের সব প্রশ্নের উত্তর দিন।");
+        return setErrorMsg("Please answer all questions in Step 3.");
+      }
+    }
+
+    // ================= STEP 4: Home Info Validation =================
+    if (currentStep === 3) {
+      const {
+        incomeSource,
+        workDescription,
+        ribaOrProhibited,
+        television,
+        music,
+        purdah,
+        mealsTogether,
+      } = formData.homeInfo;
+
+      if (
+        !incomeSource ||
+        !workDescription ||
+        !ribaOrProhibited ||
+        !television ||
+        !music ||
+        !purdah ||
+        !mealsTogether
+      ) {
+        toast.warning("দয়া করে চতুর্থ ধাপের সব প্রশ্নের উত্তর দিন।");
+        return setErrorMsg("Please answer all questions in Step 4.");
+      }
+    }
+
+    // ================= STEP 5: Habits Info Validation =================
+    if (currentStep === 4) {
+      const { screenTime, ownDevice, videoGames, watchTV, bedtime, conduct } =
+        formData.habitsInfo;
+      const {
+        obeysParents,
+        tantrums,
+        badWords,
+        sharesKindly,
+        showsInterestInDeen,
+      } = conduct;
+
+      if (
+        !screenTime ||
+        !ownDevice ||
+        !videoGames ||
+        !watchTV ||
+        !bedtime ||
+        !obeysParents ||
+        !tantrums ||
+        !badWords ||
+        !sharesKindly ||
+        !showsInterestInDeen
+      ) {
+        toast.warning("দয়া করে পঞ্চম ধাপের সব প্রশ্নের উত্তর দিন।");
+        return setErrorMsg("Please answer all questions in Step 5.");
+      }
+    }
+
+    // যদি উপরের সব ভ্যালিডেশন পাস করে, তবেই পরের ধাপে যাবে
     setCurrentStep((prev) => Math.min(prev + 1, 5));
     window.scrollTo(0, 0);
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -493,14 +611,17 @@ export default function PreAdmissionForm({ onNavigate }) {
               </div>
 
               <div className="form-group">
-                <label>Email</label>
+                <label>Email (Registered Account)</label>
                 <input
                   type="email"
                   className="form-control"
+                  style={{
+                    backgroundColor: "#f3f4f6",
+                    color: "#6b7280",
+                    cursor: "not-allowed",
+                  }}
                   value={formData.familyInfo.email}
-                  onChange={(e) =>
-                    handleNestedChange("familyInfo", "email", e.target.value)
-                  }
+                  readOnly // 🔴 ইউজার এটি পরিবর্তন করতে পারবে না
                 />
               </div>
               <div className="form-group">
