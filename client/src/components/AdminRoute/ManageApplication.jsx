@@ -485,7 +485,7 @@ export default function ManageApplications() {
                         flexDirection: "column",
                         alignItems: "flex-end",
                         gap: "6px",
-                        paddingTop: "35px", // মাদরাসার নামের সোজাসুজি মিল রাখার জন্য সামান্য নিচে নামানো হলো
+                        paddingTop: "25px", // মাদরাসার নামের সোজাসুজি মিল রাখার জন্য সামান্য নিচে নামানো হলো
                       }}
                     >
                       <div
