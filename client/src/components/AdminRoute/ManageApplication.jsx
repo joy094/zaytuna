@@ -184,168 +184,174 @@ export default function ManageApplications() {
               </thead>
               <tbody>
                 {/* 🔴 এখানে ডেটাগুলোকে সর্ট করে নেওয়া হচ্ছে (পুরোনো বা প্রথম আবেদন আগে আসবে) */}
-{[...filteredApplications]
-  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-  .map((app, index) => (
-                  <tr key={app._id}>
-                    <td>
-                      <strong>{index + 1}</strong>
-                    </td>
-                    <td className="child-name">
-                      {app.childInfo?.fullName}
-                      {app.applicationId && (
+                {[...filteredApplications]
+                  .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                  .map((app, index) => (
+                    <tr key={app._id}>
+                      <td>
+                        <strong>{index + 1}</strong>
+                      </td>
+                      <td className="child-name">
+                        {app.childInfo?.fullName}
+                        {app.applicationId && (
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              color: "#6b7280",
+                              fontWeight: "normal",
+                            }}
+                          >
+                            {app.applicationId}
+                          </div>
+                        )}
+                      </td>
+                      <td>
+                        <span style={{ fontSize: "14px", color: "#374151" }}>
+                          {app.familyInfo?.email || "N/A"}
+                        </span>
+                      </td>
+                      <td>{app.childInfo?.classSought}</td>
+                      <td>
+                        <span
+                          className={`score-badge ${app.score >= 70 ? "score-high" : "score-low"}`}
+                        >
+                          {app.score} / 100
+                        </span>
+                      </td>
+                      <td>
+                        {["Under Review", "Admitted", "Rejected"].includes(
+                          app.status,
+                        ) ? (
+                          <span
+                            style={{
+                              padding: "6px 12px",
+                              borderRadius: "20px",
+                              fontSize: "13px",
+                              fontWeight: "bold",
+                              color: "#fff",
+                              backgroundColor:
+                                app.status === "Admitted"
+                                  ? "#10b981"
+                                  : app.status === "Rejected"
+                                    ? "#ef4444"
+                                    : "#f59e0b",
+                              display: "inline-block",
+                            }}
+                          >
+                            {app.status} (Final)
+                          </span>
+                        ) : (
+                          <select
+                            className="status-select"
+                            value={app.status}
+                            onChange={(e) =>
+                              handleStatusChange(app._id, e.target.value)
+                            }
+                          >
+                            <option value="Pending">Pending</option>
+                            <option value="Invite to Interview">
+                              Invite to Interview
+                            </option>
+                            <option value="Hold">Hold</option>
+                            <option value="Accepted">Accepted</option>
+                            <option value="Cancelled">Cancelled</option>
+                          </select>
+                        )}
+                      </td>
+
+                      {/* 🔴 ২. এখানে Date & Time এর ডেটা রেন্ডার করা হলো (Status ও Action এর মাঝে) */}
+                      <td>
                         <div
                           style={{
-                            fontSize: "12px",
-                            color: "#6b7280",
-                            fontWeight: "normal",
-                          }}
-                        >
-                          {app.applicationId}
-                        </div>
-                      )}
-                    </td>
-                    <td>
-                      <span style={{ fontSize: "14px", color: "#374151" }}>
-                        {app.familyInfo?.email || "N/A"}
-                      </span>
-                    </td>
-                    <td>{app.childInfo?.classSought}</td>
-                    <td>
-                      <span
-                        className={`score-badge ${app.score >= 70 ? "score-high" : "score-low"}`}
-                      >
-                        {app.score} / 100
-                      </span>
-                    </td>
-                    <td>
-                      {["Under Review", "Admitted", "Rejected"].includes(
-                        app.status,
-                      ) ? (
-                        <span
-                          style={{
-                            padding: "6px 12px",
-                            borderRadius: "20px",
-                            fontSize: "13px",
-                            fontWeight: "bold",
-                            color: "#fff",
-                            backgroundColor:
-                              app.status === "Admitted"
-                                ? "#10b981"
-                                : app.status === "Rejected"
-                                  ? "#ef4444"
-                                  : "#f59e0b",
-                            display: "inline-block",
-                          }}
-                        >
-                          {app.status} (Final)
-                        </span>
-                      ) : (
-                        <select
-                          className="status-select"
-                          value={app.status}
-                          onChange={(e) =>
-                            handleStatusChange(app._id, e.target.value)
-                          }
-                        >
-                          <option value="Pending">Pending</option>
-                          <option value="Invite to Interview">
-                            Invite to Interview
-                          </option>
-                          <option value="Hold">Hold</option>
-                          <option value="Accepted">Accepted</option>
-                          <option value="Cancelled">Cancelled</option>
-                        </select>
-                      )}
-                    </td>
-
-                    {/* 🔴 ২. এখানে Date & Time এর ডেটা রেন্ডার করা হলো (Status ও Action এর মাঝে) */}
-                    <td>
-                      <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "2px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: "0.9rem",
-                            fontWeight: "600",
-                            color: "#374151",
-                          }}
-                        >
-                          {new Date(app.createdAt).toLocaleDateString("en-GB", {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          })}
-                        </span>
-                        <span
-                          style={{
-                            fontSize: "0.8rem",
-                            color: "#6b7280",
-                            fontWeight: "500",
-                          }}
-                        >
-                          <i
-                            className="fa-regular fa-clock"
-                            style={{ marginRight: "4px" }}
-                          ></i>
-                          {new Date(app.createdAt).toLocaleTimeString("en-US", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}
-                        </span>
-                      </div>
-                    </td>
-
-                    {/* Action কলাম */}
-                    <td>
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "10px",
-                          alignItems: "center",
-                        }}
-                      >
-                        <button
-                          className="btn-view"
-                          style={{
-                            padding: "6px 14px",
-                            borderRadius: "5px",
-                            cursor: "pointer",
-                            fontWeight: "500",
-                            border: "none",
-                          }}
-                          onClick={() => setSelectedApp(app)}
-                        >
-                          View
-                        </button>
-
-                        <button
-                          className="btn btn-sm btn-danger"
-                          style={{
-                            backgroundColor: "#ef4444",
-                            color: "white",
-                            padding: "6px 14px",
-                            borderRadius: "5px",
-                            border: "none",
-                            cursor: "pointer",
                             display: "flex",
-                            alignItems: "center",
-                            gap: "6px",
-                            fontWeight: "500",
+                            flexDirection: "column",
+                            gap: "2px",
                           }}
-                          onClick={() => handleDelete(app._id)}
                         >
-                          <i className="fa-solid fa-trash"></i> Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                          <span
+                            style={{
+                              fontSize: "0.9rem",
+                              fontWeight: "600",
+                              color: "#374151",
+                            }}
+                          >
+                            {new Date(app.createdAt).toLocaleDateString(
+                              "en-GB",
+                              {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              },
+                            )}
+                          </span>
+                          <span
+                            style={{
+                              fontSize: "0.8rem",
+                              color: "#6b7280",
+                              fontWeight: "500",
+                            }}
+                          >
+                            <i
+                              className="fa-regular fa-clock"
+                              style={{ marginRight: "4px" }}
+                            ></i>
+                            {new Date(app.createdAt).toLocaleTimeString(
+                              "en-US",
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true,
+                              },
+                            )}
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Action কলাম */}
+                      <td>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "10px",
+                            alignItems: "center",
+                          }}
+                        >
+                          <button
+                            className="btn-view"
+                            style={{
+                              padding: "6px 14px",
+                              borderRadius: "5px",
+                              cursor: "pointer",
+                              fontWeight: "500",
+                              border: "none",
+                            }}
+                            onClick={() => setSelectedApp(app)}
+                          >
+                            View
+                          </button>
+
+                          <button
+                            className="btn btn-sm btn-danger"
+                            style={{
+                              backgroundColor: "#ef4444",
+                              color: "white",
+                              padding: "6px 14px",
+                              borderRadius: "5px",
+                              border: "none",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "6px",
+                              fontWeight: "500",
+                            }}
+                            onClick={() => handleDelete(app._id)}
+                          >
+                            <i className="fa-solid fa-trash"></i> Delete
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
 
                 {filteredApplications.length === 0 && (
                   <tr>
@@ -418,19 +424,86 @@ export default function ManageApplications() {
 
                 {/* 🔴 Printable Area Starts Here */}
                 <div ref={printRef} className="adm-print-container">
-                  <div className="adm-print-header">
-                    <h2>Madrasatuz Zaytuna International</h2>
-                    <h4>Pre-Admission Application Form — Session 2027</h4>
-                    <div className="adm-print-meta">
-                      <div className="adm-print-badge">
-                        App ID: {selectedApp.applicationId}
-                      </div>
-                      <br />
+                  <div
+                    className="adm-print-header"
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "130px auto 140px",
+                      alignItems: "center", // একসাথে লম্বালম্বি মাঝে রাখা
+                      borderBottom: "2px solid #059669",
+                      paddingBottom: "15px", // নিচে হালকা প্যাডিং বাড়ানো হলো
+                      marginBottom: "15px",
+                      width: "100%",
+                    }}
+                  >
+                    {/* 🔴 ১. বাম পাশে: লোগো (একটু নিচে নামানোর জন্য marginTop বা প্যাডিং দেওয়া যেতে পারে) */}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-start",
+                        alignItems: "center",
+                        paddingTop: "5px",
+                      }}
+                    >
+                      <img
+                        src="/img/madrasatuz-zaytuna-logo5.png"
+                        alt="Logo"
+                        style={{ width: "110px", height: "auto" }} // লোগোর সাইজ আরেকটু সুন্দর করা হলো
+                      />
+                    </div>
+
+                    {/* 🔴 ২. মাঝখানে: টাইটেল */}
+                    <div style={{ textAlign: "center", padding: "0 10px" }}>
+                      <h2
+                        style={{
+                          margin: "0",
+                          color: "#064e3b",
+                          fontSize: "20px",
+                        }}
+                      >
+                        Madrasatuz Zaytuna International
+                      </h2>
+                      <h4
+                        style={{
+                          margin: "5px 0 0 0",
+                          color: "#374151",
+                          textTransform: "uppercase",
+                          fontSize: "13px",
+                          letterSpacing: "0.5px",
+                        }}
+                      >
+                        PRE-ADMISSION APPLICATION FORM <br />
+                        SESSION 2027
+                      </h4>
+                    </div>
+
+                    {/* 🔴 ৩. ডান পাশে: স্কোর এবং অ্যাপ আইডি (একটু নিচে নামানোর জন্য paddingTop দেওয়া হলো) */}
+                    <div
+                      className="adm-print-meta"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-end",
+                        gap: "6px",
+                        paddingTop: "35px", // মাদরাসার নামের সোজাসুজি মিল রাখার জন্য সামান্য নিচে নামানো হলো
+                      }}
+                    >
                       <div
                         className="adm-print-badge"
-                        style={{ color: "#059669", borderColor: "#059669" }}
+                        style={{
+                          color: "#059669",
+                          borderColor: "#059669",
+                          margin: 0,
+                          whiteSpace: "nowrap",
+                        }}
                       >
                         Score: {selectedApp.score}/100
+                      </div>
+                      <div
+                        className="adm-print-badge"
+                        style={{ margin: 0, whiteSpace: "nowrap" }}
+                      >
+                        App ID: {selectedApp.applicationId}
                       </div>
                     </div>
                   </div>
@@ -774,44 +847,6 @@ export default function ManageApplications() {
                       </span>
                     </div>
                   </div>
-
-                  {/* Office Use Only Section */}
-                  {/* <div
-                    className="adm-print-section-title"
-                    style={{ backgroundColor: "#1e293b", marginTop: "30px" }}
-                  >
-                    7. Office Use Only
-                  </div>
-                  <div className="adm-office-grid">
-                    <div className="adm-office-box">
-                      <div className="adm-office-title">Admission Officer</div>
-                      <div className="adm-office-comment">
-                        Comments / Verification notes...
-                      </div>
-                      <div className="adm-office-sign">Signature</div>
-                    </div>
-                    <div className="adm-office-box">
-                      <div className="adm-office-title">Vice-Principal</div>
-                      <div className="adm-office-comment">
-                        Assessment evaluation...
-                      </div>
-                      <div className="adm-office-sign">Signature</div>
-                    </div>
-                    <div className="adm-office-box">
-                      <div className="adm-office-title">Principal</div>
-                      <div className="adm-office-comment">
-                        Final recommendation...
-                      </div>
-                      <div className="adm-office-sign">Signature</div>
-                    </div>
-                    <div className="adm-office-box">
-                      <div className="adm-office-title">Chairman</div>
-                      <div className="adm-office-comment">
-                        Approval remarks...
-                      </div>
-                      <div className="adm-office-sign">Signature</div>
-                    </div>
-                  </div> */}
                 </div>
                 {/* 🔴 Printable Area Ends Here */}
               </div>
