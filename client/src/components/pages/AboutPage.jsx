@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Layout from "./Layout";
 import "./AboutPage.css";
+import OrganizationalChart from "./OrganizationalChart"; // সঠিক পাথটি দেখে নিবেন
 
 const About = () => {
   const [selectedFloor, setSelectedFloor] = useState(1);
@@ -89,7 +90,6 @@ const About = () => {
             roots in iman and knowledge, and a life that benefits others.
           </p>
         </div>
-
         {/* =========================================
             2. Vision, Mission & Message (#chairman)
         ========================================= */}
@@ -141,7 +141,6 @@ const About = () => {
             </div>
           </div>
         </div>
-
         {/* =========================================
             3. Why Choose Us? Section (#why-choose-us)
         ========================================= */}
@@ -257,7 +256,6 @@ const About = () => {
             </div>
           </div>
         </div>
-
         {/* =========================================
             4. Community Engagement Section (#community)
         ========================================= */}
@@ -276,7 +274,6 @@ const About = () => {
             supports family values and Islamic learning.
           </p>
         </div>
-
         {/* =========================================
             5. Prospectus 2027 Section (#prospectus)
         ========================================= */}
@@ -329,46 +326,34 @@ const About = () => {
             </a>
           </div>
         </div>
-
         {/* =========================================
             6. Governance & Campus Exploration (#governance, #campus)
         ========================================= */}
         <div className="bottom-feature-grid" id="governance">
           {/* Governance Card */}
-          <div className="feature-card">
+          <div
+            className="feature-card"
+            style={{
+              gridColumn: "1 / -1" /* 🔴 গ্রিডের পুরো জায়গা জুড়ে থাকবে */,
+              width: "100%",
+              overflowX: "auto",
+            }}
+          >
             <h2>Governance</h2>
             <p className="card-sub-text">Approved organisational structure</p>
 
-            <div className="org-structure">
-              <div className="org-box filled">
-                <strong>Chairman & Founder</strong>
-                <br />
-                Professor Mokhtar Ahmad
-              </div>
-              <div className="org-line"></div>
-              <div className="org-box outline">
-                <strong>Principal</strong>
-                <br />
-                Munshi Harun Ar Rashid
-              </div>
-              <div className="org-line"></div>
-              <div className="org-branches">
-                <div className="org-box outline split">
-                  <strong>Vice Principal</strong>
-                  <br />
-                  Hafizur Rahman
-                </div>
-                <div className="org-box outline split">
-                  <strong>Admission & Communication Officer</strong>
-                  <br />
-                  Asif Mostofa
-                </div>
-              </div>
-            </div>
+            {/* 🔴 অর্গানাইজেশনাল চার্ট কম্পোনেন্ট */}
+            <OrganizationalChart />
           </div>
 
           {/* Explore Campus Card */}
-          <div className="feature-card" id="campus">
+          <div
+            className="feature-card"
+            id="campus"
+            style={{
+              gridColumn: "1 / -1",
+            }} /* 🔴 এটিও গ্রিডের পুরো জায়গা জুড়ে নিচে বসবে */
+          >
             <h2>Explore the campus</h2>
             <p className="card-sub-text">
               Located in West Dhanmondi Housing, Bosila. Select a floor to
@@ -413,8 +398,10 @@ const About = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </div>{" "}
+        {/* 🔴 bottom-feature-grid এখানে সঠিকভাবে ক্লোজ হলো */}
+      </div>{" "}
+      {/* zaytuna-modern-wrapper ক্লোজ হলো */}
     </Layout>
   );
 };

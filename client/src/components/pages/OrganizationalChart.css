@@ -1,0 +1,240 @@
+/* Container */
+.org-container {
+  padding: 40px 20px;
+  background-color: #fcfbf7; /* ছবির ব্যাকগ্রাউন্ডের মতো কালার */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+}
+
+.org-main-title {
+  color: #1b4d3e;
+  text-align: left;
+  border-bottom: 2px solid #b89c49;
+  display: inline-block;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+}
+
+/* Base Box Styles */
+.org-box {
+  padding: 12px 15px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  z-index: 2;
+  position: relative;
+}
+
+.org-box i {
+  font-size: 18px;
+}
+
+/* Colors */
+.dark-green {
+  background-color: #155e30;
+  color: white;
+}
+
+.light-green {
+  background-color: #4a8c4a;
+  color: white;
+}
+
+.light-yellow {
+  background-color: #fdf5d3;
+  color: #333;
+  border: 1px solid #e5d9a7;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* Top Level */
+.org-top-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.org-top-level .org-box {
+  width: 250px;
+}
+
+.vice-principal {
+  background-color: #5c9e42;
+}
+
+/* Advisory Board Layout */
+.org-node-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.org-advisory {
+  position: absolute;
+  left: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.dashed-line {
+  width: 80px;
+  border-top: 2px dashed #333;
+}
+
+.advisory-box {
+  background-color: #dcedc8;
+  color: #333;
+  border: 1px solid #aed581;
+  width: 180px;
+  margin-bottom: 0;
+}
+
+/* Connectors */
+.org-connector.vertical {
+  width: 2px;
+  height: 25px;
+  background-color: #333;
+}
+
+.org-connector.short {
+  height: 15px;
+}
+
+/* Branching Connector (The tricky part for the tree) */
+.org-branch-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.branch-line-vertical {
+  width: 2px;
+  height: 25px;
+  background-color: #333;
+}
+
+.branch-line-horizontal {
+  width: 83%; /* Adjust based on container */
+  height: 2px;
+  background-color: #333;
+}
+
+/* Departments Grid */
+.org-departments-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 15px;
+  margin-top: -2px; /* Pull up to touch the horizontal line */
+}
+
+.org-dept-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dept-connector {
+  width: 2px;
+  height: 20px;
+  background-color: #333;
+}
+
+.dept-head {
+  width: 100%;
+  min-height: 65px;
+}
+
+.org-dept-col .light-yellow {
+  width: 90%;
+}
+
+/* Support Staff Special Grid */
+.support-head {
+  width: 100%;
+  background-color: #cddc39;
+  color: #333;
+}
+
+.support-staff-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.small-box {
+  font-size: 11px;
+  padding: 8px 5px;
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN (Tablet & Mobile)
+========================================== */
+
+/* Tablet View */
+@media (max-width: 1100px) {
+  .org-departments-grid {
+    grid-template-columns: repeat(3, 1fr); /* ৩ কলাম */
+    row-gap: 40px;
+  }
+  .branch-line-horizontal {
+    display: none; /* ট্যাবলেটে লম্বা দাগটি হাইড করা হলো */
+  }
+  .org-branch-connector {
+    margin-bottom: 20px;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+  .org-node-wrapper {
+    flex-direction: column;
+  }
+
+  .org-advisory {
+    position: relative;
+    left: 0;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .dashed-line {
+    width: 2px;
+    height: 20px;
+    border-top: none;
+    border-left: 2px dashed #333;
+  }
+
+  .org-departments-grid {
+    grid-template-columns: 1fr; /* মোবাইলে ১ কলাম */
+    row-gap: 30px;
+  }
+
+  .org-dept-col {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+  }
+
+  .dept-connector {
+    display: none; /* মোবাইলে কানেক্টর লাইন লাগবে না */
+  }
+
+  .support-staff-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
